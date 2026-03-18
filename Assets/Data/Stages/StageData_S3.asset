@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084b7be8cbd774c419e192d9e39c19f3, type: 3}
+  m_Name: StageData_S3
+  m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Stage.StageData
+  stageName: Stage 3
+  description: 
+  backgroundSprite: {fileID: 21300000, guid: cb0df55a12d29a04ea8f9e6f919ec2c3, type: 3}
+  bossSprite: {fileID: 127687315839032673, guid: 791b44c63291f7849b8e0ee0ebad34c4, type: 3}
+  monsterMaxHp: 1500
+  attackIntervalTurns: 4
+  attackDamage: 80
+  attackTargetType: 1
+  maxTurns: 40
+  swordResistance: 0
+  bowResistance: 0
+  wandResistance: 0

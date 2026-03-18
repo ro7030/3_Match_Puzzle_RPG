@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbc8bd9dd9a55d24db39e899ae36c441, type: 3}
+  m_Name: Chr_King
+  m_EditorClassIdentifier: Assembly-CSharp::Story.DataCharacter
+  chrID: 4
+  displayName: "\uC655"
+  chrImage: {fileID: -4821530343430527414, guid: d0d776d3d5aaecc46929c09f8c48a860, type: 3}
