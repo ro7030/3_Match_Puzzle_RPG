@@ -51,6 +51,8 @@ namespace Match3Puzzle.Skill
             backButton?.onClick.AddListener(() => SceneManager.LoadScene(backSceneName));
             if (skillSelectionPanel != null)
                 skillSelectionPanel.SetActive(false);
+
+            AutoWireSkillInfoReferencesIfMissing();
         }
 
         private void Start()
@@ -61,6 +63,7 @@ namespace Match3Puzzle.Skill
             if (skillDatabase == null)
                 skillDatabase = Resources.Load<SkillDatabase>("SkillDatabase");
 
+            AutoWireSkillInfoReferencesIfMissing();
             RefreshAll();
             SetupCharacterSlotCallbacks();
             SetupSkillSelectionCallbacks();
@@ -153,7 +156,8 @@ namespace Match3Puzzle.Skill
 
             ShowSkillInfo(data);
             RefreshAll();
-            CloseSkillSelectionPanel();
+            // 패널을 즉시 닫으면 스킬 이름/설명 표시도 함께 사라져 보이지 않습니다.
+            // 닫기는 Close 버튼(또는 Back 버튼)에서 처리하도록 두고, 클릭 시에는 정보가 화면에 남도록 유지합니다.
         }
 
         /// <summary>
@@ -162,6 +166,7 @@ namespace Match3Puzzle.Skill
         /// </summary>
         private void ShowSkillInfo(SkillData data)
         {
+            AutoWireSkillInfoReferencesIfMissing();
             if (skillInfoIconImage != null)
             {
                 if (data != null && data.icon != null)
@@ -178,6 +183,43 @@ namespace Match3Puzzle.Skill
                 skillNameText.text = data.displayName;
             if (skillEffectText != null)
                 skillEffectText.text = !string.IsNullOrEmpty(data.description) ? data.description : GetEffectDescription(data);
+        }
+
+        private void AutoWireSkillInfoReferencesIfMissing()
+        {
+            // 인스펙터에서 누락된 경우에만, SkillSelectionPanel 하위에서 이름 기반으로 탐색해 자동 연결
+            // (씬 구성 가이드의 기본 오브젝트 명: SkillIconImage / SkillNameText / SkillEffectText)
+            if (skillSelectionPanel == null) return;
+
+            var root = skillSelectionPanel.transform;
+            if (skillInfoIconImage == null)
+                skillInfoIconImage = FindImageByName(root, "SkillIconImage");
+            if (skillNameText == null)
+                skillNameText = FindTMPByName(root, "SkillNameText");
+            if (skillEffectText == null)
+                skillEffectText = FindTMPByName(root, "SkillEffectText");
+        }
+
+        private static Image FindImageByName(Transform root, string name)
+        {
+            var images = root.GetComponentsInChildren<Image>(true);
+            for (int i = 0; i < images.Length; i++)
+            {
+                if (images[i] != null && images[i].name == name)
+                    return images[i];
+            }
+            return null;
+        }
+
+        private static TextMeshProUGUI FindTMPByName(Transform root, string name)
+        {
+            var tmps = root.GetComponentsInChildren<TextMeshProUGUI>(true);
+            for (int i = 0; i < tmps.Length; i++)
+            {
+                if (tmps[i] != null && tmps[i].name == name)
+                    return tmps[i];
+            }
+            return null;
         }
 
         private void ClearSkillInfo()

@@ -35,7 +35,10 @@ namespace Match3Puzzle.Skill
         public Sprite icon;
 
         [Header("쿨타임")]
-        [Tooltip("스킬 쿨타임(초). 스킬 사용 후 다시 쓸 수 있을 때까지 대기 시간.")]
+        [Tooltip("스킬 쿨타임(턴). 배틀에서 스킬 사용 후 다시 쓸 수 있을 때까지 필요한 턴 수. 예: 4 = 4턴마다 1회 사용.")]
+        public int cooldownTurns = 4;
+
+        [Tooltip("레거시: 스킬 쿨타임(초). (턴 기반으로 전환했으므로 배틀에선 기본적으로 사용하지 않음)")]
         public float cooldownSeconds = 5f;
 
         [Header("스킬 효과")]

@@ -71,8 +71,36 @@ namespace Match3Puzzle.Map
 
             _originPosition = hoverTarget.anchoredPosition;
 
-            if (hitAreaImage != null && alphaHitThreshold > 0f)
-                hitAreaImage.alphaHitTestMinimumThreshold = alphaHitThreshold;
+            ApplyAlphaHitTestThresholdSafely();
+        }
+
+        private void ApplyAlphaHitTestThresholdSafely()
+        {
+            if (hitAreaImage == null) return;
+
+            // 0이면 Rect 전체 판정이므로 굳이 설정하지 않음
+            if (alphaHitThreshold <= 0f)
+            {
+                hitAreaImage.alphaHitTestMinimumThreshold = 0f;
+                return;
+            }
+
+            // alphaHitTestMinimumThreshold는 스프라이트 텍스처가 Read/Write 가능해야 설정 가능.
+            // (Readable이 아니면 Unity 내부에서 InvalidOperationException 발생)
+            var sprite = hitAreaImage.sprite;
+            var tex = sprite != null ? sprite.texture : null;
+            bool readable = tex != null && tex.isReadable;
+            if (!readable)
+            {
+                hitAreaImage.alphaHitTestMinimumThreshold = 0f;
+                Debug.LogWarning(
+                    $"[ChapterNodeUI] '{gameObject.name}': hitAreaImage 스프라이트 텍스처가 Read/Write Enabled가 아니어서 알파 히트 테스트를 비활성화했습니다. " +
+                    $"(Import Settings에서 Read/Write Enabled를 켜거나 alphaHitThreshold를 0으로 설정하세요.)",
+                    this);
+                return;
+            }
+
+            hitAreaImage.alphaHitTestMinimumThreshold = alphaHitThreshold;
         }
 
         // ──────────────────────────────────────────────────────────────
