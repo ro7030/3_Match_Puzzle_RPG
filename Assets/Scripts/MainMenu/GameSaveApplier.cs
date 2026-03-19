@@ -27,6 +27,8 @@ namespace MainMenu
 
             // 장착 스킬 복원 (배틀/스킬씬에서 사용)
             Match3Puzzle.Skill.EquippedSkillsHolder.LoadFromSave(data);
+            // 장착 장비 복원 (배틀/인벤토리씬에서 사용)
+            Match3Puzzle.Inventory.EquippedEquipmentHolder.LoadFromSave(data);
 
             Debug.Log($"[GameSaveApplier] 적용 - 챕터:{data.lastClearedChapter} 골드:{data.gold} 씬:{data.currentSceneName}");
 

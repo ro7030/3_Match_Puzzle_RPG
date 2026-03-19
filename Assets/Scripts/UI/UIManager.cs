@@ -246,12 +246,17 @@ namespace Match3Puzzle.UI
                 saveData.lastClearedStageIndex = clearedIndex;
                 saveData.lastClearedChapter = (clearedIndex / 3) + 1;
 
+                // 스테이지 첫 클리어 골드 보상
+                var stageData = GetCurrentStageData();
+                int clearGold = stageData != null ? Mathf.Max(0, stageData.clearGoldReward) : 0;
+                saveData.gold += clearGold;
+
                 // 신규 스테이지 클리어 → 플레이어 레벨 +1, 업그레이드 포인트 +1
                 saveData.playerLevel++;
                 saveData.upgradePoints++;
 
                 SaveSystem.Save(saveData);
-                Debug.Log($"[UIManager] 스테이지 클리어 저장: 인덱스 {clearedIndex} / Lv {saveData.playerLevel} / 포인트 {saveData.upgradePoints}");
+                Debug.Log($"[UIManager] 스테이지 클리어 저장: 인덱스 {clearedIndex} / 골드 +{clearGold} / Lv {saveData.playerLevel} / 포인트 {saveData.upgradePoints}");
             }
         }
 

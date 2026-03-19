@@ -5,6 +5,7 @@ using Match3Puzzle.Matching;
 using Match3Puzzle.Stage;
 using Match3Puzzle.Stats;
 using Match3Puzzle.UI.Battle;
+using Match3Puzzle.Inventory;
 
 namespace Match3Puzzle.Matching
 {
@@ -79,7 +80,8 @@ namespace Match3Puzzle.Matching
         private void ApplySwordMatch(int matchCount, int enhancedCount)
         {
             if (monsterHealthUI == null) return;
-            int baseDmg = CharacterStatsResolver.GetSwordDamage(characterStats) * matchCount;
+            float attackMul = EquipmentStatModifier.GetAttackMultiplier();
+            int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetSwordDamage(characterStats) * attackMul) * matchCount;
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
             int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - _stageData.swordResistance));
             if (final > 0) monsterHealthUI.TakeDamage(final);
@@ -88,7 +90,8 @@ namespace Match3Puzzle.Matching
         private void ApplyBowMatch(int enhancedCount)
         {
             if (monsterHealthUI == null) return;
-            int baseDmg = CharacterStatsResolver.GetBowDamage(characterStats);
+            float attackMul = EquipmentStatModifier.GetAttackMultiplier();
+            int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetBowDamage(characterStats) * attackMul);
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
             int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - _stageData.bowResistance));
             if (final > 0) monsterHealthUI.TakeDamage(final);
@@ -97,7 +100,8 @@ namespace Match3Puzzle.Matching
         private void ApplyCrossMatch(int matchCount)
         {
             if (partyHealthUI == null) return;
-            int heal = CharacterStatsResolver.GetHealAmount(characterStats) * matchCount;
+            float healMul = EquipmentStatModifier.GetHealMultiplier();
+            int heal = Mathf.RoundToInt(CharacterStatsResolver.GetHealAmount(characterStats) * healMul) * matchCount;
             for (int i = 0; i < partyHealthUI.CharacterCount; i++)
             {
                 if (partyHealthUI.IsAlive(i))
@@ -108,7 +112,8 @@ namespace Match3Puzzle.Matching
         private void ApplyWandMatch(int matchCount, int enhancedCount)
         {
             if (monsterHealthUI == null) return;
-            int baseDmg = CharacterStatsResolver.GetWandDamage(characterStats) * matchCount;
+            float attackMul = EquipmentStatModifier.GetAttackMultiplier();
+            int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetWandDamage(characterStats) * attackMul) * matchCount;
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
             int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - _stageData.wandResistance));
             if (final > 0) monsterHealthUI.TakeDamage(final);

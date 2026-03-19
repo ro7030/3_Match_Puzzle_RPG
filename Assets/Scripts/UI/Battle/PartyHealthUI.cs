@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Match3Puzzle.Inventory;
 
 namespace Match3Puzzle.UI.Battle
 {
@@ -24,6 +25,7 @@ namespace Match3Puzzle.UI.Battle
 
         [SerializeField] private CharacterSlot[] slots = new CharacterSlot[4];
         [SerializeField] private int maxHpPerCharacter = 100;
+        [SerializeField] private bool applyEquipmentBonusOnAwake = true;
 
         private int[] currentHp;
 
@@ -31,6 +33,12 @@ namespace Match3Puzzle.UI.Battle
 
         private void Awake()
         {
+            if (applyEquipmentBonusOnAwake)
+            {
+                float hpMul = EquipmentStatModifier.GetHpMultiplier();
+                maxHpPerCharacter = Mathf.Max(1, Mathf.RoundToInt(maxHpPerCharacter * hpMul));
+            }
+
             int count = CharacterCount;
             currentHp = new int[count];
             for (int i = 0; i < count; i++)

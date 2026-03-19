@@ -54,6 +54,14 @@ namespace MainMenu
             {
                 string json = File.ReadAllText(SavePath);
                 var data = JsonUtility.FromJson<GameSaveData>(json);
+                if (data != null)
+                {
+                    data.unlockedSkillIds ??= new System.Collections.Generic.List<string>();
+                    data.unlockedEquipmentIds ??= new System.Collections.Generic.List<string>();
+                    data.equippedSkillIds ??= new string[4];
+                    if (data.equippedEquipmentIds == null || data.equippedEquipmentIds.Length != 2)
+                        data.equippedEquipmentIds = new string[2];
+                }
                 Debug.Log("[SaveSystem] 로드 완료 - 챕터:" + data.lastClearedChapter + " 골드:" + data.gold);
                 return data;
             }

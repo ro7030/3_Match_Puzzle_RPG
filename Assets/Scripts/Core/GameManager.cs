@@ -5,6 +5,7 @@ using Match3Puzzle.Board;
 using Match3Puzzle.UI;
 using Match3Puzzle.Score;
 using Match3Puzzle.Level;
+using Match3Puzzle.Stage;
 
 namespace Match3Puzzle.Core
 {
@@ -230,6 +231,10 @@ namespace Match3Puzzle.Core
                 saveData.lastClearedStageIndex = clearedIndex;
                 saveData.lastClearedChapter = (clearedIndex / 3) + 1;
 
+                // UIManager가 없는 경우에도 첫 클리어 골드 보상 반영
+                int clearGold = GetCurrentStageClearGoldReward();
+                saveData.gold += clearGold;
+
                 // 신규 스테이지 클리어 → 플레이어 레벨 +1, 업그레이드 포인트 +1
                 saveData.playerLevel++;
                 saveData.upgradePoints++;
@@ -237,6 +242,13 @@ namespace Match3Puzzle.Core
                 MainMenu.SaveSystem.Save(saveData);
             }
             SceneManager.LoadScene("MapScene");
+        }
+
+        private static int GetCurrentStageClearGoldReward()
+        {
+            var db = Resources.Load<StageDatabase>("StageDatabase");
+            var data = db != null ? db.GetStage(BattleStageHolder.CurrentStageIndex) : null;
+            return data != null ? Mathf.Max(0, data.clearGoldReward) : 0;
         }
 
         /// <summary>uiManager가 null이면 현재 씬에서 즉시 재탐색</summary>

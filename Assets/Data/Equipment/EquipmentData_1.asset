@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5173ffe14fadf5479eca4ea0bfb6ee4, type: 3}
+  m_Name: EquipmentData_1
+  m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Inventory.EquipmentData
+  equipmentId: equip_slot1_warbanner
+  displayName: "\uC9C4\uACA9 \uC804\uD22C\uAE30"
+  description: "\uC804\uCCB4 \uACF5\uACA9\uB825\uC744 \uB192\uC5EC \uAC80/\uD65C/\uB9C8\uBC95
+    \uD53C\uD574\uB97C \uAC15\uD654\uD55C\uB2E4."
+  icon: {fileID: 9056719247498086458, guid: 011d5a633697a4b469b8b34de1a5f532, type: 3}
+  slotType: 1
+  goldCost: 600
+  requiredChapter: 0
+  partyMaxHpPercent: 0
+  attackPercent: 20
+  healPercent: 0

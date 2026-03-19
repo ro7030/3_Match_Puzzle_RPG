@@ -47,6 +47,10 @@ namespace Match3Puzzle.Stage
         [Tooltip("최대 턴 수 (예: 40). 40턴 안에 보스 처치 실패 시 패배")]
         public int maxTurns = 40;
 
+        [Header("클리어 보상")]
+        [Tooltip("이 스테이지를 처음 클리어했을 때 지급할 골드")]
+        public int clearGoldReward = 300;
+
         [Header("몬스터 저항력 (타입별, 0=무감소, 1=완전 저항)")]
         [Range(0f, 1f)]
         [Tooltip("검 공격 저항")]

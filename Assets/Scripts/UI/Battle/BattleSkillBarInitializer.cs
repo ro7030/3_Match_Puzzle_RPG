@@ -2,6 +2,7 @@ using UnityEngine;
 using Match3Puzzle.Skill;
 using Match3Puzzle.Stage;
 using Match3Puzzle.Stats;
+using Match3Puzzle.Inventory;
 using System;
 using System.Linq;
 using Match3Puzzle.Level;
@@ -177,8 +178,9 @@ namespace Match3Puzzle.UI.Battle
                 case SkillEffectType.Sword:
                 {
                     if (monsterHealthUI == null) return;
+                    float attackMul = EquipmentStatModifier.GetAttackMultiplier();
                     int dmg = Mathf.RoundToInt(
-                        CharacterStatsResolver.GetSwordDamage(characterStats) * data.effectMultiplier
+                        CharacterStatsResolver.GetSwordDamage(characterStats) * attackMul * data.effectMultiplier
                         * (1f - _currentStageData.swordResistance));
                     if (dmg > 0) monsterHealthUI.TakeDamage(dmg);
                     break;
@@ -186,8 +188,9 @@ namespace Match3Puzzle.UI.Battle
                 case SkillEffectType.Bow:
                 {
                     if (monsterHealthUI == null) return;
+                    float attackMul = EquipmentStatModifier.GetAttackMultiplier();
                     int dmg = Mathf.RoundToInt(
-                        CharacterStatsResolver.GetBowDamage(characterStats) * data.effectMultiplier
+                        CharacterStatsResolver.GetBowDamage(characterStats) * attackMul * data.effectMultiplier
                         * (1f - _currentStageData.bowResistance));
                     if (dmg > 0) monsterHealthUI.TakeDamage(dmg);
                     break;
@@ -195,8 +198,9 @@ namespace Match3Puzzle.UI.Battle
                 case SkillEffectType.Wand:
                 {
                     if (monsterHealthUI == null) return;
+                    float attackMul = EquipmentStatModifier.GetAttackMultiplier();
                     int dmg = Mathf.RoundToInt(
-                        CharacterStatsResolver.GetWandDamage(characterStats) * data.effectMultiplier
+                        CharacterStatsResolver.GetWandDamage(characterStats) * attackMul * data.effectMultiplier
                         * (1f - _currentStageData.wandResistance));
                     if (dmg > 0) monsterHealthUI.TakeDamage(dmg);
                     break;
@@ -204,8 +208,9 @@ namespace Match3Puzzle.UI.Battle
                 case SkillEffectType.Heal:
                 {
                     if (partyHealthUI == null) return;
+                    float healMul = EquipmentStatModifier.GetHealMultiplier();
                     int heal = Mathf.RoundToInt(
-                        CharacterStatsResolver.GetHealAmount(characterStats) * data.effectMultiplier);
+                        CharacterStatsResolver.GetHealAmount(characterStats) * healMul * data.effectMultiplier);
                     if (heal <= 0) return;
                     for (int i = 0; i < partyHealthUI.CharacterCount; i++)
                     {

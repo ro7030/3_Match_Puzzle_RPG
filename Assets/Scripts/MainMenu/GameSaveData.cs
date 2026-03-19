@@ -22,6 +22,7 @@ namespace MainMenu
 
         public int gold = 0;
         public List<string> unlockedSkillIds = new List<string>();
+        public List<string> unlockedEquipmentIds = new List<string>();
         public string lastPlayTimeUtc = ""; // ISO 8601 문자열
         public string currentSceneName = "";
         public int playTimeSeconds = 0;
@@ -48,6 +49,11 @@ namespace MainMenu
         /// 빈 문자열 = 미장착.
         /// </summary>
         public string[] equippedSkillIds = new string[4];
+
+        /// <summary>
+        /// 장비별 구매 해금 ID 목록.
+        /// </summary>
+        public string[] equippedEquipmentIds = new string[2];
 
         public GameSaveData() { }
 

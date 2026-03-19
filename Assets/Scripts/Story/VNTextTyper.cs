@@ -25,10 +25,9 @@ namespace Story
         private int _currentLineIndex;
         private Coroutine _typingCoroutine;
         
-        // 💡 [핵심] 상태 관리를 위한 3가지 변수
-        private bool _isWaitingToStart; // 1. 타이핑 시작 전 빈 화면 대기 상태
-        private bool _isTyping;         // 2. 한 글자씩 타이핑 중인 상태
-        private bool _isComplete;       // 3. 타이핑 완료 후 대기 상태
+        // 상태: 타이핑 중 / 타이핑 완료 후 다음 줄 대기
+        private bool _isTyping;
+        private bool _isComplete;
         
         private Action _onLineComplete;
         private Action _onAllComplete;
@@ -83,8 +82,8 @@ namespace Story
             _lines = null;
             _currentLineIndex = 0;
             if (targetText != null) targetText.text = "";
-            _isWaitingToStart = false;
             _isTyping = false;
+            _isComplete = false;
         }
 
         private void ShowNextLine()
@@ -104,40 +103,34 @@ namespace Story
                 return;
             }
 
-            // 💡 [핵심 변경 1] 대사가 로드되면 바로 타이핑을 시작하지 않고 화면을 비운 채 대기합니다.
-            if (targetText != null) targetText.text = "";
-            _isWaitingToStart = true;
-            _isTyping = false;
+            _isComplete = false;
+            _isTyping = true;
+            float delay = charDelay > 0f ? charDelay : MinCharDelay;
+            _typingCoroutine = StartCoroutine(TypeLine(line, delay));
         }
 
         private IEnumerator TypeLine(string line, float delayPerChar)
         {
             if (targetText != null) targetText.text = ""; 
-            
-            float timer = 0f;
-            int currentIndex = 0;
 
             // 딜레이 안전 장치: 값이 0에 가까워 전체가 한 번에 출력되는 버그 방지
             if (delayPerChar < MinCharDelay) delayPerChar = MinCharDelay;
+            var wait = new WaitForSecondsRealtime(delayPerChar);
+            int currentIndex = 0;
 
             while (currentIndex < line.Length)
             {
                 if (_typingCoroutine == null) yield break;
 
-                timer += Time.deltaTime;
-                
-                while (timer >= delayPerChar && currentIndex < line.Length)
-                {
-                    currentIndex++;
-                    timer -= delayPerChar;
-                }
+                currentIndex++;
 
                 if (targetText != null)
                 {
                     targetText.text = line.Substring(0, currentIndex);
                 }
 
-                yield return null;
+                if (currentIndex < line.Length)
+                    yield return wait;
             }
 
             FinishLine();
@@ -147,6 +140,7 @@ namespace Story
         {
             StopTyping();
             _isTyping = false;
+            _isComplete = true;
         }
 
         private void StopTyping()
@@ -165,25 +159,17 @@ namespace Story
 
             if (_lines == null || _currentLineIndex >= _lines.Length) return;
 
-            // 💡 [핵심 변경 2] 클릭 시 상태에 따라 3단계로 정확히 나뉘어 작동합니다.
-            if (_isWaitingToStart)
+            if (_isTyping)
             {
-                // [1단계] 빈 화면 대기 중 클릭 -> 타이핑 애니메이션 시작
-                _isWaitingToStart = false;
-                _isTyping = true;
-                float delay = charDelay > 0f ? charDelay : MinCharDelay;
-                _typingCoroutine = StartCoroutine(TypeLine(_lines[_currentLineIndex], delay));
-            }
-            else if (_isTyping)
-            {
-                // [2단계] 타이핑 중 클릭 -> 타이핑을 멈추고 전체 텍스트를 즉시 표시
+                // 타이핑 중 클릭 -> 타이핑을 멈추고 전체 텍스트를 즉시 표시
                 StopTyping();
                 if (targetText != null) targetText.text = _lines[_currentLineIndex];
                 _isTyping = false;
+                _isComplete = true;
             }
             else
             {
-                // [3단계] 전체 텍스트 표시 완료 상태에서 클릭 -> 다음 대사 로드 (다시 1단계로 진입)
+                // 전체 텍스트 표시 완료 상태에서 클릭 -> 다음 대사 즉시 시작
                 _onLineComplete?.Invoke();
                 _currentLineIndex++;
                 if (_currentLineIndex >= _lines.Length)
