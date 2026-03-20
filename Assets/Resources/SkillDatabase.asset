@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Skill.SkillDatabase
   skills:
   - {fileID: 11400000, guid: 3403542e49ba8974f978d182686f5de4, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 359b707a42e72934cb472041fba65225, type: 2}
+  - {fileID: 11400000, guid: c5c62ff4f16ecd94e8a6c3d2413fb950, type: 2}
+  - {fileID: 11400000, guid: 622bedebb36c1a04ebac7d4fcb489b08, type: 2}
+  - {fileID: 11400000, guid: 38a7bf87178842041ae5888f58eeea7e, type: 2}
+  - {fileID: 11400000, guid: db5d2185b6348ab4fa22ea709a02b817, type: 2}
+  - {fileID: 11400000, guid: aaa6c2dd1611128439b74be86f25b6f9, type: 2}
+  - {fileID: 11400000, guid: e119548fd4f4d344f833ddfadb391336, type: 2}
+  - {fileID: 11400000, guid: ce9d1f2adc6ddc94ca6ac0b6edf21525, type: 2}
+  - {fileID: 11400000, guid: acfc2931e9418d54dbbeeadf4591809a, type: 2}
+  - {fileID: 11400000, guid: 28dd6dd25f0d9d441b4f9c3df08a3311, type: 2}
+  - {fileID: 11400000, guid: d088eed0069985c4f8c040aeaeb92033, type: 2}

@@ -23,6 +23,8 @@ namespace Match3Puzzle.Level
 
         public int CurrentLevel => currentLevel;
         public int MovesRemaining => movesRemaining - currentMoves;
+        /// <summary>배틀에서 실제로 사용된 턴 수(= currentMoves)</summary>
+        public int MovesUsed => currentMoves;
         /// <summary>배틀 턴 UI용: 현재 턴 번호 (1~MaxTurns)</summary>
         public int CurrentTurnNumber => Mathf.Clamp(currentMoves + 1, 1, movesRemaining);
         /// <summary>배틀 턴 UI용: 최대 턴 수 (예: 20)</summary>

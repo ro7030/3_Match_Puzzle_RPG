@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ebec344a07c0b4fac788942570856a, type: 3}
+  m_Name: Before_Chapter1_Stage1
+  m_EditorClassIdentifier: Assembly-CSharp::Story.CutsceneData
+  cutsceneId: 
+  nextSceneName: GameScene
+  isPrologueMode: 1
+  clearSaveOnComplete: 0
+  dialogueLines:
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: 
+    backgroundSprite: {fileID: 8617253641328594296, guid: 2dfeda086d9ea9546b612b9f47aafb11, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: 
+    backgroundSprite: {fileID: 0}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: 
+    backgroundSprite: {fileID: 0}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: 
+    backgroundSprite: {fileID: 0}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: 
+    backgroundSprite: {fileID: 0}

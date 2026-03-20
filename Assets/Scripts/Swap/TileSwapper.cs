@@ -5,6 +5,7 @@ using Match3Puzzle.Matching;
 using Match3Puzzle.Core;
 using Match3Puzzle.Clear;
 using Match3Puzzle.Level;
+using Match3Puzzle.Stage;
 
 namespace Match3Puzzle.Swap
 {
@@ -91,7 +92,8 @@ namespace Match3Puzzle.Swap
 
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.ChangeState(GameState.Playing);
+                if (!BattlePhaseRuntime.IsBattleCutsceneActive)
+                    GameManager.Instance.ChangeState(GameState.Playing);
             }
 
             isSwapping = false;

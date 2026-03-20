@@ -6,6 +6,7 @@ using Match3Puzzle.Matching;
 using Match3Puzzle.Gravity;
 using Match3Puzzle.Spawn;
 using Match3Puzzle.Core;
+using Match3Puzzle.Stage;
 
 namespace Match3Puzzle.Clear
 {
@@ -47,7 +48,10 @@ namespace Match3Puzzle.Clear
                 foreach (var tile in match.Tiles)
                     tilesToClear.Add(tile);
                 if (match.Count >= 4 && match.Tiles.Count > 0)
+                {
                     enhancedSpawns.Add((match.Tiles[0].X, match.Tiles[0].Y, Tile.GetBaseType(match.TileType)));
+                    BattleClearStatsRuntime.AddEnhancedSummon(); // 4매치 이상 성공 횟수
+                }
             }
 
             if (matchEffectHandler != null)
@@ -73,7 +77,10 @@ namespace Match3Puzzle.Clear
             {
                 // 튜토리얼 모드: 빈 칸을 채우지 않고 그대로 유지
                 if (GameManager.Instance != null)
-                    GameManager.Instance.ChangeState(GameState.Playing);
+                {
+                    if (!BattlePhaseRuntime.IsBattleCutsceneActive)
+                        GameManager.Instance.ChangeState(GameState.Playing);
+                }
                 yield break;
             }
 
@@ -87,7 +94,10 @@ namespace Match3Puzzle.Clear
             if (newMatches.Count > 0)
                 yield return StartCoroutine(ClearMatches(newMatches));
             else if (GameManager.Instance != null)
-                GameManager.Instance.ChangeState(GameState.Playing);
+            {
+                if (!BattlePhaseRuntime.IsBattleCutsceneActive)
+                    GameManager.Instance.ChangeState(GameState.Playing);
+            }
         }
     }
 }

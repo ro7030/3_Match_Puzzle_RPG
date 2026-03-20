@@ -30,6 +30,7 @@ namespace Match3Puzzle.UI.Battle
         private int[] currentHp;
 
         public int CharacterCount => slots?.Length ?? 0;
+        public int MaxHpPerCharacter => maxHpPerCharacter;
 
         private void Awake()
         {
@@ -91,6 +92,26 @@ namespace Match3Puzzle.UI.Battle
         {
             if (characterIndex < 0 || characterIndex >= CharacterCount) return 0;
             return currentHp[characterIndex];
+        }
+
+        /// <summary>
+        /// 파티 캐릭터 슬롯의 초상화 Sprite를 반환.
+        /// (클리어 패널에서 랜덤 캐릭터를 띄우기 위해 사용)
+        /// </summary>
+        public Sprite GetPortraitSprite(int characterIndex)
+        {
+            if (slots == null || characterIndex < 0 || characterIndex >= slots.Length) return null;
+            var img = slots[characterIndex].portraitImage;
+            return img != null ? img.sprite : null;
+        }
+
+        /// <summary>
+        /// 파티 캐릭터 슬롯의 초상화 Image를 반환.
+        /// </summary>
+        public Image GetPortraitImage(int characterIndex)
+        {
+            if (slots == null || characterIndex < 0 || characterIndex >= slots.Length) return null;
+            return slots[characterIndex].portraitImage;
         }
 
         public bool IsAlive(int characterIndex)

@@ -72,8 +72,11 @@ namespace Match3Puzzle.UI.Battle
         private void HandleTurnChanged(int turn)
         {
             if (currentStageData == null || partyHealthUI == null) return;
-            if (currentStageData.attackIntervalTurns <= 0) return;
-            if (turn % currentStageData.attackIntervalTurns != 0) return;
+            int interval = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                ? currentStageData.attackIntervalTurnsPhase2
+                : currentStageData.attackIntervalTurns;
+            if (interval <= 0) return;
+            if (turn % interval != 0) return;
 
             ApplyMonsterAttack();
         }
@@ -96,7 +99,9 @@ namespace Match3Puzzle.UI.Battle
 
         private void ApplyMonsterAttack()
         {
-            int damage = currentStageData.attackDamage;
+            int damage = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                ? currentStageData.attackDamagePhase2
+                : currentStageData.attackDamage;
             var targets = GetAttackTargets();
 
             foreach (int idx in targets)
@@ -117,7 +122,11 @@ namespace Match3Puzzle.UI.Battle
 
             if (alive.Count == 0) return alive;
 
-            switch (currentStageData.attackTargetType)
+            var targetType = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                ? currentStageData.attackTargetTypePhase2
+                : currentStageData.attackTargetType;
+
+            switch (targetType)
             {
                 case MonsterAttackTargetType.All:
                     return new List<int>(alive);

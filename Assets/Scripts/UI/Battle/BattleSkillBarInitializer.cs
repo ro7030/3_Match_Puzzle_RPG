@@ -179,9 +179,12 @@ namespace Match3Puzzle.UI.Battle
                 {
                     if (monsterHealthUI == null) return;
                     float attackMul = EquipmentStatModifier.GetAttackMultiplier();
+                    float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                        ? _currentStageData.swordResistancePhase2
+                        : _currentStageData.swordResistance;
                     int dmg = Mathf.RoundToInt(
                         CharacterStatsResolver.GetSwordDamage(characterStats) * attackMul * data.effectMultiplier
-                        * (1f - _currentStageData.swordResistance));
+                        * (1f - resistance));
                     if (dmg > 0) monsterHealthUI.TakeDamage(dmg);
                     break;
                 }
@@ -189,9 +192,12 @@ namespace Match3Puzzle.UI.Battle
                 {
                     if (monsterHealthUI == null) return;
                     float attackMul = EquipmentStatModifier.GetAttackMultiplier();
+                    float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                        ? _currentStageData.bowResistancePhase2
+                        : _currentStageData.bowResistance;
                     int dmg = Mathf.RoundToInt(
                         CharacterStatsResolver.GetBowDamage(characterStats) * attackMul * data.effectMultiplier
-                        * (1f - _currentStageData.bowResistance));
+                        * (1f - resistance));
                     if (dmg > 0) monsterHealthUI.TakeDamage(dmg);
                     break;
                 }
@@ -199,9 +205,12 @@ namespace Match3Puzzle.UI.Battle
                 {
                     if (monsterHealthUI == null) return;
                     float attackMul = EquipmentStatModifier.GetAttackMultiplier();
+                    float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                        ? _currentStageData.wandResistancePhase2
+                        : _currentStageData.wandResistance;
                     int dmg = Mathf.RoundToInt(
                         CharacterStatsResolver.GetWandDamage(characterStats) * attackMul * data.effectMultiplier
-                        * (1f - _currentStageData.wandResistance));
+                        * (1f - resistance));
                     if (dmg > 0) monsterHealthUI.TakeDamage(dmg);
                     break;
                 }

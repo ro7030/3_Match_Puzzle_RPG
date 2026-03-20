@@ -26,6 +26,9 @@ namespace Match3Puzzle.UI.Battle
         /// <summary>몬스터 HP가 0이 되는 순간 발생. MonsterAttackController 등에서 구독.</summary>
         public event System.Action OnDied;
 
+        /// <summary>몬스터 HP(현재/최대)가 변경될 때마다 호출.</summary>
+        public event System.Action<int, int> OnHPChanged;
+
         private void Start()
         {
             Refresh();
@@ -39,6 +42,7 @@ namespace Match3Puzzle.UI.Battle
             currentHp = Mathf.Clamp(current, 0, max);
             maxHp = Mathf.Max(1, max);
             Refresh();
+            OnHPChanged?.Invoke(currentHp, maxHp);
         }
 
         /// <summary>
@@ -63,6 +67,7 @@ namespace Match3Puzzle.UI.Battle
             if (currentHp <= 0) return;
             currentHp = Mathf.Max(0, currentHp - amount);
             Refresh();
+            OnHPChanged?.Invoke(currentHp, maxHp);
 
             Debug.Log($"[MonsterHP] TakeDamage:{amount} → 남은HP:{currentHp}/{maxHp} / OnDied구독수:{OnDied?.GetInvocationList().Length ?? 0}");
 
@@ -80,6 +85,7 @@ namespace Match3Puzzle.UI.Battle
         {
             currentHp = Mathf.Min(maxHp, currentHp + amount);
             Refresh();
+            OnHPChanged?.Invoke(currentHp, maxHp);
         }
 
         private void Refresh()
