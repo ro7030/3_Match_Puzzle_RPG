@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MainMenu
 {
@@ -22,13 +25,30 @@ namespace MainMenu
         [SerializeField] private TextMeshProUGUI sfxVolumeText;
 
         [Header("Other")]
+        [Tooltip("Fullscreen 모드 드롭다운 (TextMeshPro TMP_Dropdown). (0=창모드, 1=전체화면)")]
+        [SerializeField] private TMP_Dropdown fullscreenDropdown;
         [SerializeField] private Toggle fullscreenToggle;
+
+        [Header("Debug (선택)")]
+        [Tooltip("전체/창모드 적용 결과를 화면에 표시(비워두면 콘솔 로그만 남김)")]
+        [SerializeField] private TextMeshProUGUI fullscreenDebugText;
+        [Tooltip("ApplyFullscreenMode 호출 시에도 디버그 텍스트/로그를 남김")]
+        [SerializeField] private bool verboseDebug = true;
+
         [SerializeField] private Button closeButton;
 
         private const string PrefMasterVolume = "Options_MasterVolume";
         private const string PrefBgmVolume = "Options_BgmVolume";
         private const string PrefSfxVolume = "Options_SfxVolume";
         private const string PrefFullscreen = "Options_Fullscreen";
+
+        // PlayerPrefs 값: 0=Windowed, 1=FullscreenWindow
+        private const int FullscreenWindowedValue = 0;
+        private const int FullscreenFullscreenValue = 1;
+
+        // 드롭다운 값(인덱스): 0=Windowed, 1=FullscreenWindow 가정
+        private const int DropdownWindowedIndex = 0;
+        private const int DropdownFullscreenIndex = 1;
 
         private void Awake()
         {
@@ -49,7 +69,11 @@ namespace MainMenu
             {
                 sfxVolumeSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
             }
-            if (fullscreenToggle != null)
+            if (fullscreenDropdown != null)
+            {
+                fullscreenDropdown.onValueChanged.AddListener(OnFullscreenDropdownChanged);
+            }
+            else if (fullscreenToggle != null)
             {
                 fullscreenToggle.onValueChanged.AddListener(OnFullscreenChanged);
             }
@@ -88,12 +112,21 @@ namespace MainMenu
             if (masterVolumeSlider != null) masterVolumeSlider.value = master;
             if (bgmVolumeSlider != null) bgmVolumeSlider.value = bgm;
             if (sfxVolumeSlider != null) sfxVolumeSlider.value = sfx;
-            if (fullscreenToggle != null) fullscreenToggle.isOn = fullscreen == 1;
+            if (fullscreenToggle != null) fullscreenToggle.isOn = fullscreen == FullscreenFullscreenValue;
+
+            if (fullscreenDropdown != null)
+            {
+                // dropdown은 0=창모드, 1=전체화면 가정
+                int dropdownValue = fullscreen == FullscreenFullscreenValue
+                    ? DropdownFullscreenIndex
+                    : DropdownWindowedIndex;
+                fullscreenDropdown.SetValueWithoutNotify(dropdownValue);
+            }
 
             ApplyMasterVolume(master);
             ApplyBgmVolume(bgm);
             ApplySfxVolume(sfx);
-            Screen.fullScreenMode = fullscreen == 1 ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+            ApplyFullscreenMode(fullscreen);
 
             UpdateVolumeLabels();
         }
@@ -124,9 +157,68 @@ namespace MainMenu
 
         private void OnFullscreenChanged(bool isOn)
         {
-            PlayerPrefs.SetInt(PrefFullscreen, isOn ? 1 : 0);
+            int fullscreenValue = isOn ? FullscreenFullscreenValue : FullscreenWindowedValue;
+            PlayerPrefs.SetInt(PrefFullscreen, fullscreenValue);
             PlayerPrefs.Save();
-            Screen.fullScreenMode = isOn ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+            ApplyFullscreenMode(fullscreenValue);
+        }
+
+        private void OnFullscreenDropdownChanged(int dropdownIndex)
+        {
+            // dropdownIndex: 0=Windowed, 1=Fullscreen
+            int fullscreenValue = dropdownIndex == DropdownFullscreenIndex
+                ? FullscreenFullscreenValue
+                : FullscreenWindowedValue;
+
+            PlayerPrefs.SetInt(PrefFullscreen, fullscreenValue);
+            PlayerPrefs.Save();
+            ApplyFullscreenMode(fullscreenValue);
+        }
+
+        private void ApplyFullscreenMode(int fullscreenValue)
+        {
+            var mode = fullscreenValue == FullscreenFullscreenValue
+                ? FullScreenMode.FullScreenWindow
+                : FullScreenMode.Windowed;
+
+            if (fullscreenToggle != null)
+                fullscreenToggle.isOn = fullscreenValue == FullscreenFullscreenValue;
+
+#if UNITY_EDITOR
+            // 에디터 Play 모드에서 즉시 반영이 꼬일 때가 있어 즉시 + 한 프레임 딜레이로 재적용
+            Screen.fullScreenMode = mode;
+            if (verboseDebug)
+                Debug.Log($"[OptionsPanel] ApplyFullscreenMode requested={fullscreenValue} -> mode={mode} currentMode={Screen.fullScreenMode} fullScreen={Screen.fullScreen} Screen={Screen.width}x{Screen.height} currentRes={(Screen.currentResolution.width)}x{(Screen.currentResolution.height)}");
+            EditorApplication.delayCall += () =>
+            {
+                if (Screen.fullScreenMode != mode)
+                    Screen.fullScreenMode = mode;
+            };
+#else
+            Screen.fullScreenMode = mode;
+#endif
+
+            if (fullscreenDebugText != null)
+            {
+                fullscreenDebugText.text = BuildFullscreenDebugText(mode, fullscreenValue);
+            }
+        }
+
+        private string BuildFullscreenDebugText(FullScreenMode requestedMode, int requestedValue)
+        {
+            int prefValue = PlayerPrefs.GetInt(PrefFullscreen, -999);
+            var currentMode = Screen.fullScreenMode;
+            int curW = Screen.width;
+            int curH = Screen.height;
+            int resW = Screen.currentResolution.width;
+            int resH = Screen.currentResolution.height;
+            return
+                $"[Fullscreen]\n" +
+                $"Requested(Pref)={requestedValue} / PrefNow={prefValue}\n" +
+                $"RequestedMode={requestedMode}\n" +
+                $"CurrentMode={currentMode}\n" +
+                $"Screen={curW}x{curH}\n" +
+                $"CurrentRes={resW}x{resH}";
         }
 
         private void ApplyMasterVolume(float value)
