@@ -3,6 +3,9 @@ using Match3Puzzle.Skill;
 using Match3Puzzle.Stage;
 using Match3Puzzle.Stats;
 using Match3Puzzle.Inventory;
+using Match3Puzzle.Clear;
+using Match3Puzzle.Board;
+using Match3Puzzle.Matching;
 using System;
 using System.Linq;
 using Match3Puzzle.Level;
@@ -26,6 +29,9 @@ namespace Match3Puzzle.UI.Battle
         [Header("턴 소스 (없으면 자동 탐색)")]
         [SerializeField] private LevelManager levelManager;
 
+        [Header("매치 소스 (쓸 때마다 쿨다운 감소)")]
+        [SerializeField] private TileClearer tileClearer;
+
         [Header("Slots (캐릭터 0~3 순서)")]
         [SerializeField] private SkillSlotUI[] slots = new SkillSlotUI[4];
 
@@ -35,11 +41,14 @@ namespace Match3Puzzle.UI.Battle
 
         private StageData _currentStageData;
         private readonly Action[] _slotHandlers = new Action[EquippedSkillsHolder.CharacterCount];
+        private readonly SkillEffectType[] _slotEffectTypes = new SkillEffectType[EquippedSkillsHolder.CharacterCount];
 
         private void Awake()
         {
             if (levelManager == null)
                 levelManager = FindFirstObjectByType<LevelManager>();
+            if (tileClearer == null)
+                tileClearer = FindFirstObjectByType<TileClearer>();
             if (monsterHealthUI == null)
                 monsterHealthUI = FindFirstObjectByType<MonsterHealthUI>();
             if (partyHealthUI == null)
@@ -56,14 +65,14 @@ namespace Match3Puzzle.UI.Battle
 
         private void OnEnable()
         {
-            if (levelManager != null)
-                levelManager.OnTurnChanged += HandleTurnChanged;
+            if (tileClearer != null)
+                tileClearer.OnMatchGroupsCleared += HandleMatchGroupsCleared;
         }
 
         private void OnDisable()
         {
-            if (levelManager != null)
-                levelManager.OnTurnChanged -= HandleTurnChanged;
+            if (tileClearer != null)
+                tileClearer.OnMatchGroupsCleared -= HandleMatchGroupsCleared;
         }
 
         private void Start()
@@ -90,10 +99,10 @@ namespace Match3Puzzle.UI.Battle
                 if (_slotHandlers[i] != null)
                     slot.OnSkillUsed -= _slotHandlers[i];
 
-                string skillId = EquippedSkillsHolder.GetEquippedSkillId(i);
+                string skillKey = EquippedSkillsHolder.GetEquippedSkillId(i);
                 SkillData data = null;
-                if (!string.IsNullOrEmpty(skillId))
-                    data = skillDatabase.GetById(skillId);
+                if (!string.IsNullOrEmpty(skillKey))
+                    data = skillDatabase.GetByKey(skillKey);
                 if (data == null)
                     data = skillDatabase.GetByIndex(GetDefaultSkillIndex(i));
 
@@ -107,6 +116,8 @@ namespace Match3Puzzle.UI.Battle
                 int cooldownTurns = data.cooldownTurns > 0 ? data.cooldownTurns : Mathf.Max(0, Mathf.RoundToInt(data.cooldownSeconds));
                 slot.Configure(data.skillId, data.icon, cooldownTurns);
 
+                _slotEffectTypes[i] = data.effectType;
+
                 // 클로저로 SkillData 캡처 후 OnSkillUsed에 효과 등록
                 SkillData captured = data;
                 _slotHandlers[i] = () => ApplySkillEffect(captured);
@@ -114,13 +125,47 @@ namespace Match3Puzzle.UI.Battle
             }
         }
 
-        private void HandleTurnChanged(int usedTurns)
+        private void HandleMatchGroupsCleared(System.Collections.Generic.List<MatchGroup> matches)
         {
-            if (slots == null) return;
-            for (int i = 0; i < slots.Length; i++)
+            if (slots == null || slots.Length == 0) return;
+            if (matches == null || matches.Count == 0) return;
+
+            // baseType별로 "매치 그룹 수"를 카운트합니다.
+            // Sword(0) / Bow(1) / Cross(2) / Wand(3)
+            var matchCounts = new int[4];
+
+            for (int m = 0; m < matches.Count; m++)
             {
-                if (slots[i] != null)
-                    slots[i].OnTurnAdvanced();
+                var match = matches[m];
+                if (match == null) continue;
+                if (match.Count < 3) continue;
+
+                int baseType = Tile.GetBaseType(match.TileType);
+                if (baseType < 0 || baseType >= 4) continue;
+                matchCounts[baseType] += 1;
+            }
+
+            for (int i = 0; i < slots.Length && i < EquippedSkillsHolder.CharacterCount; i++)
+            {
+                var slot = slots[i];
+                if (slot == null || !slot.gameObject.activeSelf) continue;
+
+                int neededBaseType = _slotEffectTypes[i] switch
+                {
+                    SkillEffectType.Sword => 0,
+                    // 타일 baseType 인덱스 기준(사용자 정의):
+                    // 칼=0, 완드=1, 활=2, 십자가=3
+                    SkillEffectType.Wand => 1,
+                    SkillEffectType.Bow => 2,
+                    SkillEffectType.Heal => 3,
+                    _ => -1
+                };
+
+                if (neededBaseType < 0) continue;
+
+                int tick = matchCounts[neededBaseType];
+                if (tick > 0)
+                    slot.OnMatchAdvanced(tick);
             }
         }
 

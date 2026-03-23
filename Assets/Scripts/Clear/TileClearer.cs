@@ -26,6 +26,12 @@ namespace Match3Puzzle.Clear
         /// <summary>매칭 발생 및 제거 시작 시 발생. TutorialManager 등에서 구독 가능.</summary>
         public event System.Action OnMatchCleared;
 
+        /// <summary>
+        /// 매칭 그룹들이 제거/효과 처리되는 동안 발생.
+        /// Battle에서 "특정 타일을 N회 매칭하면 쿨다운 감소" 같은 로직에 사용.
+        /// </summary>
+        public event System.Action<List<MatchGroup>> OnMatchGroupsCleared;
+
         private void Awake()
         {
             if (gameBoard == null) gameBoard = FindFirstObjectByType<GameBoard>();
@@ -57,6 +63,7 @@ namespace Match3Puzzle.Clear
             if (matchEffectHandler != null)
                 matchEffectHandler.ApplyMatchEffects(matches);
 
+            OnMatchGroupsCleared?.Invoke(matches);
             OnMatchCleared?.Invoke();
 
             foreach (var tile in tilesToClear)

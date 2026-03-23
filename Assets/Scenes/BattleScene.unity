@@ -3216,6 +3216,7 @@ MonoBehaviour:
   stageDatabase: {fileID: 11400000, guid: aecca7f0eb28b7e409dc6de8693de3d2, type: 2}
   characterStats: {fileID: 0}
   levelManager: {fileID: 0}
+  tileClearer: {fileID: 0}
   slots:
   - {fileID: 1390022821}
   - {fileID: 71226575}
@@ -3750,7 +3751,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2877866388437267277, guid: f3f3b5a598ed72c4098a54ec2301401a, type: 3}
+  m_Sprite: {fileID: 7724622641941044707, guid: 27b491590309889468bcb5ee3e084ff2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5975,13 +5976,13 @@ MonoBehaviour:
   tileSlotParent: {fileID: 1977079807}
   tileSprites:
   - {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
+  - {fileID: -4878944425459184301, guid: 6e893967db111b44c80ffa236ff40121, type: 3}
   - {fileID: 637832691010260315, guid: 52d5e4579feae424aa0a5aad8bc41614, type: 3}
   - {fileID: -1179432697989452932, guid: a021264cf6b8a81489b27410b01abbfe, type: 3}
-  - {fileID: -4878944425459184301, guid: 6e893967db111b44c80ffa236ff40121, type: 3}
   - {fileID: -8568821838703182677, guid: ea1de695d7e114e42bb52110d4046887, type: 3}
+  - {fileID: 5224396589920826048, guid: 369404e2e0132394d99214b1caa6bb27, type: 3}
   - {fileID: 7913939077123304964, guid: 25a60be31bffa934da014e44c1b8e0a7, type: 3}
   - {fileID: 2422570960469356153, guid: 36642e92e8e9f1947be1eebd2d0d0dce, type: 3}
-  - {fileID: 5224396589920826048, guid: 369404e2e0132394d99214b1caa6bb27, type: 3}
   width: 8
   height: 8
   tileTypeCount: 5
@@ -9573,7 +9574,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7724622641941044707, guid: 27b491590309889468bcb5ee3e084ff2, type: 3}
+  m_Sprite: {fileID: -2877866388437267277, guid: f3f3b5a598ed72c4098a54ec2301401a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -16,7 +16,8 @@ MonoBehaviour:
   displayName: "\uAC15\uD0C0 :"
   description: "\uAC80 \uD53C\uD574\uC758 500%"
   icon: {fileID: -4420209078433131119, guid: a2d225e7f93ed574cb3b38d97868b6d7, type: 3}
-  cooldownTurns: 4
+  iconGrayscale: {fileID: 9032492923403753996, guid: 2b5671d075608994fadf9ea7778a442c, type: 3}
+  cooldownTurns: 3
   cooldownSeconds: 5
   effectType: 2
   effectMultiplier: 5

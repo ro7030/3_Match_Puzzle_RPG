@@ -15,3 +15,4 @@ MonoBehaviour:
   chrID: 3
   displayName: "\uC138\uC2E4\uB9AC\uC544"
   chrImage: {fileID: 50398142458554901, guid: ebbb16623fbe9d34eb1adf4321875db8, type: 3}
+  chrImageGrayscale: {fileID: -5171541620758902009, guid: eadc162640cf143489d9ed9293c19e1b, type: 3}
