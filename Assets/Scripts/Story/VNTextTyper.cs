@@ -42,7 +42,8 @@ namespace Story
         private void Awake()
         {
             if (targetText == null) targetText = GetComponent<TextMeshProUGUI>();
-            if (clickAreaButton != null) clickAreaButton.onClick.AddListener(OnClick);
+            // 클릭 진행 바인딩은 각 씬 컨트롤러(StoryDialogueController / ProloguePanel)에서 담당하는 것을 권장합니다.
+            // 여기서 clickAreaButton에 중복으로 AddListener()가 걸리면 "한 번 클릭에 줄이 두 번 넘어가는" 현상이 발생할 수 있습니다.
         }
 
         public void Play(string[] lines, Action onAllComplete = null)

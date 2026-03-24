@@ -30,8 +30,8 @@ namespace Story
         [Tooltip("CutsceneData 재생 시 캐릭터 조회에 사용. 필수")]
         [SerializeField] private CharacterDatabase characterDatabase;
 
-        [Header("VN Text Typer")]
-        [SerializeField] private VNTextTyper textTyper;
+        [Header("Text Typing")]
+        [SerializeField] private TextTyping textTyper;
 
         [Header("UI Buttons")]
         [SerializeField] private Button skipButton;
@@ -102,8 +102,8 @@ namespace Story
         {
             if (textTyper != null) return;
             if (dialogueText == null) return;
-            textTyper = dialogueText.GetComponent<VNTextTyper>();
-            if (textTyper == null) textTyper = dialogueText.gameObject.AddComponent<VNTextTyper>();
+            textTyper = dialogueText.GetComponent<TextTyping>();
+            if (textTyper == null) textTyper = dialogueText.gameObject.AddComponent<TextTyping>();
         }
 
         #region 재생 시작 API

@@ -18,7 +18,7 @@ namespace MainMenu
         [SerializeField] private TextMeshProUGUI prologueText;
         [SerializeField] private Button startButton;
         [SerializeField] private Button skipButton;
-        [Tooltip("클릭으로 텍스트 진행할 영역. 없으면 PrologueText에 VNTextTyper만 사용")]
+        [Tooltip("클릭으로 텍스트 진행할 영역. 없으면 PrologueText에 TextTyping만 사용")]
         [SerializeField] private Button clickAreaButton;
 
         [Header("Settings")]
@@ -26,16 +26,16 @@ namespace MainMenu
         [SerializeField] private string prologueContent = "옛날 옛적에...\n한 편의 이야기가 시작되었다.";
         [SerializeField] private string gameSceneName = "GameScene";
 
-        private VNTextTyper _textTyper;
+        private TextTyping _textTyper;
 
         private void Awake()
         {
             if (panelRoot != null)
                 panelRoot.SetActive(false);
 
-            _textTyper = prologueText != null ? prologueText.GetComponent<VNTextTyper>() : null;
+            _textTyper = prologueText != null ? prologueText.GetComponent<TextTyping>() : null;
             if (_textTyper == null && prologueText != null)
-                _textTyper = prologueText.gameObject.AddComponent<VNTextTyper>();
+                _textTyper = prologueText.gameObject.AddComponent<TextTyping>();
 
             if (startButton != null)
             {
