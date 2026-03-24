@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Match3Puzzle.Board;
 using Match3Puzzle.Matching;
 using Match3Puzzle.Core;
@@ -24,17 +25,31 @@ namespace Match3Puzzle.Swap
 
         private void Awake()
         {
-            if (gameBoard == null)
-                gameBoard = FindFirstObjectByType<GameBoard>();
+            RebindReferences();
+        }
 
-            if (matchDetector == null)
-                matchDetector = GetComponent<MatchDetector>();
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
 
-            if (tileClearer == null)
-                tileClearer = GetComponent<TileClearer>();
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
 
-            if (levelManager == null)
-                levelManager = FindFirstObjectByType<LevelManager>();
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            RebindReferences();
+            isSwapping = false;
+        }
+
+        private void RebindReferences()
+        {
+            gameBoard = FindFirstObjectByType<GameBoard>();
+            matchDetector = GetComponent<MatchDetector>();
+            tileClearer = GetComponent<TileClearer>();
+            levelManager = FindFirstObjectByType<LevelManager>();
         }
 
         /// <summary>
@@ -42,9 +57,12 @@ namespace Match3Puzzle.Swap
         /// </summary>
         public void SwapTiles(Tile tile1, Tile tile2)
         {
+            if (gameBoard == null || matchDetector == null)
+                RebindReferences();
             if (isSwapping) return;
             if (tile1 == null || tile2 == null) return;
             if (!tile1.IsAdjacent(tile2)) return;
+            if (gameBoard == null || matchDetector == null) return;
 
             StartCoroutine(SwapTilesCoroutine(tile1, tile2));
         }
@@ -69,7 +87,9 @@ namespace Match3Puzzle.Swap
 
             if (matches.Count > 0)
             {
-                // 매칭이 있으면 턴 1회 소모 후 제거 시작
+                // 플레이어의 직접 스왑으로 매칭이 성립한 경우에만 턴 +1
+                if (levelManager == null)
+                    levelManager = FindFirstObjectByType<LevelManager>();
                 if (levelManager != null)
                     levelManager.IncrementMoves();
 

@@ -28,6 +28,7 @@ namespace Match3Puzzle.UI.Battle
         [SerializeField] private bool applyEquipmentBonusOnAwake = true;
 
         private int[] currentHp;
+        public event System.Action<int> OnCharacterHpZero;
 
         public int CharacterCount => slots?.Length ?? 0;
         public int MaxHpPerCharacter => maxHpPerCharacter;
@@ -60,8 +61,12 @@ namespace Match3Puzzle.UI.Battle
         {
             if (characterIndex < 0 || characterIndex >= CharacterCount) return;
 
+            int before = currentHp[characterIndex];
             currentHp[characterIndex] = Mathf.Max(0, currentHp[characterIndex] - amount);
             RefreshBar(characterIndex);
+
+            if (before > 0 && currentHp[characterIndex] == 0)
+                OnCharacterHpZero?.Invoke(characterIndex);
         }
 
         /// <summary>
@@ -82,10 +87,14 @@ namespace Match3Puzzle.UI.Battle
         {
             if (characterIndex < 0 || characterIndex >= CharacterCount) return;
 
+            int before = currentHp[characterIndex];
             currentHp[characterIndex] = Mathf.Clamp(current, 0, max > 0 ? max : maxHpPerCharacter);
             if (max > 0)
                 maxHpPerCharacter = max;
             RefreshBar(characterIndex);
+
+            if (before > 0 && currentHp[characterIndex] == 0)
+                OnCharacterHpZero?.Invoke(characterIndex);
         }
 
         public int GetCurrentHP(int characterIndex)

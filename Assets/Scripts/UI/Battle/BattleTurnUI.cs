@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 using Match3Puzzle.Level;
 
 namespace Match3Puzzle.UI.Battle
@@ -16,7 +17,27 @@ namespace Match3Puzzle.UI.Battle
 
         private void Awake()
         {
-            levelManager = FindFirstObjectByType<LevelManager>();
+            RebindLevelManager();
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SubscribeTurnEvent();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeTurnEvent();
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            UnsubscribeTurnEvent();
+            RebindLevelManager();
+            SubscribeTurnEvent();
+            Refresh();
         }
 
         private void Start()
@@ -31,11 +52,38 @@ namespace Match3Puzzle.UI.Battle
 
         private void Refresh()
         {
-            if (turnText == null || levelManager == null) return;
+            if (turnText == null) return;
+            if (levelManager == null)
+                RebindLevelManager();
+            if (levelManager == null) return;
 
             int current = levelManager.CurrentTurnNumber;
             int max = levelManager.MaxTurns;
             turnText.text = string.Format(format, current, max);
+        }
+
+        private void RebindLevelManager()
+        {
+            levelManager = FindFirstObjectByType<LevelManager>();
+        }
+
+        private void SubscribeTurnEvent()
+        {
+            if (levelManager == null)
+                RebindLevelManager();
+            if (levelManager != null)
+                levelManager.OnTurnChanged += HandleTurnChanged;
+        }
+
+        private void UnsubscribeTurnEvent()
+        {
+            if (levelManager != null)
+                levelManager.OnTurnChanged -= HandleTurnChanged;
+        }
+
+        private void HandleTurnChanged(int _)
+        {
+            Refresh();
         }
     }
 }

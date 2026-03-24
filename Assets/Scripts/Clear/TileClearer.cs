@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Match3Puzzle.Board;
 using Match3Puzzle.Matching;
 using Match3Puzzle.Gravity;
@@ -34,11 +35,31 @@ namespace Match3Puzzle.Clear
 
         private void Awake()
         {
-            if (gameBoard == null) gameBoard = FindFirstObjectByType<GameBoard>();
-            if (gravityController == null) gravityController = GetComponent<GravityController>();
-            if (tileSpawner == null) tileSpawner = GetComponent<TileSpawner>();
-            if (matchDetector == null) matchDetector = GetComponent<MatchDetector>();
-            if (matchEffectHandler == null) matchEffectHandler = GetComponent<MatchEffectHandler>();
+            RebindReferences();
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            RebindReferences();
+        }
+
+        private void RebindReferences()
+        {
+            gameBoard = FindFirstObjectByType<GameBoard>();
+            gravityController = GetComponent<GravityController>();
+            tileSpawner = GetComponent<TileSpawner>();
+            matchDetector = GetComponent<MatchDetector>();
+            matchEffectHandler = GetComponent<MatchEffectHandler>();
         }
 
         public IEnumerator ClearMatches(List<MatchGroup> matches)

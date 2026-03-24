@@ -92,7 +92,9 @@ namespace Match3Puzzle.Level
         public void SetBattleConfig(int maxTurns)
         {
             currentMoves = 0;
+            currentTime = 0f;
             movesRemaining = Mathf.Max(1, maxTurns);
+            OnTurnChanged?.Invoke(currentMoves); // 새 스테이지 진입 시 UI를 1턴(내부값 0)으로 즉시 동기화
         }
     }
 

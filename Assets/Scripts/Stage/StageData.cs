@@ -18,6 +18,19 @@ namespace Match3Puzzle.Stage
     }
 
     /// <summary>
+    /// 전투 시작 시 몬스터 선공 동작 모드.
+    /// </summary>
+    public enum BattleStartAttackMode
+    {
+        /// <summary>시작 즉시 공격하지 않음 (기본: 설정 턴 간격부터)</summary>
+        Disabled,
+        /// <summary>시작 즉시 1회 공격, 턴 카운트는 증가시키지 않음</summary>
+        AttackOnly,
+        /// <summary>시작 즉시 1회 공격 후 턴 카운트도 +1</summary>
+        AttackAndCountTurn
+    }
+
+    /// <summary>
     /// 스테이지별 설정. 배경·보스 이미지, 턴 수, 몬스터 체력·공격 등.
     /// </summary>
     [CreateAssetMenu(fileName = "StageData", menuName = "Match3/Stage Data", order = 0)]
@@ -36,6 +49,8 @@ namespace Match3Puzzle.Stage
         public int monsterMaxHp = 500;
 
         [Header("페이즈1 몬스터 공격 (인스펙터에서 조절)")]
+        [Tooltip("전투 시작 직후 선공 여부/턴 카운트 처리 방식")]
+        public BattleStartAttackMode startAttackMode = BattleStartAttackMode.Disabled;
         [Tooltip("몬스터가 공격하는 턴 간격 (예: 4 = 4턴마다 공격)")]
         public int attackIntervalTurns = 4;
         [Tooltip("공격 데미지 (1인당)")]

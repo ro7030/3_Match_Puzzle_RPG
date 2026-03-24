@@ -13,7 +13,9 @@ namespace Match3Puzzle.Matching
     /// 매칭된 타일에 따라 전투 효과 적용.
     /// 데미지/힐 수치: CharacterStatsData(기본) + CharacterUpgradeHolder(업그레이드 레벨)
     /// 저항력: StageData(스테이지별 몬스터 저항)
-    /// 0=검(광역), 1=활(단일 강력), 2=십자가(파티 힐), 3=지팡이(마법 광역)
+    /// 타일 인덱스 매핑:
+    /// 0=검(광역), 1=지팡이(마법 광역), 2=활(단일 강력), 3=십자가(파티 힐)
+    /// 강화 타일도 동일 매핑(+4): 4=검, 5=지팡이, 6=활, 7=십자가
     /// </summary>
     public class MatchEffectHandler : MonoBehaviour
     {
@@ -60,9 +62,9 @@ namespace Match3Puzzle.Matching
                 switch (baseType)
                 {
                     case 0: ApplySwordMatch(count, enhancedCount); break;
-                    case 1: ApplyBowMatch(enhancedCount);          break;
-                    case 2: ApplyCrossMatch(count);                break;
-                    case 3: ApplyWandMatch(count, enhancedCount);  break;
+                    case 1: ApplyWandMatch(count, enhancedCount);  break;
+                    case 2: ApplyBowMatch(enhancedCount);          break;
+                    case 3: ApplyCrossMatch(count);                break;
                 }
             }
         }

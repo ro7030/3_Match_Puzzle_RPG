@@ -3,6 +3,7 @@ using UnityEngine;
 using Match3Puzzle.Stage;
 using Match3Puzzle.Core;
 using Match3Puzzle.Level;
+using Match3Puzzle.UI;
 
 namespace Match3Puzzle.UI.Battle
 {
@@ -16,8 +17,10 @@ namespace Match3Puzzle.UI.Battle
         [SerializeField] private PartyHealthUI partyHealthUI;
         [SerializeField] private MonsterHealthUI monsterHealthUI;
         [SerializeField] private StageDatabase stageDatabase;
+        [SerializeField] private bool debugAttackFlow = true;
 
         private StageData currentStageData;
+        private bool _hasFailedByPartyDown;
 
         private void Awake()
         {
@@ -38,6 +41,8 @@ namespace Match3Puzzle.UI.Battle
                 levelManager.OnTurnChanged += HandleTurnChanged;
                 levelManager.OnTurnsExhausted += HandleTurnsExhausted;
             }
+            if (partyHealthUI != null)
+                partyHealthUI.OnCharacterHpZero += HandleAnyPartyMemberDown;
             if (monsterHealthUI != null)
                 monsterHealthUI.OnDied += HandleMonsterDied;
         }
@@ -49,12 +54,15 @@ namespace Match3Puzzle.UI.Battle
                 levelManager.OnTurnChanged -= HandleTurnChanged;
                 levelManager.OnTurnsExhausted -= HandleTurnsExhausted;
             }
+            if (partyHealthUI != null)
+                partyHealthUI.OnCharacterHpZero -= HandleAnyPartyMemberDown;
             if (monsterHealthUI != null)
                 monsterHealthUI.OnDied -= HandleMonsterDied;
         }
 
         private void Start()
         {
+            _hasFailedByPartyDown = false;
             int index = BattleStageHolder.CurrentStageIndex;
             currentStageData = stageDatabase != null ? stageDatabase.GetStage(index) : null;
 
@@ -67,17 +75,42 @@ namespace Match3Puzzle.UI.Battle
 
             Debug.Log($"[MonsterAttack] DB:{stageDatabase != null} / Data:{currentStageData?.stageName ?? "NULL"} / " +
                       $"LevelMgr:{levelManager != null} / PartyUI:{partyHealthUI != null} / MonsterUI:{monsterHealthUI != null}");
+
+            TryApplyStartAttackRule();
+        }
+
+        private void HandleAnyPartyMemberDown(int characterIndex)
+        {
+            if (_hasFailedByPartyDown) return;
+            _hasFailedByPartyDown = true;
+
+            if (debugAttackFlow)
+                Debug.Log($"[MonsterAttack] Party member down -> fail (idx={characterIndex})");
+
+            GameManager.Instance?.ChangeState(GameState.GameOver);
+
+            var uiManager = FindFirstObjectByType<UIManager>();
+            if (uiManager != null)
+                uiManager.ShowPartyDefeatPanel();
         }
 
         private void HandleTurnChanged(int turn)
         {
             if (currentStageData == null || partyHealthUI == null) return;
+            // 전투 시작 직후 UI 동기화용 turn=0 이벤트는 공격 트리거에서 제외
+            if (turn <= 0) return;
             int interval = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
                 ? currentStageData.attackIntervalTurnsPhase2
                 : currentStageData.attackIntervalTurns;
+
+            if (debugAttackFlow)
+                Debug.Log($"[MonsterAttack] TurnChanged turn={turn}, interval={interval}, phase={BattlePhaseRuntime.ActivePhaseIndex}");
+
             if (interval <= 0) return;
             if (turn % interval != 0) return;
 
+            if (debugAttackFlow)
+                Debug.Log($"[MonsterAttack] Attack Triggered at turn={turn} (interval={interval})");
             ApplyMonsterAttack();
         }
 
@@ -103,6 +136,9 @@ namespace Match3Puzzle.UI.Battle
                 ? currentStageData.attackDamagePhase2
                 : currentStageData.attackDamage;
             var targets = GetAttackTargets();
+
+            if (debugAttackFlow)
+                Debug.Log($"[MonsterAttack] ApplyAttack damage={damage}, targets={string.Join(",", targets)}");
 
             foreach (int idx in targets)
             {
@@ -151,6 +187,33 @@ namespace Match3Puzzle.UI.Battle
             }
             count = Mathf.Min(count, shuffled.Count);
             return shuffled.GetRange(0, count);
+        }
+
+        private void TryApplyStartAttackRule()
+        {
+            if (currentStageData == null || partyHealthUI == null) return;
+
+            switch (currentStageData.startAttackMode)
+            {
+                case BattleStartAttackMode.Disabled:
+                    if (debugAttackFlow)
+                        Debug.Log("[MonsterAttack] StartAttackMode=Disabled");
+                    break;
+
+                case BattleStartAttackMode.AttackOnly:
+                    if (debugAttackFlow)
+                        Debug.Log("[MonsterAttack] StartAttackMode=AttackOnly -> 즉시 공격");
+                    ApplyMonsterAttack();
+                    break;
+
+                case BattleStartAttackMode.AttackAndCountTurn:
+                    if (debugAttackFlow)
+                        Debug.Log("[MonsterAttack] StartAttackMode=AttackAndCountTurn -> 즉시 공격 + 턴+1");
+                    ApplyMonsterAttack();
+                    if (levelManager != null)
+                        levelManager.IncrementMoves();
+                    break;
+            }
         }
     }
 }

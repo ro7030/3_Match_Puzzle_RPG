@@ -25,7 +25,8 @@ namespace Match3Puzzle.Core
         [Header("Game Settings")]
         [SerializeField] private int boardWidth = 10;
         [SerializeField] private int boardHeight = 10;
-        [SerializeField] private int tileTypes = 4; // 검(0), 활(1), 십자가(2), 지팡이(3)
+        [SerializeField] private int tileTypes = 4; // 검(0), 지팡이(1), 활(2), 십자가(3)
+        [SerializeField] private string battleSceneName = "BattleScene";
 
         private GameState currentState = GameState.None;
         private GameState previousState = GameState.None;
@@ -45,8 +46,19 @@ namespace Match3Puzzle.Core
             }
             else
             {
-                Destroy(gameObject);
-                return;
+                // BattleScene 재진입 시 기존 DontDestroyOnLoad 인스턴스가
+                // 씬 전용 보드/전투 컴포넌트를 오래 붙잡아 참조가 깨질 수 있다.
+                // 항상 "현재 씬의 GameManager"를 유지하도록 기존 인스턴스를 교체한다.
+                var old = Instance;
+                if (old != null)
+                {
+                    SceneManager.sceneLoaded -= old.OnSceneLoaded;
+                    Destroy(old.gameObject);
+                }
+
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+                SceneManager.sceneLoaded += OnSceneLoaded;
             }
 
             InitializeManagers();
@@ -61,6 +73,7 @@ namespace Match3Puzzle.Core
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             RefreshManagers();
+            TryInitializeBattleOnSceneLoad(scene);
         }
 
         /// <summary>현재 씬에서 매니저 참조를 새로 탐색 (씬 전환 후 참조 갱신용)</summary>
@@ -74,7 +87,14 @@ namespace Match3Puzzle.Core
 
         private void Start()
         {
-            ChangeState(GameState.Menu);
+            // 배틀씬에서 Start가 호출될 때 Menu로 되돌아가면 입력이 막힌다.
+            // 현재 씬이 배틀씬이면 Playing 유지, 그 외 씬에서만 Menu로 전환.
+            var activeScene = SceneManager.GetActiveScene();
+            bool isBattleScene = activeScene.IsValid() &&
+                                 string.Equals(activeScene.name, battleSceneName, System.StringComparison.Ordinal);
+
+            if (!isBattleScene)
+                ChangeState(GameState.Menu);
         }
 
         private void InitializeManagers()
@@ -99,11 +119,16 @@ namespace Match3Puzzle.Core
         {
             if (currentState == newState) return;
 
-            // 종료 상태(LevelComplete/GameOver)는 다른 상태로 덮어쓸 수 없음
+            // 종료 상태 보호: 같은 전투 내에서는 다른 상태로 덮어쓰기 방지.
+            // 단, 씬 전환 후 Menu/Playing으로 복귀는 허용.
             if (currentState == GameState.LevelComplete || currentState == GameState.GameOver)
             {
-                Debug.Log($"[GameManager] 상태 변경 차단: {currentState} → {newState} 무시 (종료 상태 보호)");
-                return;
+                bool allowExitTerminalState = (newState == GameState.Menu || newState == GameState.Playing);
+                if (!allowExitTerminalState)
+                {
+                    Debug.Log($"[GameManager] 상태 변경 차단: {currentState} → {newState} 무시 (종료 상태 보호)");
+                    return;
+                }
             }
 
             previousState = currentState;
@@ -148,9 +173,17 @@ namespace Match3Puzzle.Core
         /// </summary>
         public void StartGame()
         {
+            // 씬 전환 직후 참조가 아직 비어있을 수 있어 시작 시 재탐색 보강
+            if (gameBoard == null || scoreManager == null || levelManager == null || uiManager == null)
+                RefreshManagers();
+
             if (gameBoard != null)
             {
                 gameBoard.InitializeBoard(boardWidth, boardHeight, tileTypes);
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] StartGame: GameBoard를 찾지 못했습니다.");
             }
 
             if (scoreManager != null)
@@ -159,6 +192,16 @@ namespace Match3Puzzle.Core
             }
 
             ChangeState(GameState.Playing);
+        }
+
+        private void TryInitializeBattleOnSceneLoad(Scene scene)
+        {
+            if (!scene.IsValid()) return;
+            if (!string.Equals(scene.name, battleSceneName, System.StringComparison.Ordinal)) return;
+            if (gameBoard == null) return;
+
+            // BattleSceneStarter가 중복 GameManager 파괴로 실행되지 못하는 경우를 대비한 안전망.
+            StartGame();
         }
 
         /// <summary>

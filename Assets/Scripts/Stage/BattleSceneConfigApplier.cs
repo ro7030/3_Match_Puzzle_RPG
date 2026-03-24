@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using TMPro;
 using Match3Puzzle.Stage;
 using Match3Puzzle.Level;
 using Match3Puzzle.UI.Battle;
@@ -37,8 +38,88 @@ namespace Match3Puzzle.Stage
             BattleClearStatsRuntime.ResetForNewBattle();
             _phase2Triggered = false;
             ApplyStageConfig();
+            DisableNonInteractiveUIRaycasts();
+
+            // 배틀씬 재진입/다음 스테이지 진입 시에도 보드/점수/상태 초기화가
+            // 항상 보장되도록 여기서 한 번 더 강제 시작한다.
+            // (BattleSceneStarter 실행 누락, DontDestroyOnLoad 경합 대비)
+            StartCoroutine(EnsureBattleStartedNextFrame());
+
             if (monsterHealthUI != null)
                 monsterHealthUI.OnHPChanged += HandleMonsterHpChanged;
+        }
+
+        private IEnumerator EnsureBattleStartedNextFrame()
+        {
+            // 씬 로드/오브젝트 활성 순서 차이로 참조가 비어있는 프레임을 피하기 위해 1프레임 지연
+            yield return null;
+
+            var gm = GameManager.Instance != null
+                ? GameManager.Instance
+                : FindFirstObjectByType<GameManager>();
+            if (gm != null)
+            {
+                gm.StartGame();
+
+                // 다음 스테이지 진입 시 턴 값이 이전 전투에서 남지 않도록
+                // StageData 기준 턴 설정을 한 번 더 강제 적용
+                if (levelManager == null)
+                    levelManager = FindFirstObjectByType<LevelManager>();
+                if (_stageData == null && stageDatabase != null)
+                    _stageData = stageDatabase.GetStage(BattleStageHolder.CurrentStageIndex);
+                if (levelManager != null && _stageData != null)
+                    levelManager.SetBattleConfig(_stageData.maxTurns);
+            }
+            else
+            {
+                Debug.LogWarning("[BattleConfig] GameManager를 찾지 못해 StartGame을 호출하지 못했습니다.");
+            }
+        }
+
+        /// <summary>
+        /// 배틀 보드 입력이 UI 장식 요소(Text/Image)에 가로채이지 않도록,
+        /// 비상호작용 그래픽의 raycastTarget을 비활성화한다.
+        /// </summary>
+        private void DisableNonInteractiveUIRaycasts()
+        {
+            int changed = 0;
+            var graphics = FindObjectsByType<Graphic>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < graphics.Length; i++)
+            {
+                var g = graphics[i];
+                if (g == null || !g.raycastTarget) continue;
+
+                // 타일 이미지는 반드시 입력을 받아야 하므로 유지
+                if (g.GetComponent<Match3Puzzle.Board.Tile>() != null) continue;
+
+                // 클리어 패널 계층은 UIManager에서 별도 입력 제어를 하므로 제외
+                if (IsUnderClearPanelHierarchy(g.transform)) continue;
+
+                // 버튼/슬라이더/입력필드 등 Selectable 계열 UI는 유지
+                if (g.GetComponentInParent<Selectable>() != null) continue;
+
+                // 상호작용 없는 텍스트/이미지는 레이캐스트 비활성화
+                if (g is Image || g is TMP_Text)
+                {
+                    g.raycastTarget = false;
+                    changed++;
+                }
+            }
+
+            Debug.Log($"[BattleConfig] 비상호작용 UI raycast 비활성화: {changed}개");
+        }
+
+        private static bool IsUnderClearPanelHierarchy(Transform t)
+        {
+            while (t != null)
+            {
+                string n = t.name;
+                if (!string.IsNullOrEmpty(n) &&
+                    (n.Contains("LevelCompletePanel") || n.Contains("ClearPanel")))
+                    return true;
+                t = t.parent;
+            }
+            return false;
         }
 
         private void OnDestroy()
@@ -49,6 +130,9 @@ namespace Match3Puzzle.Stage
 
         private void ApplyStageConfig()
         {
+            if (levelManager == null)
+                levelManager = FindFirstObjectByType<LevelManager>();
+
             if (stageDatabase == null)
                 stageDatabase = Resources.Load<StageDatabase>("StageDatabase");
 

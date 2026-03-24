@@ -131,7 +131,7 @@ namespace Match3Puzzle.UI.Battle
             if (matches == null || matches.Count == 0) return;
 
             // baseType별로 "매치 그룹 수"를 카운트합니다.
-            // Sword(0) / Bow(1) / Cross(2) / Wand(3)
+            // Sword(0) / Wand(1) / Bow(2) / Cross(3)
             var matchCounts = new int[4];
 
             for (int m = 0; m < matches.Count; m++)

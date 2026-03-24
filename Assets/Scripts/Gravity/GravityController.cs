@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Match3Puzzle.Board;
 
 namespace Match3Puzzle.Gravity
@@ -14,8 +15,27 @@ namespace Match3Puzzle.Gravity
 
         private void Awake()
         {
-            if (gameBoard == null)
-                gameBoard = FindFirstObjectByType<GameBoard>();
+            RebindReferences();
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            RebindReferences();
+        }
+
+        private void RebindReferences()
+        {
+            gameBoard = FindFirstObjectByType<GameBoard>();
         }
 
         /// <summary>
@@ -24,6 +44,11 @@ namespace Match3Puzzle.Gravity
         /// </summary>
         public IEnumerator ApplyGravity()
         {
+            if (gameBoard == null)
+                RebindReferences();
+            if (gameBoard == null)
+                yield break;
+
             int width = gameBoard.Width;
             int height = gameBoard.Height;
             Tile[,] tiles = gameBoard.Tiles;

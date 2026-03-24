@@ -38,6 +38,21 @@ namespace Match3Puzzle.UI
         [SerializeField] private TextMeshProUGUI levelCompleteScoreText;
         [SerializeField] private Button nextLevelButton;
 
+        [Header("Defeat UI")]
+        [SerializeField] private GameObject defeatPanel;
+        [SerializeField] private Button defeatReplayButton;
+        [SerializeField] private Button defeatStageSelectButton;
+        [SerializeField] private string defeatPanelName = "DefeatPanel";
+        [SerializeField] private TextMeshProUGUI defeatScoreText;
+        [SerializeField] private TextMeshProUGUI defeatGoldText;
+        [SerializeField] private TextMeshProUGUI defeatTurnsText;
+        [SerializeField] private TextMeshProUGUI defeatEnhancedSummonText;
+        [SerializeField] private TextMeshProUGUI defeatSwordDamageText;
+        [SerializeField] private TextMeshProUGUI defeatBowDamageText;
+        [SerializeField] private TextMeshProUGUI defeatWandDamageText;
+        [SerializeField] private TextMeshProUGUI defeatCrossHealText;
+        [SerializeField] private Image defeatRandomCharacterImage;
+
         [Header("Level Complete Stats UI")]
         [SerializeField] private Button stageSelectButton;
         [SerializeField] private Image clearRandomCharacterImage;
@@ -223,7 +238,9 @@ namespace Match3Puzzle.UI
 
             if (levelCompletePanel != null)
             {
+                EnsureLevelCompleteInputCapture();
                 levelCompletePanel.SetActive(true);
+                levelCompletePanel.transform.SetAsLastSibling(); // 최상단으로 올려 뒤 UI 클릭 방지
                 UpdateClearPanelTexts();
 
                 // 버튼 리스너는 씬 전환/재클릭 상황을 고려해 매번 최신 콜백으로 교체
@@ -243,6 +260,37 @@ namespace Match3Puzzle.UI
                 // UI 생성 실패 시 최소한 맵으로 이동 (보상은 이미 적용됨)
                 SceneManager.LoadScene(mapSceneName);
             }
+        }
+
+        /// <summary>
+        /// 클리어 패널이 떠 있을 때 뒤쪽 UI로 클릭이 관통되지 않도록 입력 차단 레이어를 보장.
+        /// </summary>
+        private void EnsureLevelCompleteInputCapture()
+        {
+            if (levelCompletePanel == null) return;
+
+            var rootRt = levelCompletePanel.GetComponent<RectTransform>();
+            if (rootRt != null)
+            {
+                rootRt.anchorMin = Vector2.zero;
+                rootRt.anchorMax = Vector2.one;
+                rootRt.offsetMin = Vector2.zero;
+                rootRt.offsetMax = Vector2.zero;
+            }
+
+            var group = levelCompletePanel.GetComponent<CanvasGroup>();
+            if (group == null)
+                group = levelCompletePanel.AddComponent<CanvasGroup>();
+            group.interactable = true;
+            group.blocksRaycasts = true;
+            group.ignoreParentGroups = false;
+
+            var blocker = levelCompletePanel.GetComponent<Image>();
+            if (blocker == null)
+                blocker = levelCompletePanel.AddComponent<Image>();
+            blocker.raycastTarget = true;
+            if (blocker.color.a <= 0f)
+                blocker.color = new Color(0f, 0f, 0f, 0.65f);
         }
 
         private void OnRestartClicked()
@@ -292,6 +340,8 @@ namespace Match3Puzzle.UI
         {
             if (levelCompletePanel != null)
                 levelCompletePanel.SetActive(false);
+            if (defeatPanel != null)
+                defeatPanel.SetActive(false);
 
             int currentIndex = BattleStageHolder.CurrentStageIndex;
             int chapter = currentIndex <= 0 ? 1 : ((currentIndex - 1) / 3) + 1; // 0=튜토리얼
@@ -301,6 +351,167 @@ namespace Match3Puzzle.UI
             // (프로젝트 내 StageSelectPanel은 MapSceneController가 실제로 Show() 호출)
             BattleStageHolder.AutoOpenStageSelectOnMap = true;
             SceneManager.LoadScene(mapSceneName);
+        }
+
+        /// <summary>
+        /// 파티원 사망(패배) 시 DefeatPanel 표시.
+        /// 버튼 동작: 다시 플레이 / 스테이지 선택
+        /// </summary>
+        public void ShowPartyDefeatPanel()
+        {
+            EnsureDefeatPanelBindings();
+            if (defeatPanel == null)
+            {
+                // DefeatPanel이 없으면 기존 GameOver 패널로 폴백
+                ShowGameOver();
+                return;
+            }
+
+            EnsureInputCaptureForPanel(defeatPanel);
+            defeatPanel.SetActive(true);
+            defeatPanel.transform.SetAsLastSibling();
+            UpdateDefeatPanelTexts();
+
+            if (defeatReplayButton != null)
+            {
+                defeatReplayButton.onClick.RemoveAllListeners();
+                defeatReplayButton.onClick.AddListener(OnReplayCurrentStageClicked);
+            }
+
+            if (defeatStageSelectButton != null)
+            {
+                defeatStageSelectButton.onClick.RemoveAllListeners();
+                defeatStageSelectButton.onClick.AddListener(OnStageSelectClicked);
+            }
+        }
+
+        private void OnReplayCurrentStageClicked()
+        {
+            if (defeatPanel != null)
+                defeatPanel.SetActive(false);
+
+            // 현재 스테이지를 그대로 다시 시작
+            SceneManager.LoadScene(battleSceneName);
+        }
+
+        private void EnsureDefeatPanelBindings()
+        {
+            if (defeatPanel == null)
+                defeatPanel = FindGameObjectIncludingInactive(defeatPanelName);
+            if (defeatPanel == null) return;
+
+            if (defeatReplayButton == null || defeatStageSelectButton == null)
+            {
+                var buttons = defeatPanel.GetComponentsInChildren<Button>(true);
+                foreach (var b in buttons)
+                {
+                    if (b == null) continue;
+                    string n = b.gameObject.name;
+                    if (defeatReplayButton == null &&
+                        (n.Contains("다시") || n.Contains("Replay") || n.Contains("retry") || n.Contains("Retry")))
+                    {
+                        defeatReplayButton = b;
+                        continue;
+                    }
+                    if (defeatStageSelectButton == null &&
+                        (n.Contains("스테이지") || n.Contains("Stage") || n.Contains("Select")))
+                    {
+                        defeatStageSelectButton = b;
+                    }
+                }
+
+                // 이름으로 못 찾은 경우 첫/둘째 버튼으로 폴백
+                if (defeatReplayButton == null && buttons.Length > 0)
+                    defeatReplayButton = buttons[0];
+                if (defeatStageSelectButton == null && buttons.Length > 1)
+                    defeatStageSelectButton = buttons[1];
+            }
+
+            if (defeatScoreText == null)
+                defeatScoreText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearScoreText");
+            if (defeatGoldText == null)
+                defeatGoldText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearGoldText");
+            if (defeatTurnsText == null)
+                defeatTurnsText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearTurnsText");
+            if (defeatEnhancedSummonText == null)
+                defeatEnhancedSummonText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearEnhancedSummonText");
+
+            if (defeatSwordDamageText == null)
+                defeatSwordDamageText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearSwordDamageText");
+            if (defeatBowDamageText == null)
+                defeatBowDamageText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearBowDamageText");
+            if (defeatWandDamageText == null)
+                defeatWandDamageText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearWandDamageText");
+            if (defeatCrossHealText == null)
+                defeatCrossHealText = FindChildComponent<TextMeshProUGUI>(defeatPanel.transform, "ClearCrossHealText");
+
+            if (defeatRandomCharacterImage == null)
+                defeatRandomCharacterImage = FindChildComponent<Image>(defeatPanel.transform, "ClearRandomCharacterImage");
+        }
+
+        private void EnsureInputCaptureForPanel(GameObject panel)
+        {
+            if (panel == null) return;
+
+            var rt = panel.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchorMin = Vector2.zero;
+                rt.anchorMax = Vector2.one;
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+            }
+
+            var group = panel.GetComponent<CanvasGroup>();
+            if (group == null)
+                group = panel.AddComponent<CanvasGroup>();
+            group.interactable = true;
+            group.blocksRaycasts = true;
+            group.ignoreParentGroups = false;
+
+            var blocker = panel.GetComponent<Image>();
+            if (blocker == null)
+                blocker = panel.AddComponent<Image>();
+            blocker.raycastTarget = true;
+        }
+
+        private void UpdateDefeatPanelTexts()
+        {
+            if (defeatScoreText != null && scoreManager != null)
+                defeatScoreText.text = $"패배...  (Score: {scoreManager.CurrentScore:N0})";
+
+            if (defeatGoldText != null)
+                defeatGoldText.text = "획득 골드: 0G";
+
+            int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
+            if (defeatTurnsText != null)
+                defeatTurnsText.text = $"사용 턴 수: {turnsUsed}턴";
+
+            if (defeatEnhancedSummonText != null)
+                defeatEnhancedSummonText.text = $"강화타일 소환(4매치+): {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
+
+            if (defeatSwordDamageText != null)
+                defeatSwordDamageText.text = $"검 데미지: {BattleClearStatsRuntime.DamageSword:N0}";
+            if (defeatBowDamageText != null)
+                defeatBowDamageText.text = $"활 데미지: {BattleClearStatsRuntime.DamageBow:N0}";
+            if (defeatWandDamageText != null)
+                defeatWandDamageText.text = $"마법 데미지: {BattleClearStatsRuntime.DamageWand:N0}";
+            if (defeatCrossHealText != null)
+                defeatCrossHealText.text = $"십자가 회복: {BattleClearStatsRuntime.HealCross:N0}";
+
+            if (defeatRandomCharacterImage != null)
+            {
+                var party = FindFirstObjectByType<PartyHealthUI>();
+                Sprite sprite = null;
+                if (party != null && party.CharacterCount > 0)
+                {
+                    int idx = Random.Range(0, party.CharacterCount);
+                    sprite = party.GetPortraitSprite(idx);
+                }
+
+                defeatRandomCharacterImage.sprite = sprite;
+                defeatRandomCharacterImage.gameObject.SetActive(sprite != null);
+            }
         }
 
         private void ApplyClearRewardOnce()
