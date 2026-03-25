@@ -357,7 +357,18 @@ namespace Story
             CutsceneContext.ClearCutsceneIdOnly();
 
             if (so != null && so.dialogueLines != null && so.dialogueLines.Count > 0)
+            {
                 PlayCutscene(so);
+                return;
+            }
+
+            // 대사가 비어있는 컷신(또는 로드 실패)이라도, 배틀로 복귀해야 하는 흐름이면 콜백을 실행해 데드락을 방지한다.
+            if (CutsceneContext.ReturnToBattleAfterCutscene)
+            {
+                var cb = CutsceneContext.OnBattleCutsceneFinished;
+                CutsceneContext.ClearBattleReturn();
+                cb?.Invoke();
+            }
         }
     }
 }

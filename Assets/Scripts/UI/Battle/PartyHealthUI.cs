@@ -29,6 +29,7 @@ namespace Match3Puzzle.UI.Battle
 
         private int[] currentHp;
         public event System.Action<int> OnCharacterHpZero;
+        public event System.Action<int, int, int> OnCharacterHpChanged; // (index, currentHp, maxHp)
 
         public int CharacterCount => slots?.Length ?? 0;
         public int MaxHpPerCharacter => maxHpPerCharacter;
@@ -55,6 +56,32 @@ namespace Match3Puzzle.UI.Battle
         }
 
         /// <summary>
+        /// 스테이지 설정: 최대 체력은 유지하고, 1인당 현재 체력만 (최대 − deduction)으로 시작합니다.
+        /// </summary>
+        /// <param name="deductionFromMax">0이면 무시(풀 체력). 1 이상이면 각자 최대 체력에서 이 만큼 깎인 상태로 시작.</param>
+        public void ApplyBattleStartingHpDeduction(int deductionFromMax)
+        {
+            if (deductionFromMax <= 0) return;
+
+            int count = CharacterCount;
+            if (currentHp == null || currentHp.Length != count)
+                return;
+
+            int max = maxHpPerCharacter;
+            int target = Mathf.Max(0, max - deductionFromMax);
+
+            for (int i = 0; i < count; i++)
+            {
+                int before = currentHp[i];
+                currentHp[i] = target;
+                RefreshBar(i);
+                OnCharacterHpChanged?.Invoke(i, currentHp[i], maxHpPerCharacter);
+                if (before > 0 && currentHp[i] == 0)
+                    OnCharacterHpZero?.Invoke(i);
+            }
+        }
+
+        /// <summary>
         /// 해당 캐릭터에 피격 처리 (HP 감소). 체력 바 Image는 fillAmount로 자동 반영됨.
         /// </summary>
         public void TakeDamage(int characterIndex, int amount)
@@ -64,6 +91,7 @@ namespace Match3Puzzle.UI.Battle
             int before = currentHp[characterIndex];
             currentHp[characterIndex] = Mathf.Max(0, currentHp[characterIndex] - amount);
             RefreshBar(characterIndex);
+            OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
 
             if (before > 0 && currentHp[characterIndex] == 0)
                 OnCharacterHpZero?.Invoke(characterIndex);
@@ -78,6 +106,7 @@ namespace Match3Puzzle.UI.Battle
 
             currentHp[characterIndex] = Mathf.Min(maxHpPerCharacter, currentHp[characterIndex] + amount);
             RefreshBar(characterIndex);
+            OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
         }
 
         /// <summary>
@@ -92,6 +121,7 @@ namespace Match3Puzzle.UI.Battle
             if (max > 0)
                 maxHpPerCharacter = max;
             RefreshBar(characterIndex);
+            OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
 
             if (before > 0 && currentHp[characterIndex] == 0)
                 OnCharacterHpZero?.Invoke(characterIndex);

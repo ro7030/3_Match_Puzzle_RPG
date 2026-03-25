@@ -99,6 +99,9 @@ namespace Match3Puzzle.UI.Battle
             if (currentStageData == null || partyHealthUI == null) return;
             // 전투 시작 직후 UI 동기화용 turn=0 이벤트는 공격 트리거에서 제외
             if (turn <= 0) return;
+
+            ApplyPartyHpLossPerTurn();
+
             int interval = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
                 ? currentStageData.attackIntervalTurnsPhase2
                 : currentStageData.attackIntervalTurns;
@@ -112,6 +115,19 @@ namespace Match3Puzzle.UI.Battle
             if (debugAttackFlow)
                 Debug.Log($"[MonsterAttack] Attack Triggered at turn={turn} (interval={interval})");
             ApplyMonsterAttack();
+        }
+
+        /// <summary>스테이지 설정: 턴 1회 소모마다 파티원 1인당 체력 감소</summary>
+        private void ApplyPartyHpLossPerTurn()
+        {
+            int loss = currentStageData.partyHpLossPerTurn;
+            if (loss <= 0) return;
+
+            for (int i = 0; i < partyHealthUI.CharacterCount; i++)
+            {
+                if (partyHealthUI.IsAlive(i))
+                    partyHealthUI.TakeDamage(i, loss);
+            }
         }
 
         /// <summary>몬스터 HP가 0이 되는 순간 즉시 클리어 처리</summary>

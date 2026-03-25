@@ -19,14 +19,18 @@ MonoBehaviour:
   monsterMaxHp: 500
   startAttackMode: 0
   attackIntervalTurns: 4
-  attackDamage: 100
+  attackDamage: 10
   attackTargetType: 1
+  partyStartHpDeduction: 15
+  partyHpLossPerTurn: 5
   maxTurns: 40
+  introCutscene: {fileID: 11400000, guid: 669ea9411288f4d41bbb6de8a49edf4d, type: 2}
   clearGoldReward: 300
   swordResistance: 0
   bowResistance: 0
   wandResistance: 0
   hasPhase2: 0
+  phase2TriggerTarget: 0
   phase2TriggerHp: 0
   phase2Cutscene: {fileID: 0}
   bossSpritePhase2: {fileID: 0}

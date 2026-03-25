@@ -28,6 +28,8 @@ namespace Match3Puzzle.Stage
         [SerializeField] private MonsterHealthUI monsterHealthUI;
         [Header("턴/난이도 (선택)")]
         [SerializeField] private LevelManager levelManager;
+        [Header("파티 체력 (선택)")]
+        [SerializeField] private PartyHealthUI partyHealthUI;
 
         private StageData _stageData;
         private bool _phase2Triggered;
@@ -47,6 +49,12 @@ namespace Match3Puzzle.Stage
 
             if (monsterHealthUI != null)
                 monsterHealthUI.OnHPChanged += HandleMonsterHpChanged;
+
+            if (partyHealthUI != null)
+                partyHealthUI.OnCharacterHpChanged += HandlePartyCharacterHpChanged;
+
+            // 시작 시점(파티 체력 깎기 등)에도 페이즈2 발동 조건을 한 번 체크
+            CheckPhase2TriggerAtStart();
         }
 
         private IEnumerator EnsureBattleStartedNextFrame()
@@ -126,6 +134,9 @@ namespace Match3Puzzle.Stage
         {
             if (monsterHealthUI != null)
                 monsterHealthUI.OnHPChanged -= HandleMonsterHpChanged;
+
+            if (partyHealthUI != null)
+                partyHealthUI.OnCharacterHpChanged -= HandlePartyCharacterHpChanged;
         }
 
         private void ApplyStageConfig()
@@ -189,6 +200,18 @@ namespace Match3Puzzle.Stage
             {
                 Debug.LogWarning($"[BattleConfig] maxTurns 접근 실패(직렬화 불일치 가능): {ex.Message}");
             }
+
+            try
+            {
+                if (partyHealthUI == null)
+                    partyHealthUI = FindFirstObjectByType<PartyHealthUI>();
+                if (partyHealthUI != null && data.partyStartHpDeduction > 0)
+                    partyHealthUI.ApplyBattleStartingHpDeduction(data.partyStartHpDeduction);
+            }
+            catch (MissingReferenceException ex)
+            {
+                Debug.LogWarning($"[BattleConfig] partyStartHpDeduction 적용 실패(직렬화 불일치 가능): {ex.Message}");
+            }
         }
 
         private void HandleMonsterHpChanged(int currentHp, int maxHp)
@@ -196,6 +219,7 @@ namespace Match3Puzzle.Stage
             if (_stageData == null) return;
             if (!_stageData.hasPhase2) return;
             if (_phase2Triggered) return;
+            if (_stageData.phase2TriggerTarget != Phase2TriggerTargetType.MonsterHp) return;
 
             // HP=0인 순간은 HandleMonsterDied(클리어) 쪽이 우선 처리되도록 방어
             if (currentHp <= 0) return;
@@ -204,6 +228,56 @@ namespace Match3Puzzle.Stage
             {
                 _phase2Triggered = true;
                 StartCoroutine(TriggerPhase2CutsceneCoroutine());
+            }
+        }
+
+        private void HandlePartyCharacterHpChanged(int characterIndex, int currentHp, int maxHp)
+        {
+            if (_stageData == null) return;
+            if (!_stageData.hasPhase2) return;
+            if (_phase2Triggered) return;
+            if (_stageData.phase2TriggerTarget != Phase2TriggerTargetType.PartyAnyMemberHp) return;
+
+            // HP=0인 순간은 패배 처리(파티원 down) 쪽이 우선 처리되도록 방어
+            if (currentHp <= 0) return;
+
+            if (currentHp <= _stageData.phase2TriggerHp)
+            {
+                _phase2Triggered = true;
+                StartCoroutine(TriggerPhase2CutsceneCoroutine());
+            }
+        }
+
+        private void CheckPhase2TriggerAtStart()
+        {
+            if (_stageData == null) return;
+            if (!_stageData.hasPhase2) return;
+            if (_phase2Triggered) return;
+            if (_stageData.phase2TriggerHp <= 0) return; // 기본 0은 트리거되지 않는 용도
+
+            if (_stageData.phase2TriggerTarget == Phase2TriggerTargetType.MonsterHp)
+            {
+                if (monsterHealthUI == null) return;
+                int currentHp = monsterHealthUI.CurrentHp;
+                if (currentHp > 0 && currentHp <= _stageData.phase2TriggerHp)
+                {
+                    _phase2Triggered = true;
+                    StartCoroutine(TriggerPhase2CutsceneCoroutine());
+                }
+            }
+            else if (_stageData.phase2TriggerTarget == Phase2TriggerTargetType.PartyAnyMemberHp)
+            {
+                if (partyHealthUI == null) return;
+                for (int i = 0; i < partyHealthUI.CharacterCount; i++)
+                {
+                    int hp = partyHealthUI.GetCurrentHP(i);
+                    if (hp > 0 && hp <= _stageData.phase2TriggerHp)
+                    {
+                        _phase2Triggered = true;
+                        StartCoroutine(TriggerPhase2CutsceneCoroutine());
+                        return;
+                    }
+                }
             }
         }
 
