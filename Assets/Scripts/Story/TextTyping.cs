@@ -5,14 +5,12 @@ using UnityEngine;
 
 namespace Story
 {
-    /// <summary>
     /// 공용 텍스트 타이핑 컴포넌트.
     /// - 문자열 직접형: Play(string[] lines), Play(string fullText)
     /// - 구조화 데이터형: 컨트롤러가 라인 단위 문자열을 넘겨 Play(string line)
     /// 클릭 동작:
     /// 1) 타이핑 중 클릭 -> 현재 줄 즉시 완성
     /// 2) 완성 상태 클릭 -> 다음 줄/완료 콜백
-    /// </summary>
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class TextTyping : MonoBehaviour
     {
