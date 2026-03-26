@@ -125,7 +125,9 @@ namespace Match3Puzzle.Board
             }
             width = gridSize;
             height = total / width;
-            if (width * height < total) height++;
+            // 슬롯 수가 타일 수보다 적으면 일부 Tile이 배열에 안 들어가 ContainsTile이 실패함
+            while (width * height < total)
+                height++;
 
             tiles = new Tile[width, height];
             tileList.Sort((a, b) =>
@@ -249,6 +251,88 @@ namespace Match3Puzzle.Board
             if (x >= 0 && x < maxX && y >= 0 && y < maxY)
                 return tiles[x, y];
             return null;
+        }
+
+        /// <summary>
+        /// 이 보드의 타일 배열에 해당 타일 인스턴스가 들어있는지 (슬롯이 부모 밖에 있어도 판별 가능)
+        /// </summary>
+        public bool ContainsTile(Tile tile)
+        {
+            if (tile == null || tiles == null) return false;
+            int w = tiles.GetLength(0);
+            int h = tiles.GetLength(1);
+            for (int x = 0; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    if (tiles[x, y] == tile)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>슬롯 루트(타일이 배열에 없을 때도 계층으로 소속 판별)</summary>
+        public Transform TileSlotsRoot => tileSlotParent != null ? tileSlotParent : transform;
+
+        public bool OwnsTileByHierarchy(Tile tile)
+        {
+            if (tile == null) return false;
+            var root = TileSlotsRoot;
+            if (root == null) return false;
+            return tile.transform == root || tile.transform.IsChildOf(root);
+        }
+
+        /// <summary>배열이 비어 있을 때만 슬롯에서 다시 수집 (런타임 복구)</summary>
+        public void EnsureTilesArrayFromHierarchy()
+        {
+            if (tiles != null) return;
+            CollectTilesFromParent();
+        }
+
+        /// <summary>
+        /// 클릭/스왑에 사용할 올바른 GameBoard 찾기.
+        /// tileSlotParent가 GameBoard 밖에 있으면 GetComponentInParent만으로는 실패할 수 있어 배열 검색을 병행합니다.
+        /// </summary>
+        public static GameBoard FindBoardForTile(Tile tile)
+        {
+            if (tile == null) return null;
+
+            var fromParent = tile.GetComponentInParent<GameBoard>();
+            if (fromParent != null && (fromParent.ContainsTile(tile) || fromParent.OwnsTileByHierarchy(tile)))
+                return fromParent;
+
+            var boards = FindObjectsByType<GameBoard>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < boards.Length; i++)
+            {
+                var b = boards[i];
+                if (b != null && b.ContainsTile(tile))
+                    return b;
+            }
+
+            for (int i = 0; i < boards.Length; i++)
+            {
+                var b = boards[i];
+                if (b != null && b.OwnsTileByHierarchy(tile))
+                    return b;
+            }
+            return null;
+        }
+
+        /// <summary>인접 스왑 시 두 타일이 속한 단일 보드 (다르면 null 아닌 쪽 우선)</summary>
+        public static GameBoard FindBoardForSwap(Tile a, Tile b)
+        {
+            if (a == null || b == null) return null;
+
+            var boardA = FindBoardForTile(a);
+            if (boardA != null && (boardA.ContainsTile(b) || boardA.OwnsTileByHierarchy(b)))
+                return boardA;
+
+            var boardB = FindBoardForTile(b);
+            if (boardB != null && (boardB.ContainsTile(a) || boardB.OwnsTileByHierarchy(a)))
+                return boardB;
+
+            return boardA != null ? boardA : boardB;
         }
 
         /// <summary>

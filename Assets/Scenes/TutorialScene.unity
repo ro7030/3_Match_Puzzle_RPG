@@ -1334,7 +1334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
+  m_Sprite: {fileID: -2005898006081286098, guid: 7795324010b8f9a43ada0c04abc544f0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2152,7 +2152,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
+  m_Sprite: {fileID: -2005898006081286098, guid: 7795324010b8f9a43ada0c04abc544f0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2217,14 +2217,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Board.GameBoard
   tileSlotParent: {fileID: 1977079807}
   tileSprites:
-  - {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
-  - {fileID: -4878944425459184301, guid: 6e893967db111b44c80ffa236ff40121, type: 3}
-  - {fileID: 637832691010260315, guid: 52d5e4579feae424aa0a5aad8bc41614, type: 3}
-  - {fileID: -1179432697989452932, guid: a021264cf6b8a81489b27410b01abbfe, type: 3}
-  - {fileID: -8568821838703182677, guid: ea1de695d7e114e42bb52110d4046887, type: 3}
-  - {fileID: 5224396589920826048, guid: 369404e2e0132394d99214b1caa6bb27, type: 3}
-  - {fileID: 7913939077123304964, guid: 25a60be31bffa934da014e44c1b8e0a7, type: 3}
-  - {fileID: 2422570960469356153, guid: 36642e92e8e9f1947be1eebd2d0d0dce, type: 3}
+  - {fileID: -2005898006081286098, guid: 7795324010b8f9a43ada0c04abc544f0, type: 3}
+  - {fileID: 8996815027175218690, guid: 833e3ea61860f4f4e93d688dbce9f180, type: 3}
+  - {fileID: -7856493677412862020, guid: 798ad01d465970347acd98202ed46b48, type: 3}
+  - {fileID: -5134353640494552591, guid: 63726be2d1517aa42bd2a38fecc294a6, type: 3}
+  - {fileID: -6689768461760490466, guid: b57e9cbfbc7f4e348a5be04512a827fb, type: 3}
+  - {fileID: 5887550642596084616, guid: 02505eebd130fa4488ba3b03b4040393, type: 3}
+  - {fileID: 389618858218783054, guid: b6dab8ba28b433b4faa8f049af35c2bf, type: 3}
+  - {fileID: -5663518193055116647, guid: bb56892e8fb26a44f9f9580abbc157f4, type: 3}
   width: 8
   height: 8
   tileTypeCount: 5
@@ -2473,6 +2473,7 @@ GameObject:
   - component: {fileID: 924561848}
   - component: {fileID: 924561859}
   - component: {fileID: 924561860}
+  - component: {fileID: 924561861}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2508,8 +2509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9b028a971d51047960c4937fcd76ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Spawn.TileSpawner
-  gameBoard: {fileID: 0}
-  matchDetector: {fileID: 0}
+  gameBoard: {fileID: 766330759}
+  matchDetector: {fileID: 924561854}
 --- !u!114 &924561851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2522,7 +2523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf20e47e0861f2f4780b84f1f3c8db46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Gravity.GravityController
-  gameBoard: {fileID: 0}
+  gameBoard: {fileID: 766330759}
 --- !u!114 &924561852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2535,13 +2536,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9697097f4ca1a45b0affa961130ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Clear.TileClearer
-  gameBoard: {fileID: 0}
-  gravityController: {fileID: 0}
-  tileSpawner: {fileID: 0}
-  matchDetector: {fileID: 0}
+  gameBoard: {fileID: 766330759}
+  gravityController: {fileID: 924561851}
+  tileSpawner: {fileID: 924561850}
+  matchDetector: {fileID: 924561854}
   clearDelay: 0.1
   clearAnimationDuration: 0.5
-  matchEffectHandler: {fileID: 0}
+  matchEffectHandler: {fileID: 924561861}
   skipGravityAndSpawn: 1
 --- !u!114 &924561853
 MonoBehaviour:
@@ -2555,10 +2556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e088c6218f303694dadf3d846c8ebb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Swap.TileSwapper
-  gameBoard: {fileID: 0}
-  matchDetector: {fileID: 0}
-  tileClearer: {fileID: 0}
-  levelManager: {fileID: 0}
+  gameBoard: {fileID: 766330759}
+  matchDetector: {fileID: 924561854}
+  tileClearer: {fileID: 924561852}
+  levelManager: {fileID: 924561848}
 --- !u!114 &924561854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2583,8 +2584,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ecbfb37d213d354d9ffa6200d1c77a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Swap.InputHandler
-  gameBoard: {fileID: 0}
+  gameBoard: {fileID: 766330759}
   dragThreshold: 50
+  debugInput: 1
 --- !u!114 &924561856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2604,6 +2606,7 @@ MonoBehaviour:
   boardWidth: 8
   boardHeight: 8
   tileTypes: 5
+  battleSceneName: BattleScene
 --- !u!4 &924561857
 Transform:
   m_ObjectHideFlags: 0
@@ -2650,9 +2653,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd63ddc7ab41c154ea5d1ba0964501cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Tutorial.TutorialSceneStarter
+  debugStateLog: 1
   stageData: {fileID: 11400000, guid: 4e9e161e91f3f774487449588152b165, type: 2}
   monsterHealthUI: {fileID: 0}
+  partyHealthUI: {fileID: 0}
   monsterAttackController: {fileID: 0}
+  tutorialTileOneName: Tile (1)
+  tileOneSpriteAfterMove: {fileID: 0}
+--- !u!114 &924561861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924561846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038aa8ca56ffe714d81e76f3b6065d8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Matching.MatchEffectHandler
+  monsterHealthUI: {fileID: 0}
+  partyHealthUI: {fileID: 0}
+  stageDatabase: {fileID: 0}
+  characterStats: {fileID: 0}
 --- !u!1 &952417699
 GameObject:
   m_ObjectHideFlags: 0
@@ -4012,7 +4035,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
+  m_Sprite: {fileID: -2005898006081286098, guid: 7795324010b8f9a43ada0c04abc544f0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4561,7 +4584,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
+  m_Sprite: {fileID: -7797449867349345912, guid: 61b6a3b999f02a34f8df66a991367fda, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4988,7 +5011,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6814373240806179995, guid: 739fd5c98379bf74bb930ba9e304f785, type: 3}
+  m_Sprite: {fileID: -2005898006081286098, guid: 7795324010b8f9a43ada0c04abc544f0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

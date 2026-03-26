@@ -2086,7 +2086,7 @@ MonoBehaviour:
   skillSceneName: SkillScene
   inventorySceneName: InventoryScene
   mapSceneName: MapScene
-  backSceneName: MapScene
+  backSceneName: TitleScene
 --- !u!4 &1260850501
 Transform:
   m_ObjectHideFlags: 0

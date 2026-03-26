@@ -21,6 +21,14 @@ namespace Match3Puzzle.Spawn
 
         public IEnumerator SpawnNewTiles()
         {
+            if (gameBoard == null)
+                gameBoard = FindFirstObjectByType<GameBoard>();
+            if (gameBoard == null || gameBoard.Tiles == null)
+            {
+                Debug.LogWarning("[TileSpawner] SpawnNewTiles 중단: GameBoard 또는 Tiles가 null");
+                yield break;
+            }
+
             int width = gameBoard.Width;
             int height = gameBoard.Height;
             Tile[,] tiles = gameBoard.Tiles;

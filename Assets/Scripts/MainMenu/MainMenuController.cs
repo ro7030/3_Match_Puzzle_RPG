@@ -23,6 +23,7 @@ namespace MainMenu
 
         [Header("Scene Names")]
         [SerializeField] private string gameSceneName = "GameScene";
+        [SerializeField] private string kingdomSceneName = "KingdomScene";
 
         [Header("No Save Popup (Optional)")]
         [SerializeField] private GameObject noSaveDataPopup;
@@ -78,9 +79,15 @@ namespace MainMenu
 
             // 로드한 데이터를 게임 씬에서 사용할 수 있도록 보관
             LoadedSaveDataHolder.Data = data;
-            string sceneToLoad = string.IsNullOrEmpty(data.currentSceneName) ? gameSceneName : data.currentSceneName;
-            LoadedSaveDataHolder.Data = data;
-            SceneManager.LoadScene(sceneToLoad);
+            string requestedScene = string.IsNullOrEmpty(data.currentSceneName) ? gameSceneName : data.currentSceneName;
+
+            // 요청 씬이 비어있거나 빌드에 없으면, 또는 실수로 프롤로그가 들어오면 KingdomScene으로 폴백
+            if (string.IsNullOrEmpty(requestedScene) ||
+                !Application.CanStreamedLevelBeLoaded(requestedScene) ||
+                string.Equals(requestedScene, "PrologueScene", System.StringComparison.Ordinal))
+                requestedScene = kingdomSceneName;
+
+            SceneManager.LoadScene(requestedScene);
         }
 
         private void OnOptionClicked()

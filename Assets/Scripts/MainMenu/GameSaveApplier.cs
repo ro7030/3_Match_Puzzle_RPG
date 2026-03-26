@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Match3Puzzle.Stats;
 
 namespace MainMenu
 {
@@ -29,6 +30,8 @@ namespace MainMenu
             Match3Puzzle.Skill.EquippedSkillsHolder.LoadFromSave(data);
             // 장착 장비 복원 (배틀/인벤토리씬에서 사용)
             Match3Puzzle.Inventory.EquippedEquipmentHolder.LoadFromSave(data);
+            // 현재 스탯 업그레이드 레벨 복원 (배틀 등에서 CharacterUpgradeHolder를 참조하는 경우 대비)
+            CharacterUpgradeHolder.LoadFromSave(data);
 
             Debug.Log($"[GameSaveApplier] 적용 - 챕터:{data.lastClearedChapter} 골드:{data.gold} 씬:{data.currentSceneName}");
 

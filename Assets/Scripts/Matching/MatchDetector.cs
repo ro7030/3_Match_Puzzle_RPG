@@ -15,6 +15,8 @@ namespace Match3Puzzle.Matching
         public List<MatchGroup> FindAllMatches(Tile[,] tiles)
         {
             List<MatchGroup> allMatches = new List<MatchGroup>();
+            if (tiles == null) return allMatches;
+            if (tiles.GetLength(0) == 0 || tiles.GetLength(1) == 0) return allMatches;
             int width = tiles.GetLength(0);
             int height = tiles.GetLength(1);
 
@@ -80,6 +82,8 @@ namespace Match3Puzzle.Matching
         /// </summary>
         public MatchGroup FindHorizontalMatch(Tile[,] tiles, int startX, int y, int width)
         {
+            if (tiles == null) return null;
+            if (tiles.GetLength(0) == 0 || tiles.GetLength(1) == 0) return null;
             if (y < 0 || y >= tiles.GetLength(1)) return null;
             if (startX < 0 || startX >= width) return null;
 
@@ -111,6 +115,8 @@ namespace Match3Puzzle.Matching
         /// </summary>
         public MatchGroup FindVerticalMatch(Tile[,] tiles, int x, int startY, int height)
         {
+            if (tiles == null) return null;
+            if (tiles.GetLength(0) == 0 || tiles.GetLength(1) == 0) return null;
             if (x < 0 || x >= tiles.GetLength(0)) return null;
             if (startY < 0 || startY >= height) return null;
 
@@ -142,6 +148,8 @@ namespace Match3Puzzle.Matching
         /// </summary>
         public bool HasMatchAt(Tile[,] tiles, int x, int y)
         {
+            if (tiles == null) return false;
+            if (tiles.GetLength(0) == 0 || tiles.GetLength(1) == 0) return false;
             MatchGroup horizontal = FindHorizontalMatch(tiles, x, y, tiles.GetLength(0));
             MatchGroup vertical = FindVerticalMatch(tiles, x, y, tiles.GetLength(1));
 
@@ -154,6 +162,8 @@ namespace Match3Puzzle.Matching
         /// </summary>
         public bool WouldCreateMatch(Tile[,] tiles, Tile tile1, Tile tile2)
         {
+            if (tiles == null) return false;
+            if (tiles.GetLength(0) == 0 || tiles.GetLength(1) == 0) return false;
             if (tile1 == null || tile2 == null) return false;
             if (!tile1.IsAdjacent(tile2)) return false;
 

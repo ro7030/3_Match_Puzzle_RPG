@@ -4,6 +4,7 @@ using Match3Puzzle.Board;
 using Match3Puzzle.Matching;
 using Match3Puzzle.Stage;
 using Match3Puzzle.Stats;
+using Match3Puzzle.Tutorial;
 using Match3Puzzle.UI.Battle;
 using Match3Puzzle.Inventory;
 
@@ -48,6 +49,11 @@ namespace Match3Puzzle.Matching
         /// </summary>
         public void ApplyMatchEffects(List<MatchGroup> matches)
         {
+            // 튜토리얼은 TutorialManager가 TileClearer.OnMatchCleared에서 고정 데미지만 쓰도록 설계됨.
+            // 여기서 스탯 기반 데미지까지 넣으면 일반 배틀과 동일한 큰 피해가 들어가 체력이 바로 0이 됨.
+            if (FindFirstObjectByType<TutorialManager>() != null)
+                return;
+
             if (_stageData == null || characterStats == null) return;
 
             foreach (var match in matches)
@@ -63,7 +69,7 @@ namespace Match3Puzzle.Matching
                 {
                     case 0: ApplySwordMatch(count, enhancedCount); break;
                     case 1: ApplyWandMatch(count, enhancedCount);  break;
-                    case 2: ApplyBowMatch(enhancedCount);          break;
+                    case 2: ApplyBowMatch(count, enhancedCount);  break;
                     case 3: ApplyCrossMatch(count);                break;
                 }
             }
@@ -99,11 +105,12 @@ namespace Match3Puzzle.Matching
             monsterHealthUI.TakeDamage(final);
         }
 
-        private void ApplyBowMatch(int enhancedCount)
+        private void ApplyBowMatch(int matchCount, int enhancedCount)
         {
             if (monsterHealthUI == null) return;
             float attackMul = EquipmentStatModifier.GetAttackMultiplier();
-            int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetBowDamage(characterStats) * attackMul);
+            // 활도 3매치면 matchCount만큼 기본 데미지를 누적
+            int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetBowDamage(characterStats) * attackMul) * matchCount;
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
             float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
                 ? _stageData.bowResistancePhase2

@@ -17,7 +17,7 @@ namespace Match3Puzzle.Tutorial
 
     /// <summary>
     /// 튜토리얼 흐름 제어.
-    /// MatchEffectHandler 없이 고정 데미지로 직접 몬스터 체력을 조절.
+    /// 매칭 데미지는 <see cref="matchDamage"/>만 적용 (씬에 이 컴포넌트가 있으면 MatchEffectHandler가 스탯 데미지를 넣지 않음).
     /// TutorialManager 빈 오브젝트에 붙임.
     /// </summary>
     public class TutorialManager : MonoBehaviour
