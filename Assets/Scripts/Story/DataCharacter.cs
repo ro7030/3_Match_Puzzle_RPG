@@ -11,5 +11,7 @@ namespace Story
         public int chrID;
         public string displayName = "";
         public Sprite chrImage;
+        [Tooltip("스킬 씬 등에서 미선택 시 표시할 흑백 초상화. 비어 있으면 컬러 스프라이트만 사용합니다.")]
+        public Sprite chrImageGrayscale;
     }
 }

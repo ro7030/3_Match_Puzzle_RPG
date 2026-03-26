@@ -25,6 +25,8 @@ namespace Story
         [Header("Background & Character")]
         [SerializeField] private UnityEngine.UI.Image backgroundImage;
         [SerializeField] private UnityEngine.UI.Image characterImage;
+        [SerializeField] private UnityEngine.UI.Image characterImage2;
+        [SerializeField] private UnityEngine.UI.Image characterImage3;
 
         [Header("Data")]
         [Tooltip("CutsceneData 재생 시 캐릭터 조회에 사용. 필수")]
@@ -71,6 +73,8 @@ namespace Story
             public string speakerName = "";
             public string text = "";
             public Sprite characterSprite;
+            public Sprite characterSprite2;
+            public Sprite characterSprite3;
             public Sprite backgroundSprite;
         }
 
@@ -78,6 +82,11 @@ namespace Story
         {
             if (backgroundImage != null)
                 _defaultBackgroundSprite = backgroundImage.sprite;
+
+            // 새로 추가된 캐릭터 슬롯(characterImage2/3)은 기본 스프라이트가 있을 수 있으니,
+            // 실제 dialogue 데이터가 들어오는 순간(ShowCurrentLine)만 켜지도록 초기 비활성화
+            if (characterImage2 != null) characterImage2.gameObject.SetActive(false);
+            if (characterImage3 != null) characterImage3.gameObject.SetActive(false);
 
             EnsureTextTyper();
             if (textTyper != null && clickAreaButton != null)
@@ -172,6 +181,16 @@ namespace Story
             {
                 characterImage.gameObject.SetActive(line.characterSprite != null);
                 if (line.characterSprite != null) characterImage.sprite = line.characterSprite;
+            }
+            if (characterImage2 != null)
+            {
+                characterImage2.gameObject.SetActive(line.characterSprite2 != null);
+                if (line.characterSprite2 != null) characterImage2.sprite = line.characterSprite2;
+            }
+            if (characterImage3 != null)
+            {
+                characterImage3.gameObject.SetActive(line.characterSprite3 != null);
+                if (line.characterSprite3 != null) characterImage3.sprite = line.characterSprite3;
             }
 
             if (!string.IsNullOrWhiteSpace(line.text))
@@ -285,6 +304,15 @@ namespace Story
 
         private void OnSkipClicked()
         {
+            // (배틀용) 씬 전환 대신 배틀 복귀 콜백 실행
+            if (CutsceneContext.ReturnToBattleAfterCutscene)
+            {
+                var cb = CutsceneContext.OnBattleCutsceneFinished;
+                CutsceneContext.ClearBattleReturn();
+                cb?.Invoke();
+                return;
+            }
+
             if (EffectiveIsPrologueMode && !string.IsNullOrEmpty(EffectiveNextScene))
             {
                 if (EffectiveClearSave) SaveSystem.DeleteSave();
@@ -295,6 +323,15 @@ namespace Story
 
         private void OnAllDialogueComplete()
         {
+            // (배틀용) 씬 전환 대신 배틀 복귀 콜백 실행
+            if (CutsceneContext.ReturnToBattleAfterCutscene)
+            {
+                var cb = CutsceneContext.OnBattleCutsceneFinished;
+                CutsceneContext.ClearBattleReturn();
+                cb?.Invoke();
+                return;
+            }
+
             if (EffectiveIsPrologueMode && !string.IsNullOrEmpty(EffectiveNextScene))
             {
                 if (EffectiveClearSave) SaveSystem.DeleteSave();
@@ -317,10 +354,21 @@ namespace Story
         private void LoadAndPlayFromContext()
         {
             var so = Resources.Load<CutsceneData>($"{CutsceneContext.ScriptableObjectPathPrefix}{CutsceneContext.CutsceneId}");
-            CutsceneContext.Clear();
+            CutsceneContext.ClearCutsceneIdOnly();
 
             if (so != null && so.dialogueLines != null && so.dialogueLines.Count > 0)
+            {
                 PlayCutscene(so);
+                return;
+            }
+
+            // 대사가 비어있는 컷신(또는 로드 실패)이라도, 배틀로 복귀해야 하는 흐름이면 콜백을 실행해 데드락을 방지한다.
+            if (CutsceneContext.ReturnToBattleAfterCutscene)
+            {
+                var cb = CutsceneContext.OnBattleCutsceneFinished;
+                CutsceneContext.ClearBattleReturn();
+                cb?.Invoke();
+            }
         }
     }
 }

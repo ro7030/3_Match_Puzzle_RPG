@@ -47,7 +47,13 @@ namespace Match3Puzzle.Board
                 image = GetComponent<Image>();
             if (image != null)
                 image.raycastTarget = true;
-            _inputHandler = FindFirstObjectByType<InputHandler>();
+            EnsureInputHandler();
+        }
+
+        private void EnsureInputHandler()
+        {
+            if (_inputHandler == null)
+                _inputHandler = FindFirstObjectByType<InputHandler>();
         }
 
         /// <summary>
@@ -172,16 +178,19 @@ namespace Match3Puzzle.Board
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            EnsureInputHandler();
             _inputHandler?.OnTilePointerDown(this, eventData);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            EnsureInputHandler();
             _inputHandler?.OnTilePointerUp(this);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
+            EnsureInputHandler();
             _inputHandler?.OnTileDrag(this, eventData);
         }
     }

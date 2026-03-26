@@ -17,6 +17,12 @@ namespace Match3Puzzle.Map
         public static int CurrentChapter { get; set; } = 1;
 
         /// <summary>
+        /// MapScene 진입 시 StageSelectPanel을 자동으로 열지 여부.
+        /// (클리어 패널의 “스테이지 선택” 버튼에서 설정)
+        /// </summary>
+        public static bool AutoOpenStageSelect { get; set; } = false;
+
+        /// <summary>
         /// 챕터 번호를 전역 스테이지 인덱스의 시작 값으로 변환.
         /// Index 0은 Tutorial이므로 챕터 스테이지는 1부터 시작.
         /// 챕터1 → 1, 챕터2 → 4, 챕터3 → 7

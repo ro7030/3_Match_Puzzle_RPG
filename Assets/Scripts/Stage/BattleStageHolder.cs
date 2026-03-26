@@ -12,6 +12,12 @@ namespace Match3Puzzle.Stage
         /// <summary>진입할 스테이지 인덱스 (0~8 = 스테이지 1~9)</summary>
         public static int CurrentStageIndex { get; set; }
 
+        /// <summary>
+        /// MapScene 진입 시 StageSelectPanel을 자동으로 열지 여부.
+        /// (클리어 패널에서 "스테이지 선택으로" 버튼 클릭 시 사용)
+        /// </summary>
+        public static bool AutoOpenStageSelectOnMap { get; set; } = false;
+
         /// <summary>스테이지 선택 시 호출. 배틀 씬 로드 전에 호출.</summary>
         public static void SetStage(int stageIndex)
         {

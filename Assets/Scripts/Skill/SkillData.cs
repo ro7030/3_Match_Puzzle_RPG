@@ -33,6 +33,8 @@ namespace Match3Puzzle.Skill
 
         [Header("표시")]
         public Sprite icon;
+        [Tooltip("잠금 상태(또는 미선택/회색)로 표시할 흑백 아이콘. 비어 있으면 icon을 그대로 사용합니다.")]
+        public Sprite iconGrayscale;
 
         [Header("쿨타임")]
         [Tooltip("스킬 쿨타임(턴). 배틀에서 스킬 사용 후 다시 쓸 수 있을 때까지 필요한 턴 수. 예: 4 = 4턴마다 1회 사용.")]

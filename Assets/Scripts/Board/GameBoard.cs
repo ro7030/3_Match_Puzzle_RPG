@@ -71,10 +71,48 @@ namespace Match3Puzzle.Board
             if (tileSlotParent != null)
                 tileList.AddRange(tileSlotParent.GetComponentsInChildren<Tile>(true));
 
+            // 재진입 시 참조가 끊어졌거나(파괴된 씬 오브젝트 참조), 슬롯 부모가 비어있는 경우
+            // 씬에서 Tile들을 다시 찾아 슬롯 부모를 런타임에 복구한다.
+            if (tileList.Count == 0)
+            {
+                var allTiles = FindObjectsByType<Tile>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                if (allTiles != null && allTiles.Length > 0)
+                {
+                    tileList.AddRange(allTiles);
+
+                    Transform bestParent = null;
+                    int bestCount = 0;
+                    var countByParent = new Dictionary<Transform, int>();
+                    for (int i = 0; i < allTiles.Length; i++)
+                    {
+                        var t = allTiles[i];
+                        if (t == null) continue;
+                        var p = t.transform.parent;
+                        if (p == null) continue;
+                        if (!countByParent.ContainsKey(p))
+                            countByParent[p] = 0;
+                        countByParent[p]++;
+                    }
+
+                    foreach (var kv in countByParent)
+                    {
+                        if (kv.Value > bestCount)
+                        {
+                            bestCount = kv.Value;
+                            bestParent = kv.Key;
+                        }
+                    }
+
+                    if (bestParent != null)
+                        tileSlotParent = bestParent;
+                }
+            }
+
             int total = tileList.Count;
             if (total == 0)
             {
-                Debug.LogError("[GameBoard] Tile 슬롯이 없습니다.");
+                string parentName = tileSlotParent != null ? tileSlotParent.name : "NULL";
+                Debug.LogError($"[GameBoard] Tile 슬롯이 없습니다. tileSlotParent={parentName}");
                 return;
             }
 
@@ -203,7 +241,12 @@ namespace Match3Puzzle.Board
 
         public Tile GetTile(int x, int y)
         {
-            if (x >= 0 && x < width && y >= 0 && y < height)
+            if (tiles == null)
+                return null;
+
+            int maxX = tiles.GetLength(0);
+            int maxY = tiles.GetLength(1);
+            if (x >= 0 && x < maxX && y >= 0 && y < maxY)
                 return tiles[x, y];
             return null;
         }

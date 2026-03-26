@@ -28,8 +28,11 @@ namespace Match3Puzzle.UI.Battle
         [SerializeField] private bool applyEquipmentBonusOnAwake = true;
 
         private int[] currentHp;
+        public event System.Action<int> OnCharacterHpZero;
+        public event System.Action<int, int, int> OnCharacterHpChanged; // (index, currentHp, maxHp)
 
         public int CharacterCount => slots?.Length ?? 0;
+        public int MaxHpPerCharacter => maxHpPerCharacter;
 
         private void Awake()
         {
@@ -53,14 +56,45 @@ namespace Match3Puzzle.UI.Battle
         }
 
         /// <summary>
+        /// 스테이지 설정: 최대 체력은 유지하고, 1인당 현재 체력만 (최대 − deduction)으로 시작합니다.
+        /// </summary>
+        /// <param name="deductionFromMax">0이면 무시(풀 체력). 1 이상이면 각자 최대 체력에서 이 만큼 깎인 상태로 시작.</param>
+        public void ApplyBattleStartingHpDeduction(int deductionFromMax)
+        {
+            if (deductionFromMax <= 0) return;
+
+            int count = CharacterCount;
+            if (currentHp == null || currentHp.Length != count)
+                return;
+
+            int max = maxHpPerCharacter;
+            int target = Mathf.Max(0, max - deductionFromMax);
+
+            for (int i = 0; i < count; i++)
+            {
+                int before = currentHp[i];
+                currentHp[i] = target;
+                RefreshBar(i);
+                OnCharacterHpChanged?.Invoke(i, currentHp[i], maxHpPerCharacter);
+                if (before > 0 && currentHp[i] == 0)
+                    OnCharacterHpZero?.Invoke(i);
+            }
+        }
+
+        /// <summary>
         /// 해당 캐릭터에 피격 처리 (HP 감소). 체력 바 Image는 fillAmount로 자동 반영됨.
         /// </summary>
         public void TakeDamage(int characterIndex, int amount)
         {
             if (characterIndex < 0 || characterIndex >= CharacterCount) return;
 
+            int before = currentHp[characterIndex];
             currentHp[characterIndex] = Mathf.Max(0, currentHp[characterIndex] - amount);
             RefreshBar(characterIndex);
+            OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
+
+            if (before > 0 && currentHp[characterIndex] == 0)
+                OnCharacterHpZero?.Invoke(characterIndex);
         }
 
         /// <summary>
@@ -72,6 +106,7 @@ namespace Match3Puzzle.UI.Battle
 
             currentHp[characterIndex] = Mathf.Min(maxHpPerCharacter, currentHp[characterIndex] + amount);
             RefreshBar(characterIndex);
+            OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
         }
 
         /// <summary>
@@ -81,16 +116,41 @@ namespace Match3Puzzle.UI.Battle
         {
             if (characterIndex < 0 || characterIndex >= CharacterCount) return;
 
+            int before = currentHp[characterIndex];
             currentHp[characterIndex] = Mathf.Clamp(current, 0, max > 0 ? max : maxHpPerCharacter);
             if (max > 0)
                 maxHpPerCharacter = max;
             RefreshBar(characterIndex);
+            OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
+
+            if (before > 0 && currentHp[characterIndex] == 0)
+                OnCharacterHpZero?.Invoke(characterIndex);
         }
 
         public int GetCurrentHP(int characterIndex)
         {
             if (characterIndex < 0 || characterIndex >= CharacterCount) return 0;
             return currentHp[characterIndex];
+        }
+
+        /// <summary>
+        /// 파티 캐릭터 슬롯의 초상화 Sprite를 반환.
+        /// (클리어 패널에서 랜덤 캐릭터를 띄우기 위해 사용)
+        /// </summary>
+        public Sprite GetPortraitSprite(int characterIndex)
+        {
+            if (slots == null || characterIndex < 0 || characterIndex >= slots.Length) return null;
+            var img = slots[characterIndex].portraitImage;
+            return img != null ? img.sprite : null;
+        }
+
+        /// <summary>
+        /// 파티 캐릭터 슬롯의 초상화 Image를 반환.
+        /// </summary>
+        public Image GetPortraitImage(int characterIndex)
+        {
+            if (slots == null || characterIndex < 0 || characterIndex >= slots.Length) return null;
+            return slots[characterIndex].portraitImage;
         }
 
         public bool IsAlive(int characterIndex)

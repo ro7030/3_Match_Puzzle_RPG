@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using MainMenu;
+using Match3Puzzle.Stage;
 
 namespace Match3Puzzle.Map
 {
@@ -69,6 +70,16 @@ namespace Match3Puzzle.Map
         {
             _saveData = SaveSystem.Load() ?? new GameSaveData();
             InitializeChapterNodes();
+
+            // 클리어 패널에서 "스테이지 선택" 버튼을 눌렀을 때 챕터 패널을 자동으로 열기
+            if (stageSelectPanel != null && BattleStageHolder.AutoOpenStageSelectOnMap)
+            {
+                int idx = BattleStageHolder.CurrentStageIndex;
+                int chapter = idx <= 0 ? 1 : ((idx - 1) / 3) + 1; // 0=튜토리얼
+                chapter = Mathf.Clamp(chapter, 1, 3);
+                stageSelectPanel.Show(chapter, _saveData);
+                BattleStageHolder.AutoOpenStageSelectOnMap = false; // 1회성
+            }
 
             if (kingdomButton != null)
                 kingdomButton.onClick.AddListener(OnKingdomButton);

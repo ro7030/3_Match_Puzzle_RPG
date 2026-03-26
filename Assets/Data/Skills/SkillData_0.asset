@@ -15,8 +15,9 @@ MonoBehaviour:
   skillId: skill_001
   displayName: "\uAC15\uD0C0 :"
   description: "\uAC80 \uD53C\uD574\uC758 500%"
-  icon: {fileID: -8059402779639786689, guid: 38fbbb4850696f14683dd8f64679973c, type: 3}
-  cooldownTurns: 4
+  icon: {fileID: -4029560544573063405, guid: 71826811005a21447ad922b1250182ff, type: 3}
+  iconGrayscale: {fileID: -1112969516998079427, guid: 99b38b892c44a4b42838c42d00cab5d8, type: 3}
+  cooldownTurns: 3
   cooldownSeconds: 5
   effectType: 0
   effectMultiplier: 5

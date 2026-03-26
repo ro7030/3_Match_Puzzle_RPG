@@ -170,6 +170,10 @@ namespace Match3Puzzle.UI.Battle
                 button.interactable = true;
             if (grayOverlay != null)
                 grayOverlay.gameObject.SetActive(false);
+
+            // 쿨다운이 걸려있지 않은 상태(remaining=0)에서는 오버레이를 비워 둔다.
+            // (SetCooldownTurns 호출로 인해 기본 radial fill 값이 1로 잡히는 문제를 방지)
+            SetCooldownVisual(0f);
         }
 
         /// <summary>
@@ -205,5 +209,33 @@ namespace Match3Puzzle.UI.Battle
         }
 
         public event System.Action OnSkillUsed;
+
+        /// <summary>
+        /// 매치(특정 타일 타입이 N회 매칭)로 쿨다운을 N만큼 진행시키는 함수.
+        /// 기본 턴 로직(OnTurnAdvanced)의 개념을 "매치 횟수"로 바꿔 재사용합니다.
+        /// </summary>
+        public void OnMatchAdvanced(int matchCount)
+        {
+            if (_cooldownMode != CooldownMode.Turns) return;
+            if (matchCount <= 0) return;
+
+            // 남은 턴(= 남은 쿨다운 틱)이 없으면 아무것도 하지 않습니다.
+            if (_cooldownTurnsRemaining <= 0) return;
+
+            int newRemaining = Mathf.Max(0, _cooldownTurnsRemaining - matchCount);
+            _cooldownTurnsRemaining = newRemaining;
+
+            if (_cooldownTurnsRemaining <= 0)
+            {
+                if (grayOverlay != null)
+                    grayOverlay.gameObject.SetActive(false);
+                if (button != null)
+                    button.interactable = true;
+                SetCooldownVisual(0f);
+                return;
+            }
+
+            RefreshTurnCooldownVisual();
+        }
     }
 }

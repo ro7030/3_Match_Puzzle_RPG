@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9561e1774032147499522a850a0f3041, type: 3}
+  m_Name: SkillData_5
+  m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Skill.SkillData
+  skillId: skill_001
+  displayName: "\uAC15\uD0C0 :"
+  description: "\uAC80 \uD53C\uD574\uC758 500%"
+  icon: {fileID: -1823723604768877084, guid: a0889a6ccadfc02469a3cb47c44c726d, type: 3}
+  iconGrayscale: {fileID: -4004774217189992839, guid: 428941cdf49b0cd47a762af5c0c29ed6, type: 3}
+  cooldownTurns: 3
+  cooldownSeconds: 5
+  effectType: 2
+  effectMultiplier: 5
+  ownerCharacterIndex: 0
+  requiredChapter: 3

@@ -30,6 +30,19 @@ namespace Story
         {
             [Tooltip("CharacterDatabase ID. -1이면 나레이터(캐릭터 없음)")]
             public int characterId = -1;
+            [Tooltip("characterId가 -1일 때 사용할 스프라이트 오버라이드 (데이터베이스에 없는 한두번 캐릭터용)")]
+            public Sprite characterSpriteOverride;
+
+            [Tooltip("두 번째 캐릭터(동시에 표시) CharacterDatabase ID. -1이면 표시 끔/스프라이트 오버라이드 사용")]
+            public int characterId2 = -1;
+            [Tooltip("characterId2가 -1일 때 사용할 두 번째 스프라이트 오버라이드")]
+            public Sprite characterSpriteOverride2;
+
+            [Tooltip("세 번째 캐릭터(동시에 표시) CharacterDatabase ID. -1이면 표시 끔/스프라이트 오버라이드 사용")]
+            public int characterId3 = -1;
+            [Tooltip("characterId3가 -1일 때 사용할 세 번째 스프라이트 오버라이드")]
+            public Sprite characterSpriteOverride3;
+
             [Tooltip("characterId가 -1일 때 사용, 또는 표시 이름 오버라이드")]
             public string speakerName = "";
             [TextArea(2, 6)]
@@ -46,15 +59,26 @@ namespace Story
             var list = new List<StoryDialogueController.DialogueLine>();
             foreach (var d in dialogueLines)
             {
-                var chr = characterDb != null && d.characterId >= 0 ? characterDb.Get(d.characterId) : null;
-                string name = !string.IsNullOrEmpty(d.speakerName) ? d.speakerName : (chr?.displayName ?? "");
-                Sprite portrait = chr != null ? chr.chrImage : null;
+                var chr1 = characterDb != null && d.characterId >= 0 ? characterDb.Get(d.characterId) : null;
+                var chr2 = characterDb != null && d.characterId2 >= 0 ? characterDb.Get(d.characterId2) : null;
+                var chr3 = characterDb != null && d.characterId3 >= 0 ? characterDb.Get(d.characterId3) : null;
+
+                string name = !string.IsNullOrEmpty(d.speakerName)
+                    ? d.speakerName
+                    : (chr1?.displayName ?? "");
+
+                // characterId가 -1이면 CharacterDatabase에서 가져오지 못하므로, Inspector에서 넣어준 오버라이드 스프라이트를 사용
+                Sprite portrait1 = chr1 != null ? chr1.chrImage : d.characterSpriteOverride;
+                Sprite portrait2 = chr2 != null ? chr2.chrImage : d.characterSpriteOverride2;
+                Sprite portrait3 = chr3 != null ? chr3.chrImage : d.characterSpriteOverride3;
 
                 list.Add(new StoryDialogueController.DialogueLine
                 {
                     speakerName = name ?? "",
                     text = d.text ?? "",
-                    characterSprite = portrait,
+                    characterSprite = portrait1,
+                    characterSprite2 = portrait2,
+                    characterSprite3 = portrait3,
                     backgroundSprite = d.backgroundSprite
                 });
             }
@@ -79,6 +103,8 @@ namespace Story
                     speakerName = chr?.displayName ?? "",
                     text = texts[i] ?? "",
                     characterSprite = chr?.chrImage,
+                    characterSprite2 = null,
+                    characterSprite3 = null,
                     backgroundSprite = null
                 });
             }

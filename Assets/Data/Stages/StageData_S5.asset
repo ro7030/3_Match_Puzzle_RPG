@@ -14,13 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Stage.StageData
   stageName: Stage 5
   description: 
-  backgroundSprite: {fileID: 21300000, guid: f1bfcbcac69774b42a1d0a8d892fd5d4, type: 3}
+  backgroundSprite: {fileID: -4960957712320046227, guid: f1bfcbcac69774b42a1d0a8d892fd5d4, type: 3}
   bossSprite: {fileID: 8208410677223932748, guid: 1f7a98451c62a8a4b81e98e577e5b8c2, type: 3}
   monsterMaxHp: 500
+  startAttackMode: 0
   attackIntervalTurns: 4
   attackDamage: 20
   attackTargetType: 0
+  partyStartHpDeduction: 0
+  partyHpLossPerTurn: 0
   maxTurns: 40
+  introCutscene: {fileID: 11400000, guid: 2fda74084bc1c094a8ec26aa27f78632, type: 2}
+  clearGoldReward: 300
   swordResistance: 0
   bowResistance: 0
   wandResistance: 0
+  hasPhase2: 0
+  phase2TriggerTarget: 0
+  phase2TriggerHp: 0
+  phase2Cutscene: {fileID: 0}
+  bossSpritePhase2: {fileID: 0}
+  monsterMaxHpPhase2: 500
+  attackIntervalTurnsPhase2: 4
+  attackDamagePhase2: 20
+  attackTargetTypePhase2: 0
+  swordResistancePhase2: 0
+  bowResistancePhase2: 0
+  wandResistancePhase2: 0
+  clearCutscene: {fileID: 11400000, guid: 6478990b4e029d64e8d9cf0002b48897, type: 2}

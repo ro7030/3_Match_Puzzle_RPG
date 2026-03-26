@@ -23,6 +23,8 @@ namespace Match3Puzzle.Level
 
         public int CurrentLevel => currentLevel;
         public int MovesRemaining => movesRemaining - currentMoves;
+        /// <summary>배틀에서 실제로 사용된 턴 수(= currentMoves)</summary>
+        public int MovesUsed => currentMoves;
         /// <summary>배틀 턴 UI용: 현재 턴 번호 (1~MaxTurns)</summary>
         public int CurrentTurnNumber => Mathf.Clamp(currentMoves + 1, 1, movesRemaining);
         /// <summary>배틀 턴 UI용: 최대 턴 수 (예: 20)</summary>
@@ -90,7 +92,9 @@ namespace Match3Puzzle.Level
         public void SetBattleConfig(int maxTurns)
         {
             currentMoves = 0;
+            currentTime = 0f;
             movesRemaining = Mathf.Max(1, maxTurns);
+            OnTurnChanged?.Invoke(currentMoves); // 새 스테이지 진입 시 UI를 1턴(내부값 0)으로 즉시 동기화
         }
     }
 

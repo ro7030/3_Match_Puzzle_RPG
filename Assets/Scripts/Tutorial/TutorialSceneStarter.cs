@@ -21,6 +21,7 @@ namespace Match3Puzzle.Tutorial
 
         [Header("배틀 UI 참조 (stageData 연결 시 자동 탐색)")]
         [SerializeField] private MonsterHealthUI monsterHealthUI;
+        [SerializeField] private PartyHealthUI partyHealthUI;
         [SerializeField] private MonsterAttackController monsterAttackController;
 
         private void Start()
@@ -52,6 +53,11 @@ namespace Match3Puzzle.Tutorial
 
             if (monsterHealthUI != null)
                 monsterHealthUI.SetHP(stageData.monsterMaxHp, stageData.monsterMaxHp);
+
+            if (partyHealthUI == null)
+                partyHealthUI = FindFirstObjectByType<PartyHealthUI>();
+            if (partyHealthUI != null && stageData.partyStartHpDeduction > 0)
+                partyHealthUI.ApplyBattleStartingHpDeduction(stageData.partyStartHpDeduction);
         }
 
         private IEnumerator SetPlayingNextFrame()

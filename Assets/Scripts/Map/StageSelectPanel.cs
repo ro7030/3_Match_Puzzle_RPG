@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using MainMenu;
 using Match3Puzzle.Stage;
+using Story;
 
 namespace Match3Puzzle.Map
 {
@@ -34,6 +35,7 @@ namespace Match3Puzzle.Map
 
         [Header("이동할 씬 이름")]
         [SerializeField] private string battleSceneName = "BattleScene";
+        [SerializeField] private string storySceneName = "StoryScene";
 
         // ──────────────────────────────────────────────────────────────
         // 내부 상태
@@ -143,6 +145,33 @@ namespace Match3Puzzle.Map
         {
             Debug.Log($"[StageSelectPanel] 스테이지 진입: 전역 인덱스 {globalStageIndex} (챕터{_currentChapter} Stage{(globalStageIndex - 1) % 3 + 1})");
             BattleStageHolder.SetStage(globalStageIndex);
+
+            // 스테이지 시작 인트로 컷신 재생 후 배틀로 진입
+            var stageDatabase = Resources.Load<StageDatabase>("StageDatabase");
+            var stageData = stageDatabase != null ? stageDatabase.GetStage(globalStageIndex) : null;
+            var introCutscene = stageData != null ? stageData.introCutscene : null;
+            // CutsceneData.cutsceneId를 비워두는 실수가 있어, 비어있으면 asset name으로 자동 보정한다.
+            string cutsceneId = introCutscene != null
+                ? (!string.IsNullOrEmpty(introCutscene.cutsceneId) ? introCutscene.cutsceneId : introCutscene.name)
+                : null;
+
+            Debug.Log(
+                $"[StageSelectPanel] introCutscene check: " +
+                $"stageData={(stageData != null ? stageData.stageName : "NULL")} " +
+                $"introCutscene={(introCutscene != null ? introCutscene.name : "NULL")} " +
+                $"resolvedCutsceneId={(string.IsNullOrEmpty(cutsceneId) ? "NULL/EMPTY" : cutsceneId)}"
+            );
+
+            if (!string.IsNullOrEmpty(cutsceneId))
+            {
+                CutsceneContext.SetNextForBattle(cutsceneId, () =>
+                {
+                    SceneManager.LoadScene(battleSceneName);
+                });
+                SceneManager.LoadScene(storySceneName);
+                return;
+            }
+
             SceneManager.LoadScene(battleSceneName);
         }
     }

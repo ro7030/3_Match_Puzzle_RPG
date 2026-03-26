@@ -13,7 +13,9 @@ namespace Match3Puzzle.Matching
     /// 매칭된 타일에 따라 전투 효과 적용.
     /// 데미지/힐 수치: CharacterStatsData(기본) + CharacterUpgradeHolder(업그레이드 레벨)
     /// 저항력: StageData(스테이지별 몬스터 저항)
-    /// 0=검(광역), 1=활(단일 강력), 2=십자가(파티 힐), 3=지팡이(마법 광역)
+    /// 타일 인덱스 매핑:
+    /// 0=검(광역), 1=지팡이(마법 광역), 2=활(단일 강력), 3=십자가(파티 힐)
+    /// 강화 타일도 동일 매핑(+4): 4=검, 5=지팡이, 6=활, 7=십자가
     /// </summary>
     public class MatchEffectHandler : MonoBehaviour
     {
@@ -50,6 +52,7 @@ namespace Match3Puzzle.Matching
 
             foreach (var match in matches)
             {
+                if (BattlePhaseRuntime.IsBattleCutsceneActive) return;
                 if (match == null || match.Count < 3) continue;
 
                 int baseType = Tile.GetBaseType(match.TileType);
@@ -59,9 +62,9 @@ namespace Match3Puzzle.Matching
                 switch (baseType)
                 {
                     case 0: ApplySwordMatch(count, enhancedCount); break;
-                    case 1: ApplyBowMatch(enhancedCount);          break;
-                    case 2: ApplyCrossMatch(count);                break;
-                    case 3: ApplyWandMatch(count, enhancedCount);  break;
+                    case 1: ApplyWandMatch(count, enhancedCount);  break;
+                    case 2: ApplyBowMatch(enhancedCount);          break;
+                    case 3: ApplyCrossMatch(count);                break;
                 }
             }
         }
@@ -83,8 +86,17 @@ namespace Match3Puzzle.Matching
             float attackMul = EquipmentStatModifier.GetAttackMultiplier();
             int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetSwordDamage(characterStats) * attackMul) * matchCount;
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
-            int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - _stageData.swordResistance));
-            if (final > 0) monsterHealthUI.TakeDamage(final);
+            float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                ? _stageData.swordResistancePhase2
+                : _stageData.swordResistance;
+            int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - resistance));
+            if (final <= 0) return;
+
+            // 이미 몬스터가 죽었을 경우 과집계를 방지하기 위해 실제 적용 가능한 HP만 누적
+            int remainingHp = monsterHealthUI.CurrentHp;
+            int actualDamage = remainingHp > 0 ? Mathf.Min(final, remainingHp) : 0;
+            BattleClearStatsRuntime.AddDamageSword(actualDamage);
+            monsterHealthUI.TakeDamage(final);
         }
 
         private void ApplyBowMatch(int enhancedCount)
@@ -93,8 +105,16 @@ namespace Match3Puzzle.Matching
             float attackMul = EquipmentStatModifier.GetAttackMultiplier();
             int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetBowDamage(characterStats) * attackMul);
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
-            int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - _stageData.bowResistance));
-            if (final > 0) monsterHealthUI.TakeDamage(final);
+            float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                ? _stageData.bowResistancePhase2
+                : _stageData.bowResistance;
+            int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - resistance));
+            if (final <= 0) return;
+
+            int remainingHp = monsterHealthUI.CurrentHp;
+            int actualDamage = remainingHp > 0 ? Mathf.Min(final, remainingHp) : 0;
+            BattleClearStatsRuntime.AddDamageBow(actualDamage);
+            monsterHealthUI.TakeDamage(final);
         }
 
         private void ApplyCrossMatch(int matchCount)
@@ -105,7 +125,13 @@ namespace Match3Puzzle.Matching
             for (int i = 0; i < partyHealthUI.CharacterCount; i++)
             {
                 if (partyHealthUI.IsAlive(i))
+                {
+                    int current = partyHealthUI.GetCurrentHP(i);
+                    int missing = Mathf.Max(0, partyHealthUI.MaxHpPerCharacter - current);
+                    int actualHeal = missing > 0 ? Mathf.Min(heal, missing) : 0;
+                    BattleClearStatsRuntime.AddHealCross(actualHeal);
                     partyHealthUI.Heal(i, heal);
+                }
             }
         }
 
@@ -115,8 +141,16 @@ namespace Match3Puzzle.Matching
             float attackMul = EquipmentStatModifier.GetAttackMultiplier();
             int baseDmg = Mathf.RoundToInt(CharacterStatsResolver.GetWandDamage(characterStats) * attackMul) * matchCount;
             int bonus   = CharacterStatsResolver.GetEnhancedBonus(characterStats) * enhancedCount;
-            int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - _stageData.wandResistance));
-            if (final > 0) monsterHealthUI.TakeDamage(final);
+            float resistance = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2
+                ? _stageData.wandResistancePhase2
+                : _stageData.wandResistance;
+            int final   = Mathf.RoundToInt((baseDmg + bonus) * (1f - resistance));
+            if (final <= 0) return;
+
+            int remainingHp = monsterHealthUI.CurrentHp;
+            int actualDamage = remainingHp > 0 ? Mathf.Min(final, remainingHp) : 0;
+            BattleClearStatsRuntime.AddDamageWand(actualDamage);
+            monsterHealthUI.TakeDamage(final);
         }
     }
 }
