@@ -21,12 +21,16 @@ MonoBehaviour:
   attackIntervalTurns: 4
   attackDamage: 20
   attackTargetType: 1
+  partyStartHpDeduction: 0
+  partyHpLossPerTurn: 0
   maxTurns: 40
+  introCutscene: {fileID: 11400000, guid: 468dec44cbf73a24083126219e8aa692, type: 2}
   clearGoldReward: 300
   swordResistance: 0
   bowResistance: 0
   wandResistance: 0
   hasPhase2: 0
+  phase2TriggerTarget: 0
   phase2TriggerHp: 0
   phase2Cutscene: {fileID: 0}
   bossSpritePhase2: {fileID: 0}

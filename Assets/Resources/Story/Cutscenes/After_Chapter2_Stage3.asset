@@ -1,0 +1,253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ebec344a07c0b4fac788942570856a, type: 3}
+  m_Name: After_Chapter2_Stage3
+  m_EditorClassIdentifier: Assembly-CSharp::Story.CutsceneData
+  cutsceneId: 
+  nextSceneName: MapScene
+  isPrologueMode: 1
+  clearSaveOnComplete: 0
+  dialogueLines:
+  - characterId: -1
+    characterSpriteOverride: {fileID: -1887551411774842755, guid: 611857d7cd13c9e4092f737f54d3377e, type: 3}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uB2E4\uC774\uB098\uC758 \uD654\uC0B4\uC774 \uC218\uD638\uC790\uC758 \uB208\uC744
+      \uC815\uD655\uD788 \uAD00\uD1B5\uD558\uC790, \uC721\uC911\uD55C \uAC11\uC637\uB4E4\uC774
+      \uC870\uAC01\uB098 \uD769\uC5B4\uC9C0\uBA70 \uC601\uB871\uD558\uAC8C \uBE5B\uB098\uB294
+      \uC218\uC815\uC11D \uCF54\uC5B4\uAC00 \uB4DC\uB7EC\uB0AC\uB2E4."
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC5D8\uB9AC\uC57C"
+    text: "\"\uC9C0\uAE08\uC785\uB2C8\uB2E4! \uC18C\uD53C\uC544!\""
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC18C\uD53C\uC544"
+    text: " \"\uB9D0\uD558\uC9C0 \uC54A\uC544\uB3C4 \uC54C\uC544\uC694! \uBD80\uC11C\uC838\uB77C\u2014!\"
+      \r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\"\uCF70\uC544\uC544\uC559\u2014!\" \uAC70\uB300\uD55C \uCCA0\uAC11 \uC870\uAC01\uB4E4\uC774
+      \uBC14\uB2E5\uC5D0 \uAD74\uB7EC\uB2E4\uB2C8\uBA70 \uC721\uC911\uD55C \uAE08\uC18D\uC74C\uC774
+      \uACF5\uB3D9\uC744 \uBA54\uC6B4\uB2E4."
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 2
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uB2E4\uC774\uB098"
+    text: "\"\uD734\uC6B0... \uC9C4\uC9DC \uC544\uC2AC\uC544\uC2AC\uD588\uB2E4\uB2C8\uAE4C!
+      \uB0B4 \uD654\uC0B4\uC774 \uC870\uAE08\uB9CC \uBE57\uB098\uAC14\uC5B4\uB3C4
+      \uC6B0\uB9B0 \uC9C0\uAE08\uCBE4 \uB0A9\uC791\uD55C \uACE0\uAE30 \uBD80\uCE68\uAC1C\uAC00
+      \uB410\uC744\uAC78?\""
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC18C\uD53C\uC544"
+    text: " \"\uAC70 \uCC38, \uC0DD\uC0C9\uB0B4\uAE30\uB294. \uB0B4\uAC00 \uC815\uD655\uD55C
+      \uC57D\uC810\uC744 \uC9DA\uC5B4\uC900 \uB355\uBD84\uC778 \uC904\uC774\uB098
+      \uC544\uC138\uC694. \uADF8\uB098\uC800\uB098... \uADF8 \uAC70\uAD6C\uB97C \uB2E8\uCE7C\uC5D0
+      \uBCA0\uC5B4 \uB118\uAE30\uB2E4\uB2C8, \uAE30\uC0AC\uB2E8\uC7A5\uB2D8\uB3C4
+      \uC81C\uBC95 \uBB34\uC2DD\uD55C \uD798\uC744 \uC4F0\uC2DC\uB124\uC694?\"\r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC5D8\uB9AC\uC57C\uB294 \uAC70\uCE60\uAC8C \uBAB0\uC544\uC26C\uB358 \uC228\uC744
+      \uAC00\uB2E4\uB4EC\uC73C\uBA70, \uC2B9\uB9AC\uC758 \uC99D\uAC70\uCC98\uB7FC
+      \uBE5B\uB098\uB294 \uAC80\uC744 \uCC9C\uCC9C\uD788 \uCE7C\uC9D1\uC5D0 \uBC00\uC5B4
+      \uB123\uC5C8\uB2E4. \uC5B4\uAE68\uB97C \uB4E4\uC369\uC774\uBA70 \uB0B4\uBC49\uB294
+      \uAC00\uBCBC\uC6B4 \uD55C\uC228\uC5D0\uB294 \uC0DD\uC0AC\uB97C \uB118\uB098\uB4E0
+      \uB4A4\uC758 \uC548\uB3C4\uAC10\uC774 \uC11E\uC5EC \uC788\uC5C8\uB2E4."
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC5D8\uB9AC\uC57C"
+    text: "\"\uD558\uD558, \uC18C\uD53C\uC544 \uC528\uC758 \uC9C0\uC2DC\uC640 \uB2E4\uC774\uB098
+      \uC528\uC758 \uC0AC\uACA9\uC774 \uC644\uBCBD\uD588\uB358 \uB355\uBD84\uC785\uB2C8\uB2E4.
+      \uC800 \uD63C\uC790\uC600\uB2E4\uBA74 \uC800 \uAC11\uC637\uC5D0 \uAE30\uC2A4
+      \uD558\uB098 \uB0B4\uC9C0 \uBABB\uD588\uACA0\uC8E0.\"\r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC138\uC2E4\uB9AC\uC544\uB294 \uC548\uB3C4\uC758 \uBBF8\uC18C\uB97C \uC9C0\uC73C\uBA70
+      \uC77C\uD589\uC758 \uACC1\uC744 \uC870\uC6A9\uD788 \uB9F4\uB3CC\uC558\uB2E4.
+      \uADF8\uB140\uAC00 \uAE30\uB3C4\uB97C \uC74A\uC870\uB9AC\uBA70 \uC190\uC744
+      \uBED7\uC744 \uB54C\uB9C8\uB2E4, \uC131\uC2A4\uB7EC\uC6B4 \uBE5B\uC758 \uC785\uC790\uB4E4\uC774
+      \uB098\uBE44\uCC98\uB7FC \uB0A0\uC544\uC640 \uB3D9\uB8CC\uB4E4\uC758 \uBAB8\uC5D0
+      \uB09C \uC790\uC798\uD55C \uCC30\uACFC\uC0C1\uB4E4\uC744 \uBD80\uB4DC\uB7FD\uAC8C
+      \uB36E\uC5B4 \uC9C0\uC6CC\uB098\uAC14\uB2E4.\r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 3
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC138\uC2E4\uB9AC\uC544"
+    text: " \"\uBAA8\uB450 \uB2E4\uCE58\uC9C0 \uC54A\uC544\uC11C \uC815\uB9D0 \uB2E4\uD589\uC774\uC5D0\uC694.
+      \uC2E0\uC758 \uAC00\uD638\uAC00 \uC6B0\uB9AC\uB97C \uC9C0\uCF1C\uC8FC\uC2E0
+      \uBAA8\uC591\uC774\uC5D0\uC694.\""
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uD769\uC5B4\uC9C4 \uAC11\uC637 \uD30C\uD3B8\uB4E4 \uC0AC\uC774\uB85C
+      \uD76C\uBBF8\uD55C \uBE5B\uC774 \uC2A4\uBA70 \uB098\uC624\uB354\uB2C8, \uC218\uD638\uC790\uAC00
+      \uC11C \uC788\uB358 \uC790\uB9AC\uC5D0 \uAC70\uB300\uD55C \uACE0\uB300 \uB9C8\uBC95\uC9C4\uC774
+      \uD22C\uBA85\uD558\uAC8C \uB5A0\uC624\uB974\uAE30 \uC2DC\uC791\uD588\uB2E4."
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uBC14\uB2E5\uC5D0\uC11C \uAC15\uB82C\uD55C \uB9C8\uB825\uC758 \uC18C\uC6A9\uB3CC\uC774\uAC00
+      \uC19F\uAD6C\uCCE4\uB2E4. \uC18C\uD53C\uC544\uB294 \uC9C4\uC9C0\uD55C \uD45C\uC815\uC73C\uB85C
+      \uB9C8\uBC95\uC9C4 \uC55E\uC5D0 \uC130\uB2E4."
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC18C\uD53C\uC544\uAC00 \uB5A8\uB9AC\uB294 \uC190\uC73C\uB85C \uB9C8\uBC95\uC9C4\uC758
+      \uC911\uC2EC\uC5D0 \uC9C0\uD321\uC774\uB97C \uAF42\uC544 \uB123\uC790, \uACF5\uAC04\uC774
+      \uBE44\uD2C0\uB9AC\uB294 \uAD49\uC74C\uC774 \uB4E4\uB824\uC654\uB2E4."
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC18C\uD53C\uC544"
+    text: "\"\uC774\uAC74... \uB2E8\uC21C\uD55C \uC7A5\uCE58\uAC00 \uC544\uB2C8\uC5D0\uC694.
+      \uACF5\uAC04\uC744 \uCC22\uC5B4 \uC5F0\uACB0\uD558\uB294 \uC804\uC1A1 \uB9C8\uBC95\uC9C4\uC774\uC8E0.
+      \uBAA9\uC801\uC9C0\uB294... \uBCFC\uCF00\uC778\uC774 \uC7A0\uB4E0 \uACF3, \uC6A9\uC758
+      \uC694\uC0C8\uC608\uC694.\""
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC18C\uD53C\uC544\uB294 \uD3C9\uC18C\uC758 \uAE4C\uCE60\uD55C \uB9D0\uD22C\uB97C
+      \uC9C0\uC6B0\uACE0, \uC77C\uD589\uC744 \uD55C \uBA85\uC529 \uBB34\uAC70\uC6B4
+      \uB208\uBE5B\uC73C\uB85C \uBC14\uB77C\uBCF4\uC558\uB2E4.\r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC18C\uD53C\uC544"
+    text: "\"\uC5EC\uAE30\uC11C\uBD80\uD130\uB294 \uC815\uB9D0 \uB3CC\uC544\uC62C
+      \uC218 \uC5C6\uC744\uC9C0\uB3C4 \uBAB0\uB77C\uC694. \uC544\uB2C8, \uC544\uB9C8
+      \uC8FD\uC744 \uD655\uB960\uC774 \uB354 \uB192\uACA0\uC8E0. \uB2E4\uB4E4...
+      \uC900\uBE44\uB410\uB098\uC694?\"\r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC5D8\uB9AC\uC57C"
+    text: "\"\uBB3C\uB860\uC785\uB2C8\uB2E4. \uC6B0\uB9AC\uAC00 \uC544\uB2C8\uBA74
+      \uC655\uAD6D\uC744 \uAD6C\uD560 \uC0AC\uB78C\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.
+      \uC124\uB839 \uADF8\uACF3\uC774 \uC9C0\uC625\uC774\uB77C \uD574\uB3C4, \uAE30\uC0AC\uB294
+      \uAC80\uC744 \uAC70\uB450\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.\""
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 2
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uB2E4\uC774\uB098"
+    text: " \"\uC5EC\uAE30\uAE4C\uC9C0 \uC640\uC11C \uBE84 \uC21C \uC5C6\uC9C0! \uCD5C\uACE0\uC758
+      \uBAA8\uD5D8\uAC00 \uB2E4\uC774\uB098 \uB2D8\uC758 \uC804\uC124\uC740 \uC774\uC81C\uBD80\uD130
+      \uC2DC\uC791\uC774\uB77C\uACE0!\"\r\n"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 3
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC138\uC2E4\uB9AC\uC544"
+    text: "\"\uC2E0\uAED8\uC11C \uC6B0\uB9AC\uC758 \uBC1C\uAC78\uC74C\uC744 \uAD7D\uC5B4\uC0B4\uD53C\uC2E4
+      \uAC70\uC608\uC694. \uC5B4\uB5A4 \uC5B4\uB460 \uC18D\uC5D0\uC11C\uB3C4 \uBE5B\uC740
+      \uC783\uC9C0 \uC54A\uB3C4\uB85D...\" "
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC5D8\uB9AC\uC57C"
+    text: "'\uB9C8\uBC95\uC9C4\uC758 \uBE5B\uC774 \uC6B0\uB9AC\uB97C \uC9D1\uC5B4\uC0BC\uD0A8\uB2E4.
+      \uD604\uAE30\uC99D\uACFC \uD568\uAED8 \uC138\uC0C1\uC774 \uD558\uC597\uAC8C
+      \uBA40\uC5B4\uC84C\uB2E4. \uB2E4\uC74C \uBC1C\uC744 \uB0B4\uB51B\uB294 \uACF3\uC740...
+      \uC804\uC124 \uC18D\uC758 \uADF8 \uC9C0\uC625\uC77C \uAC83\uC774\uB2E4.'"
+    backgroundSprite: {fileID: 4184116334029279494, guid: b5f06b4003899504ca7e33bb3806148d, type: 3}

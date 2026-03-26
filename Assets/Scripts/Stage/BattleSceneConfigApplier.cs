@@ -288,9 +288,11 @@ namespace Match3Puzzle.Stage
             GameManager.Instance?.ChangeState(GameState.Paused);
 
             // 2) 컷씬이 설정된 경우 StoryScene을 잠깐 Additive 로드
-            if (_stageData != null && _stageData.phase2Cutscene != null && !string.IsNullOrEmpty(_stageData.phase2Cutscene.cutsceneId))
+            // CutsceneData.cutsceneId가 비어 있으면 에셋 이름으로 Resources.Load (인트로/클리어와 동일)
+            string phase2CutsceneId = ResolveCutsceneId(_stageData != null ? _stageData.phase2Cutscene : null);
+            if (!string.IsNullOrEmpty(phase2CutsceneId))
             {
-                CutsceneContext.SetNextForBattle(_stageData.phase2Cutscene.cutsceneId, OnPhase2CutsceneFinished);
+                CutsceneContext.SetNextForBattle(phase2CutsceneId, OnPhase2CutsceneFinished);
 
                 // 이미 로드돼있는 경우를 방지(비정상 케이스)
                 var existing = SceneManager.GetSceneByName(storySceneName);
@@ -348,6 +350,12 @@ namespace Match3Puzzle.Stage
                 int currentHp = monsterHealthUI.CurrentHp;
                 monsterHealthUI.SetHP(currentHp, _stageData.monsterMaxHpPhase2);
             }
+        }
+
+        private static string ResolveCutsceneId(CutsceneData cutscene)
+        {
+            if (cutscene == null) return null;
+            return !string.IsNullOrEmpty(cutscene.cutsceneId) ? cutscene.cutsceneId : cutscene.name;
         }
     }
 }

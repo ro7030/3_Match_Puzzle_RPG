@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ebec344a07c0b4fac788942570856a, type: 3}
+  m_Name: After_Chapter3_Stage1
+  m_EditorClassIdentifier: Assembly-CSharp::Story.CutsceneData
+  cutsceneId: 
+  nextSceneName: MapScene
+  isPrologueMode: 1
+  clearSaveOnComplete: 0
+  dialogueLines:
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\"\uC26C\uC774\uC775\u2014!\" \uC4F0\uB7EC\uC9C4 \uB9AC\uC790\uB4DC\uB9E8\uC758
+      \uC0AC\uCCB4\uC5D0\uC11C \uC5F0\uAE30\uAC00 \uD53C\uC5B4\uC624\uB974\uBA70
+      \uC6A9\uC554 \uC18D\uC73C\uB85C \uB179\uC544\uB4E4\uC5C8\uB2E4."
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: 2
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uB2E4\uC774\uB098"
+    text: " \"\uD558\uC544, \uD558\uC544... \uC774 \uB140\uC11D\uB4E4, \uC544\uAE4C
+      \uADF8 \uACE8\uB818\uBCF4\uB2E4 \uB354 \uB048\uC9C8\uAE34 \uAC70 \uC544\uB0D0?
+      \uBE44\uB298\uC5D0 \uD654\uC0B4\uC774 \uBC15\uD788\uC9C8 \uC54A\uC544... \uAC8C\uB2E4\uAC00
+      \uC774\uB188\uC758 \uC5F4\uAE30\uB294 \uC815\uB9D0\uC774\uC9C0 \uCD5C\uC545\uC774\uC57C!\""
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC18C\uD53C\uC544\uB294 \uD3C9\uC18C\uC758 \uB3C4\uB3C4\uD55C \uAE30\uC0C9\uC740
+      \uC628\uB370\uAC04\uB370\uC5C6\uC774, \uB208\uC5D0 \uB744\uAC8C \uCC3D\uBC31\uD574\uC9C4
+      \uC548\uC0C9\uC73C\uB85C \uC9C0\uD321\uC774\uC5D0 \uC704\uD0DC\uB86D\uAC8C
+      \uBAB8\uC744 \uAE30\uB314\uB2E4. \uC774\uB9C8\uC5D0\uC11C \uD750\uB978 \uB540\uBC29\uC6B8\uC774
+      \uD131\uB05D\uC5D0 \uB9FA\uD788\uAE30\uB3C4 \uC804\uC5D0 \uB728\uAC70\uC6B4
+      \uACF5\uAE30 \uC18D\uC73C\uB85C \uC99D\uBC1C\uD574 \uBC84\uB838\uB2E4."
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: 1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC18C\uD53C\uC544"
+    text: "\"......\uB354\uC6CC. \uB9C8\uB825\uC774... \uC2DC\uC804\uD558\uAE30\uB3C4
+      \uC804\uC5D0 \uACF5\uAE30 \uC911\uC73C\uB85C \uADF8\uB0E5 \uC0B0\uC0B0\uC870\uAC01\uB098
+      \uBC84\uB9AC\uB294 \uAC83 \uAC19\uC544\uC694. \uC774\uB7F0 \uACE0\uB18D\uB3C4
+      \uB9C8\uB825 \uC9C0\uB300\uC5D0\uC11C \uC804\uD22C\uB77C\uB2C8, \uBBF8\uCE5C
+      \uC9D3\uC774\uC5D0\uC694.\""
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: " \uC5D8\uB9AC\uC57C\uB294 \uC790\uC2E0\uC758 \uC0C1\uD0DC\uBCF4\uB2E4
+      \uB3D9\uB8CC\uB4E4\uC758 \uC548\uC704\uAC00 \uB354 \uAC71\uC815\uB418\uB294
+      \uB4EF, \uB728\uAC81\uAC8C \uB2EC\uAD88\uC9C4 \uAC11\uC637\uC758 \uBB34\uAC8C\uB97C
+      \uACAC\uB514\uBA70 \uC18C\uD53C\uC544\uC5D0\uAC8C \uB2E4\uAC00\uAC14\uB2E4."
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC5D8\uB9AC\uC57C"
+    text: "\"\uC18C\uD53C\uC544 \uC528, \uAD1C\uCC2E\uC2B5\uB2C8\uAE4C? \uC548\uC0C9\uC774
+      \uB108\uBB34 \uC548 \uC88B\uC2B5\uB2C8\uB2E4.\"\r\n"
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC18C\uD53C\uC544\uB294 \uB2E4\uAC00\uC624\uB294 \uC5D8\uB9AC\uC57C\uB97C
+      \uD5A5\uD574 \uAE4C\uCE60\uD558\uAC8C \uC3D8\uC544\uBD99\uC600\uC9C0\uB9CC,
+      \uC9C0\uD321\uC774\uB97C \uC954 \uCC44 \uAC00\uB298\uAC8C \uB5A8\uB9AC\uB294
+      \uADF8\uB140\uC758 \uC190\uB05D\uC740 \uC774\uBBF8 \uD55C\uACC4\uAC00 \uBA38\uC9C0\uC54A\uC558\uC74C\uC744
+      \uCC98\uC808\uD558\uAC8C \uB9D0\uD574\uC8FC\uACE0 \uC788\uC5C8\uB2E4.\r\n"
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: 1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC18C\uD53C\uC544"
+    text: "\"\uAC71\uC815\uD560 \uC2DC\uAC04 \uC788\uC73C\uBA74... \uADF8 \uB728\uAC70\uC6B4
+      \uAC11\uC637 \uC785\uACE0 \uB0B4 \uADFC\uCC98\uB85C \uC624\uC9C0\uB098 \uB9C8\uC694.
+      \uC5F4\uAE30 \uB54C\uBB38\uC5D0 \uBA38\uB9AC\uAC00 \uC5B4\uB5BB\uAC8C \uB420
+      \uAC83 \uAC19\uC73C\uB2C8\uAE4C...\""
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: -1
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: 
+    text: "\uC138\uC2E4\uB9AC\uC544 \uC5ED\uC2DC \uC0C1\uD669\uC774 \uC88B\uC9C0
+      \uC54A\uC558\uB2E4. \uD3C9\uC18C \uACB0\uC810 \uD558\uB098 \uC5C6\uB358 \uC131\uB140\uC758
+      \uC5BC\uAD74\uC5D0\uB294 \uB540\uBC29\uC6B8\uC774 \uC1A1\uACE8\uC1A1\uACE8
+      \uB9FA\uD600 \uD758\uB7EC\uB0B4\uB838\uACE0, \uAE30\uB3C4\uB97C \uC62C\uB9AC\uB294
+      \uBAA9\uC18C\uB9AC\uC5D0\uB294 \uBBF8\uC138\uD55C \uB5A8\uB9BC\uC774 \uC11E\uC5EC
+      \uC788\uC5C8\uB2E4. \uADF8\uB140\uB294 \uAC00\uC05C \uC228\uC744 \uBAB0\uC544\uC26C\uBA70
+      \uB3D9\uB8CC\uB4E4\uC744 \uB3C5\uB824\uD588\uB2E4.\r\n"
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: 3
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC138\uC2E4\uB9AC\uC544"
+    text: "\"\uB2E4\uB4E4 \uC870\uAE08\uB9CC \uB354 \uAE30\uC6B4\uC744 \uB0B4\uC138\uC694.
+      \uC81C \uC2E0\uC131\uB825\uC73C\uB85C \uC5F4\uAE30\uB97C \uC5B5\uB204\uB974\uACE0\uB294
+      \uC788\uC9C0\uB9CC... \uC624\uB798 \uBC84\uD2F0\uAE30\uB294 \uD798\uB4E4 \uAC83
+      \uAC19\uC544\uC694. \uC5B4\uC11C \uC774 \uC5F4\uAE30\uC758 \uADFC\uC6D0\uC73C\uB85C
+      \uAC00\uC57C \uD574\uC694.\"\r\n"
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}
+  - characterId: 0
+    characterSpriteOverride: {fileID: 0}
+    characterId2: -1
+    characterSpriteOverride2: {fileID: 0}
+    characterId3: -1
+    characterSpriteOverride3: {fileID: 0}
+    speakerName: "\uC5D8\uB9AC\uC57C"
+    text: "'\uD56D\uC0C1 \uCE68\uCC29\uD558\uC2DC\uB358 \uC138\uC2E4\uB9AC\uC544
+      \uB2D8\uC870\uCC28 \uC9C0\uCCD0\uAC00\uACE0 \uC788\uB2E4. \uD55C \uAC78\uC74C
+      \uB0B4\uB514\uB51C \uB54C\uB9C8\uB2E4 \uAC00\uC8FD \uC7A5\uD654 \uBC14\uB2E5\uC774
+      \uB179\uC544\uB0B4\uB824 \uC9C0\uBA74\uC5D0 \uB2EC\uB77C\uBD99\uB294 \uAE30\uBD84\uC774\uB2E4.
+      \uD558\uC9C0\uB9CC \uC5EC\uAE30\uC11C \uBA48\uCD9C \uC21C \uC5C6\uB2E4. \uC800
+      \uB108\uBA38, \uC694\uC0C8\uC758 \uAC00\uC7A5 \uAE4A\uC740 \uACF3\uC5D0\uC11C...
+      \uC774 \uBAA8\uB4E0 \uC9C0\uC625\uC758 \uC2DC\uC791\uC778 \uB354 \uAC70\uB300\uD55C
+      \uBD88\uAE38\uC774 \uC6B0\uB9AC\uB97C \uAE30\uB2E4\uB9AC\uACE0 \uC788\uC73C\uB2C8\uAE4C.'"
+    backgroundSprite: {fileID: -111404599429950948, guid: 20581b130e9687f41b8d35d64691650a, type: 3}

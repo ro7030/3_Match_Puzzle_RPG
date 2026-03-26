@@ -242,6 +242,7 @@ namespace Match3Puzzle.UI
                 levelCompletePanel.SetActive(true);
                 levelCompletePanel.transform.SetAsLastSibling(); // 최상단으로 올려 뒤 UI 클릭 방지
                 UpdateClearPanelTexts();
+                UpdateNextLevelButtonLabel();
 
                 // 버튼 리스너는 씬 전환/재클릭 상황을 고려해 매번 최신 콜백으로 교체
                 if (nextLevelButton != null)
@@ -260,6 +261,25 @@ namespace Match3Puzzle.UI
                 // UI 생성 실패 시 최소한 맵으로 이동 (보상은 이미 적용됨)
                 SceneManager.LoadScene(mapSceneName);
             }
+        }
+
+        private void UpdateNextLevelButtonLabel()
+        {
+            if (nextLevelButton == null) return;
+
+            int currentIndex = BattleStageHolder.CurrentStageIndex;
+            bool isLastStage = currentIndex >= StageDatabase.StageCount - 1; // Tutorial 제외한 마지막 스테이지
+
+            SetButtonText(nextLevelButton, isLastStage ? "맵으로" : "다음 스테이지 시작");
+        }
+
+        private void SetButtonText(Button button, string text)
+        {
+            if (button == null) return;
+
+            var tmp = button.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (tmp != null)
+                tmp.text = text;
         }
 
         /// <summary>
@@ -308,31 +328,73 @@ namespace Match3Puzzle.UI
             int currentIndex = BattleStageHolder.CurrentStageIndex;
             int nextIndex = currentIndex + 1;
 
-            // 다음 스테이지가 없으면 맵으로 복귀
+            var currentStageData = GetCurrentStageData();
+            string clearCutsceneId = ResolveCutsceneId(
+                currentStageData != null ? currentStageData.clearCutscene : null);
+
+            // 마지막 스테이지 클리어 후: 에프터(clearCutscene)가 있으면 먼저 재생 → 맵 (바로 맵으로 가면 컷신이 스킵되던 버그 수정)
             if (nextIndex >= StageDatabase.StageCount)
             {
+                if (!string.IsNullOrEmpty(clearCutsceneId))
+                {
+                    CutsceneContext.SetNextForBattle(clearCutsceneId, () =>
+                    {
+                        SceneManager.LoadScene(mapSceneName);
+                    });
+                    SceneManager.LoadScene(storySceneName);
+                    return;
+                }
+
                 SceneManager.LoadScene(mapSceneName);
                 return;
             }
 
-            var stageData = GetCurrentStageData(); // 현재 스테이지 clearCutscene 유무 확인
-            string cutsceneId = stageData != null && stageData.clearCutscene != null
-                ? stageData.clearCutscene.cutsceneId
-                : null;
-
-            if (!string.IsNullOrEmpty(cutsceneId))
+            // 현재 스테이지 클리어 컷신 → 끝나면 다음 스테이지 인트로(있으면) 또는 배틀
+            if (!string.IsNullOrEmpty(clearCutsceneId))
             {
-                // 컷씬 후에 바로 다음 스테이지 배틀로
-                CutsceneContext.SetNextForBattle(cutsceneId, () =>
+                CutsceneContext.SetNextForBattle(clearCutsceneId, () =>
                 {
-                    BattleStageHolder.SetStage(nextIndex);
+                    TryStartNextStageBattle(nextIndex);
+                });
+                SceneManager.LoadScene(storySceneName);
+                return;
+            }
+
+            TryStartNextStageBattle(nextIndex);
+        }
+
+        /// <summary>
+        /// CutsceneData.cutsceneId가 비어 있으면 에셋 이름으로 로드 (StageSelectPanel과 동일).
+        /// </summary>
+        private static string ResolveCutsceneId(Story.CutsceneData cutscene)
+        {
+            if (cutscene == null) return null;
+            return !string.IsNullOrEmpty(cutscene.cutsceneId) ? cutscene.cutsceneId : cutscene.name;
+        }
+
+        /// <summary>
+        /// 다음 스테이지 인덱스를 저장한 뒤, 인트로 컷신이 있으면 StoryScene → 끝나면 BattleScene, 없으면 바로 BattleScene.
+        /// </summary>
+        private void TryStartNextStageBattle(int nextIndex)
+        {
+            BattleStageHolder.SetStage(nextIndex);
+
+            if (stageDatabase == null)
+                stageDatabase = Resources.Load<StageDatabase>("StageDatabase");
+            var nextStageData = stageDatabase != null ? stageDatabase.GetStage(nextIndex) : null;
+            string introCutsceneId = ResolveCutsceneId(
+                nextStageData != null ? nextStageData.introCutscene : null);
+
+            if (!string.IsNullOrEmpty(introCutsceneId))
+            {
+                CutsceneContext.SetNextForBattle(introCutsceneId, () =>
+                {
                     SceneManager.LoadScene(battleSceneName);
                 });
                 SceneManager.LoadScene(storySceneName);
                 return;
             }
 
-            BattleStageHolder.SetStage(nextIndex);
             SceneManager.LoadScene(battleSceneName);
         }
 
@@ -343,9 +405,22 @@ namespace Match3Puzzle.UI
             if (defeatPanel != null)
                 defeatPanel.SetActive(false);
 
-            int currentIndex = BattleStageHolder.CurrentStageIndex;
-            int chapter = currentIndex <= 0 ? 1 : ((currentIndex - 1) / 3) + 1; // 0=튜토리얼
-            chapter = Mathf.Clamp(chapter, 1, 3);
+            // 클리어 패널에서 "스테이지 선택"을 눌렀을 때도, 현재 스테이지의 clearCutscene이 있으면 먼저 재생한다.
+            // (다음 스테이지로 가기 버튼과 동일한 스토리 흐름 유지)
+            var currentStageData = GetCurrentStageData();
+            string clearCutsceneId = ResolveCutsceneId(
+                currentStageData != null ? currentStageData.clearCutscene : null);
+
+            if (!string.IsNullOrEmpty(clearCutsceneId))
+            {
+                CutsceneContext.SetNextForBattle(clearCutsceneId, () =>
+                {
+                    BattleStageHolder.AutoOpenStageSelectOnMap = true;
+                    SceneManager.LoadScene(mapSceneName);
+                });
+                SceneManager.LoadScene(storySceneName);
+                return;
+            }
 
             // MapScene 진입 후 StageSelectPanel을 자동 오픈하기 위한 값 설정
             // (프로젝트 내 StageSelectPanel은 MapSceneController가 실제로 Show() 호출)
