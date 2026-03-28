@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b4cef187f4878437599e59a05def33a7
+guid: 3aa17d711e8d74c7f84cca19e9e29faf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8315195452046639031
-    second: Start_Set_0
+      213: 3882234888464180817
+    second: Status_Magician_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -165,13 +165,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Start_Set_0
+      name: Status_Magician_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 34
         y: 0
-        width: 345
-        height: 60
+        width: 327
+        height: 386
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,8 +180,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 94001dacacd7a9c80800000000000000
-      internalID: -8315195452046639031
+      spriteID: 1562985ef0870e530800000000000000
+      internalID: 3882234888464180817
       vertices: []
       indices: 
       edges: []
@@ -200,7 +200,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Start_Set_0: -8315195452046639031
+      Status_Magician_0: 3882234888464180817
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
