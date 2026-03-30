@@ -18,7 +18,7 @@ MonoBehaviour:
     \uC0DD\uC874\uB825\uC744 \uAC15\uD654\uD55C\uB2E4."
   icon: {fileID: 6451958854970298308, guid: 38c447913cdd19043b7fafd838896383, type: 3}
   slotType: 0
-  goldCost: 500
+  goldCost: 0
   requiredChapter: 0
   partyMaxHpPercent: 12
   attackPercent: 0
