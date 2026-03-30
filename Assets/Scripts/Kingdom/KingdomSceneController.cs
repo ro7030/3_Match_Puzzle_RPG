@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MainMenu;
+using Match3Puzzle.Skill;
+using Match3Puzzle.Inventory;
+using Match3Puzzle.Stats;
 
 namespace Match3Puzzle.Kingdom
 {
@@ -39,6 +43,20 @@ namespace Match3Puzzle.Kingdom
         private void OnSettingsButton()
         {
             Debug.Log("[KingdomScene] 설정 버튼 클릭");
+        }
+
+        private void Start()
+        {
+            // Continue로 KingdomScene에 진입했을 때,
+            // GameSaveApplier 컴포넌트가 씬에 없더라도 최소 복원을 보장한다.
+            var data = LoadedSaveDataHolder.Data;
+            if (data == null) return;
+
+            Match3Puzzle.Skill.EquippedSkillsHolder.LoadFromSave(data);
+            Match3Puzzle.Inventory.EquippedEquipmentHolder.LoadFromSave(data);
+            CharacterUpgradeHolder.LoadFromSave(data);
+
+            LoadedSaveDataHolder.Data = null;
         }
     }
 }

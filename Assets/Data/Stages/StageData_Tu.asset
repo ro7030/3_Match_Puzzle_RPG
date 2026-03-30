@@ -16,7 +16,7 @@ MonoBehaviour:
   description: 
   backgroundSprite: {fileID: 6558155441594556298, guid: 293e91c1221d86b48999f4d2edca1edb, type: 3}
   bossSprite: {fileID: 8060827608744566591, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
-  monsterMaxHp: 100
+  monsterMaxHp: 200
   startAttackMode: 0
   attackIntervalTurns: 4
   attackDamage: 20

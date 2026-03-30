@@ -45,7 +45,40 @@ namespace Match3Puzzle.Swap
 
         private void RebindReferences()
         {
-            gameBoard = FindFirstObjectByType<GameBoard>();
+            var active = SceneManager.GetActiveScene();
+            var boards = FindObjectsByType<GameBoard>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            gameBoard = null;
+            for (int i = 0; i < boards.Length; i++)
+            {
+                var b = boards[i];
+                if (b == null) continue;
+                if (b.gameObject.scene == active)
+                {
+                    gameBoard = b;
+                    break;
+                }
+            }
+
+            if (gameBoard == null)
+            {
+                for (int i = 0; i < boards.Length; i++)
+                {
+                    var b = boards[i];
+                    if (b != null && b.Tiles != null)
+                    {
+                        gameBoard = b;
+                        break;
+                    }
+                }
+            }
+
+            if (gameBoard == null && boards.Length > 0)
+                gameBoard = boards[0];
+        }
+
+        public void SetDragThreshold(float threshold)
+        {
+            dragThreshold = Mathf.Max(1f, threshold);
         }
 
         private void Update()
@@ -95,6 +128,23 @@ namespace Match3Puzzle.Swap
                 return;
             }
 
+            // 드래그 인식이 어려운 환경(튜토리얼/트랙패드) 대응:
+            // 이미 선택된 타일이 있고, 이번에 누른 타일이 인접하면 즉시 스왑.
+            if (selectedTile != null && selectedTile != tile)
+            {
+                if (!selectedTile.IsEmpty && !tile.IsEmpty && selectedTile.IsAdjacent(tile))
+                {
+                    TrySwapTiles(selectedTile, tile);
+                    hasSwappedThisPress = true;
+                    selectedTile.SetSelected(false);
+                    selectedTile = null;
+                    return;
+                }
+
+                selectedTile.SetSelected(false);
+                selectedTile = null;
+            }
+
             selectedTile = tile;
             selectedTile.SetSelected(true);
             dragStartPos = eventData.position;
@@ -103,7 +153,9 @@ namespace Match3Puzzle.Swap
 
         public void OnTilePointerUp(Tile tile)
         {
-            if (selectedTile != null)
+            // 2-클릭 스왑을 위해 단순 클릭만으로는 선택을 유지합니다.
+            // (드래그 스왑이 발생한 경우에만 선택 해제)
+            if (hasSwappedThisPress && selectedTile != null)
             {
                 selectedTile.SetSelected(false);
                 selectedTile = null;
@@ -113,13 +165,6 @@ namespace Match3Puzzle.Swap
         public void OnTileDrag(Tile tile, PointerEventData eventData)
         {
             if (selectedTile == null || hasSwappedThisPress) return;
-            if (gameBoard == null)
-                RebindReferences();
-            if (gameBoard == null)
-            {
-                DebugInputOnce("[InputHandler] Drag 차단: gameBoard == null");
-                return;
-            }
 
             Vector2 delta = eventData.position - dragStartPos;
             if (delta.sqrMagnitude < dragThreshold * dragThreshold) return;
@@ -135,20 +180,48 @@ namespace Match3Puzzle.Swap
             }
         }
 
+        /// <summary>
+        /// 드래그 이벤트가 플랫폼/입력 모듈에서 누락되는 경우를 대비한 보조 경로.
+        /// 마우스를 누른 채 인접 타일 위로 들어오면 즉시 스왑합니다.
+        /// </summary>
+        public void OnTilePointerEnter(Tile tile)
+        {
+            if (selectedTile == null || hasSwappedThisPress) return;
+            if (tile == null || tile == selectedTile) return;
+            if (tile.IsEmpty || selectedTile.IsEmpty) return;
+            if (!Input.GetMouseButton(0)) return;
+            if (!selectedTile.IsAdjacent(tile)) return;
+
+            TrySwapTiles(selectedTile, tile);
+            hasSwappedThisPress = true;
+            selectedTile.SetSelected(false);
+            selectedTile = null;
+        }
+
         private Tile GetAdjacentInDirection(Tile tile, Vector2 screenDirection)
         {
-            if (tile == null || gameBoard == null) return null;
+            if (tile == null) return null;
+            // 캐시된 gameBoard가 클릭 타일과 다른 보드를 가리킬 수 있어, 타일이 실제 등록된 보드 사용
+            var board = GameBoard.FindBoardForTile(tile);
+            if (board == null)
+            {
+                RebindReferences();
+                board = gameBoard;
+            }
+            if (board == null) return null;
+
             int x = tile.X, y = tile.Y;
 
             if (Mathf.Abs(screenDirection.x) > Mathf.Abs(screenDirection.y))
-                return screenDirection.x > 0 ? gameBoard.GetTile(x + 1, y) : gameBoard.GetTile(x - 1, y);
+                return screenDirection.x > 0 ? board.GetTile(x + 1, y) : board.GetTile(x - 1, y);
             else
-                return screenDirection.y > 0 ? gameBoard.GetTile(x, y + 1) : gameBoard.GetTile(x, y - 1);
+                return screenDirection.y > 0 ? board.GetTile(x, y + 1) : board.GetTile(x, y - 1);
         }
 
         private void TrySwapTiles(Tile tile1, Tile tile2)
         {
             if (tile1 == null || tile2 == null) return;
+            if (tile1.IsEmpty || tile2.IsEmpty) return;
             if (!tile1.IsAdjacent(tile2)) return;
 
             var swapper = GetComponent<TileSwapper>();

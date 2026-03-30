@@ -6,9 +6,11 @@ using Match3Puzzle.Inventory;
 using Match3Puzzle.Clear;
 using Match3Puzzle.Board;
 using Match3Puzzle.Matching;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using Match3Puzzle.Level;
+using System.Collections;
 
 namespace Match3Puzzle.UI.Battle
 {
@@ -42,13 +44,14 @@ namespace Match3Puzzle.UI.Battle
         private StageData _currentStageData;
         private readonly Action[] _slotHandlers = new Action[EquippedSkillsHolder.CharacterCount];
         private readonly SkillEffectType[] _slotEffectTypes = new SkillEffectType[EquippedSkillsHolder.CharacterCount];
+        private TileClearer _subscribedTileClearer;
 
         private void Awake()
         {
             if (levelManager == null)
                 levelManager = FindFirstObjectByType<LevelManager>();
             if (tileClearer == null)
-                tileClearer = FindFirstObjectByType<TileClearer>();
+                tileClearer = FindTileClearerInSameScene();
             if (monsterHealthUI == null)
                 monsterHealthUI = FindFirstObjectByType<MonsterHealthUI>();
             if (partyHealthUI == null)
@@ -65,14 +68,15 @@ namespace Match3Puzzle.UI.Battle
 
         private void OnEnable()
         {
-            if (tileClearer != null)
-                tileClearer.OnMatchGroupsCleared += HandleMatchGroupsCleared;
+            // 씬 전환 중 GameManager 교체(DontDestroyOnLoad) 타이밍으로
+            // FindFirstObjectByType 결과가 이전 씬의 TileClearer를 잡을 수 있어,
+            // "현재 씬에 있는 TileClearer만" 다시 찾아 구독합니다.
+            StartCoroutine(ResubscribeTileClearerNextFrame());
         }
 
         private void OnDisable()
         {
-            if (tileClearer != null)
-                tileClearer.OnMatchGroupsCleared -= HandleMatchGroupsCleared;
+            UnsubscribeTileClearer();
         }
 
         private void Start()
@@ -81,6 +85,48 @@ namespace Match3Puzzle.UI.Battle
             _currentStageData = stageDatabase != null ? stageDatabase.GetStage(index) : null;
 
             ApplyEquippedSkills();
+        }
+
+        private void ResubscribeTileClearer()
+        {
+            UnsubscribeTileClearer();
+
+            _subscribedTileClearer = FindTileClearerInSameScene();
+            if (_subscribedTileClearer != null)
+                _subscribedTileClearer.OnMatchGroupsCleared += HandleMatchGroupsCleared;
+        }
+
+        private IEnumerator ResubscribeTileClearerNextFrame()
+        {
+            // 씬 로드 직후 DontDestroyOnLoad 교체 과정이 끝난 뒤에 다시 찾기
+            yield return null;
+            ResubscribeTileClearer();
+        }
+
+        private void UnsubscribeTileClearer()
+        {
+            if (_subscribedTileClearer != null)
+                _subscribedTileClearer.OnMatchGroupsCleared -= HandleMatchGroupsCleared;
+            _subscribedTileClearer = null;
+        }
+
+        private TileClearer FindTileClearerInSameScene()
+        {
+            // 현재 씬을 기준으로 후보를 좁혀 레이스 컨디션을 줄입니다.
+            // (이전 씬의 DontDestroyOnLoad 오브젝트가 잠깐 남아있을 때 잘못 구독하는 문제 방지)
+            var myScene = gameObject.scene;
+            var candidates = FindObjectsByType<TileClearer>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                var c = candidates[i];
+                if (c == null) continue;
+                if (c.gameObject.scene == myScene)
+                    return c;
+            }
+
+            // 같은 씬에서 못 찾는 특이 케이스(비활성/씬 구성 문제)가 있으면
+            // 마지막 안전망으로 첫 후보를 사용합니다.
+            return candidates != null && candidates.Length > 0 ? candidates[0] : null;
         }
 
         private void ApplyEquippedSkills()

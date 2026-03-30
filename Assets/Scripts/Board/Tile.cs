@@ -8,7 +8,7 @@ namespace Match3Puzzle.Board
     /// <summary>
     /// 10x10 슬롯 중 하나. UI Image 기반. 사용자가 미리 배치한 Image에 붙임.
     /// </summary>
-    public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+    public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPointerEnterHandler
     {
         [Header("Tile Properties")]
         [SerializeField] private int tileType = -1;
@@ -192,6 +192,12 @@ namespace Match3Puzzle.Board
         {
             EnsureInputHandler();
             _inputHandler?.OnTileDrag(this, eventData);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            EnsureInputHandler();
+            _inputHandler?.OnTilePointerEnter(this);
         }
     }
 
