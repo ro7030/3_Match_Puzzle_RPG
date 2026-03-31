@@ -16,6 +16,8 @@ namespace Match3Puzzle.Inventory
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI itemCostText;
         [SerializeField] private TextMeshProUGUI itemDescriptionText;
+        [Tooltip("있으면 효과는 여기, 설명은 ItemDescriptionText에만 표시. 없으면 ItemDescriptionText에 효과+설명을 한 번에(리치텍스트).")]
+        [SerializeField] private TextMeshProUGUI itemEffectText;
 
         private EquipmentData _itemData;
         private Action<EquipmentData, int> _clickCallback;
@@ -31,6 +33,7 @@ namespace Match3Puzzle.Inventory
             if (itemNameText == null) itemNameText = FindChildTMP("ItemNameText") ?? FindChildTMP("SkillNameText");
             if (itemCostText == null) itemCostText = FindChildTMP("ItemCostText") ?? FindChildTMP("SkillCostText");
             if (itemDescriptionText == null) itemDescriptionText = FindChildTMP("ItemDescriptionText");
+            if (itemEffectText == null) itemEffectText = FindChildTMP("ItemEffectText");
 
             if (cardButton != null)
                 cardButton.onClick.AddListener(() => _clickCallback?.Invoke(_itemData, ParseIndexFromName(gameObject.name)));
@@ -67,10 +70,34 @@ namespace Match3Puzzle.Inventory
                 itemCostText.enabled = hasData;
             }
 
-            if (itemDescriptionText != null)
+            if (itemEffectText != null || itemDescriptionText != null)
             {
-                itemDescriptionText.text = hasData ? data.description : "";
-                itemDescriptionText.enabled = hasData;
+                string effect = hasData ? EquipmentDisplayText.GetEffectText(data) : "";
+                string desc = hasData ? (data.description ?? "") : "";
+
+                if (itemEffectText != null)
+                {
+                    itemEffectText.text = effect;
+                    itemEffectText.enabled = hasData && !string.IsNullOrEmpty(effect);
+                }
+
+                if (itemDescriptionText != null)
+                {
+                    if (!hasData)
+                    {
+                        itemDescriptionText.text = "";
+                    }
+                    else if (itemEffectText != null)
+                    {
+                        itemDescriptionText.text = desc;
+                    }
+                    else
+                    {
+                        itemDescriptionText.text = EquipmentDisplayText.FormatCardDescriptionBody(data);
+                    }
+
+                    itemDescriptionText.enabled = hasData;
+                }
             }
 
             // 카드 자체는 "선택"만 목적이므로 클릭 가능 여부는 controller가 최종 판단한다.

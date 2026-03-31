@@ -32,9 +32,27 @@ namespace Match3Puzzle.Inventory
 
         [Header("우측 패널")]
         [SerializeField] private TextMeshProUGUI goldText;
+        [SerializeField] private TextMeshProUGUI infoPanelItemNameText;
+        [SerializeField] private TextMeshProUGUI infoPanelItemTmiText;
         [SerializeField] private TextMeshProUGUI purchaseHelpText;
         [SerializeField] private Button actionButton;
         [SerializeField] private TextMeshProUGUI actionButtonText;
+
+        [Header("Action Button(이미지 모드)")]
+        [Tooltip("버튼의 타겟 그래픽(Image)를 자동으로 잡거나, 직접 연결해도 된다.")]
+        [SerializeField] private Image actionButtonImage;
+        [Tooltip("선택 아이템이 없을 때 적용할 기본 버튼 스프라이트. 비워두면 변경 안 함.")]
+        [SerializeField] private Sprite defaultActionButtonSprite;
+        [Tooltip("구매 상태(미보유)일 때 스프라이트.")]
+        [SerializeField] private Sprite purchaseActionButtonSprite;
+        [Tooltip("장비 상태(보유)일 때 스프라이트.")]
+        [SerializeField] private Sprite equipActionButtonSprite;
+        [Tooltip("글자(TMP)를 숨기고 스프라이트만 표시한다.")]
+        [SerializeField] private bool hideActionButtonText = true;
+
+        // 씬에서 이름이 "InfoPanel"인 루트를 찾아 active 상태를 제어한다.
+        // (하이어라키 연결 없이도 동작하도록 AutoWire에서 찾는다.)
+        private GameObject _infoPanelRoot;
 
         private GameSaveData _save;
 
@@ -72,8 +90,19 @@ namespace Match3Puzzle.Inventory
                 shopItemCards = GetComponentsInChildren<SkillShopItemCardUI>(true);
 
             if (goldText == null) goldText = FindTMP("GoldText");
+            if (infoPanelItemNameText == null) infoPanelItemNameText = FindTMPUnder("InfoPanel", "InfoItemNameText");
+            if (infoPanelItemTmiText == null) infoPanelItemTmiText = FindTMPUnder("InfoPanel", "InfoItemTmiText");
             if (purchaseHelpText == null) purchaseHelpText = FindTMP("PurchaseHelpText");
+            if (_infoPanelRoot == null) _infoPanelRoot = GameObject.Find("InfoPanel");
             if (backButton == null) backButton = FindButton("BackButton");
+
+            if (actionButtonImage == null && actionButton != null)
+            {
+                actionButtonImage = actionButton.targetGraphic as Image;
+                if (actionButtonImage == null)
+                    actionButtonImage = actionButton.GetComponent<Image>();
+            }
+
             if (actionButton == null)
             {
                 actionButton = FindButton("ActionButton");
@@ -232,12 +261,42 @@ namespace Match3Puzzle.Inventory
         {
             if (actionButton == null || actionButtonText == null) return;
 
+            // 선택된 아이템이 없으면 InfoPanel은 꺼둔다(처음 비활성/선택 없음 상태).
+            if (_infoPanelRoot != null)
+                _infoPanelRoot.SetActive(_selectedItem != null);
+
             if (_selectedItem == null)
             {
                 actionButton.interactable = false;
-                actionButtonText.text = "선택 없음";
-                if (purchaseHelpText != null) purchaseHelpText.text = "카드를 선택하면 구매/장비 버튼이 활성화됩니다.";
+
+                if (hideActionButtonText && actionButtonText != null)
+                    actionButtonText.gameObject.SetActive(false);
+
+                if (actionButtonImage != null && defaultActionButtonSprite != null)
+                    actionButtonImage.sprite = defaultActionButtonSprite;
+
+                if (infoPanelItemNameText != null)
+                {
+                    infoPanelItemNameText.text = "";
+                    infoPanelItemNameText.enabled = false;
+                }
+
+                if (purchaseHelpText != null)
+                    purchaseHelpText.text = "카드를 선택하면 아이템 이름·효과·설명이 표시되고 구매/장비 버튼이 활성화됩니다.";
                 return;
+            }
+
+            if (infoPanelItemNameText != null)
+            {
+                infoPanelItemNameText.text = _selectedItem.displayName;
+                infoPanelItemNameText.enabled = true;
+            }
+
+            if (infoPanelItemTmiText != null)
+            {
+                bool hasTmi = _selectedItem != null && !string.IsNullOrWhiteSpace(_selectedItem.tmi);
+                infoPanelItemTmiText.text = hasTmi ? _selectedItem.tmi : "";
+                infoPanelItemTmiText.enabled = hasTmi;
             }
 
             bool isOwned = IsItemUnlocked(_selectedItem.equipmentId);
@@ -247,23 +306,37 @@ namespace Match3Puzzle.Inventory
 
             if (isOwned)
             {
-                actionButtonText.text = "장비";
                 actionButton.interactable = true;
+
+                if (hideActionButtonText && actionButtonText != null)
+                    actionButtonText.gameObject.SetActive(false);
+
+                if (actionButtonImage != null && equipActionButtonSprite != null)
+                    actionButtonImage.sprite = equipActionButtonSprite;
             }
             else
             {
-                actionButtonText.text = "구매";
                 actionButton.interactable = meetsChapter && canAfford;
+
+                if (hideActionButtonText && actionButtonText != null)
+                    actionButtonText.gameObject.SetActive(false);
+
+                if (actionButtonImage != null && purchaseActionButtonSprite != null)
+                    actionButtonImage.sprite = purchaseActionButtonSprite;
             }
 
             if (purchaseHelpText != null)
             {
-                purchaseHelpText.text =
-                    "구매 버튼: 해당하는 골드 이상 존재할 시 구매할 수 있는 버튼이다.\n" +
-                    "구매 시 장비 버튼으로 바뀌고 장비를 장착할 수 있게 된다.\n\n" +
-                    $"선택: {_selectedItem.displayName}\n" +
-                    (isOwned ? "상태: 보유 중" : $"필요 골드: {cost}G" ) +
-                    (meetsChapter ? "" : $"\n해금 조건: 챕터 {_selectedItem.requiredChapter} 이후");
+                var body = new System.Text.StringBuilder();
+                if (infoPanelItemNameText == null)
+                    body.AppendLine(_selectedItem.displayName).AppendLine();
+                body.AppendLine(EquipmentDisplayText.FormatInfoPanelBody(_selectedItem));
+                body.AppendLine();
+                if (isOwned)
+                    body.AppendLine("상태: 보유 중");
+                if (!meetsChapter)
+                    body.AppendLine($"해금 조건: 챕터 {_selectedItem.requiredChapter} 이후");
+                purchaseHelpText.text = body.ToString().TrimEnd();
             }
         }
 
@@ -362,6 +435,14 @@ namespace Match3Puzzle.Inventory
                     return tmps[i];
             }
             return null;
+        }
+
+        private static TextMeshProUGUI FindTMPUnder(string parentName, string childName)
+        {
+            var parent = GameObject.Find(parentName);
+            if (parent == null || string.IsNullOrEmpty(childName)) return null;
+            var t = parent.transform.Find(childName);
+            return t != null ? t.GetComponent<TextMeshProUGUI>() : null;
         }
 
         private static Button FindButton(string name)

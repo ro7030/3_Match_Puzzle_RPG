@@ -56,6 +56,8 @@ namespace Match3Puzzle.UI
         [Header("Level Complete Stats UI")]
         [SerializeField] private Button stageSelectButton;
         [SerializeField] private Image clearRandomCharacterImage;
+        [Tooltip("클리어 패널 박스에 표시할 랜덤 이미지 목록. 비어 있으면 기존 파티 초상화 랜덤 로직 사용.")]
+        [SerializeField] private Sprite[] clearPanelRandomImagePool;
 
         [SerializeField] private TextMeshProUGUI clearGoldText;
         [SerializeField] private TextMeshProUGUI clearTurnsText;
@@ -556,23 +558,23 @@ namespace Match3Puzzle.UI
                 defeatScoreText.text = $"패배...  (Score: {scoreManager.CurrentScore:N0})";
 
             if (defeatGoldText != null)
-                defeatGoldText.text = "획득 골드: 0G";
+                defeatGoldText.text = "전체 획득 골드            0G";
 
             int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
             if (defeatTurnsText != null)
-                defeatTurnsText.text = $"사용 턴 수: {turnsUsed}턴";
+                defeatTurnsText.text = $"사용한 턴                   {turnsUsed}/40";
 
             if (defeatEnhancedSummonText != null)
-                defeatEnhancedSummonText.text = $"강화타일 소환(4매치+): {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
+                defeatEnhancedSummonText.text = $"강화 블록 생성            {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
 
             if (defeatSwordDamageText != null)
-                defeatSwordDamageText.text = $"검 데미지: {BattleClearStatsRuntime.DamageSword:N0}";
+                defeatSwordDamageText.text = $"검  피해량                  {BattleClearStatsRuntime.DamageSword:N0}";
             if (defeatBowDamageText != null)
-                defeatBowDamageText.text = $"활 데미지: {BattleClearStatsRuntime.DamageBow:N0}";
+                defeatBowDamageText.text = $"화살 피해량                {BattleClearStatsRuntime.DamageBow:N0}";
             if (defeatWandDamageText != null)
-                defeatWandDamageText.text = $"마법 데미지: {BattleClearStatsRuntime.DamageWand:N0}";
+                defeatWandDamageText.text = $"마법 피해량               {BattleClearStatsRuntime.DamageWand:N0}";
             if (defeatCrossHealText != null)
-                defeatCrossHealText.text = $"십자가 회복: {BattleClearStatsRuntime.HealCross:N0}";
+                defeatCrossHealText.text = $"회복량                       {BattleClearStatsRuntime.HealCross:N0}";
 
             if (defeatRandomCharacterImage != null)
             {
@@ -897,32 +899,42 @@ namespace Match3Puzzle.UI
                 levelCompleteScoreText.text = $"클리어!  (Score: {scoreManager.CurrentScore:N0})";
 
             if (clearGoldText != null)
-                clearGoldText.text = $"획득 골드: {_goldEarnedThisClear:N0}G";
+                clearGoldText.text = $"전체 획득 골드            {_goldEarnedThisClear:N0}G";
 
             int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
             if (clearTurnsText != null)
-                clearTurnsText.text = $"사용 턴 수: {turnsUsed}턴";
+                clearTurnsText.text = $"사용한 턴                  {turnsUsed}/40";
 
             if (clearEnhancedSummonText != null)
-                clearEnhancedSummonText.text = $"강화타일 소환(4매치+): {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
+                clearEnhancedSummonText.text = $"강화 타일 생성           {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
 
             if (clearSwordDamageText != null)
-                clearSwordDamageText.text = $"검 데미지: {BattleClearStatsRuntime.DamageSword:N0}";
+                clearSwordDamageText.text = $"검  피해량                 {BattleClearStatsRuntime.DamageSword:N0}";
             if (clearBowDamageText != null)
-                clearBowDamageText.text = $"활 데미지: {BattleClearStatsRuntime.DamageBow:N0}";
+                clearBowDamageText.text = $"화살 피해량                {BattleClearStatsRuntime.DamageBow:N0}";
             if (clearWandDamageText != null)
-                clearWandDamageText.text = $"마법 데미지: {BattleClearStatsRuntime.DamageWand:N0}";
+                clearWandDamageText.text = $"마법 피해량                {BattleClearStatsRuntime.DamageWand:N0}";
             if (clearCrossHealText != null)
-                clearCrossHealText.text = $"십자가 회복: {BattleClearStatsRuntime.HealCross:N0}";
+                clearCrossHealText.text = $"회복량                       {BattleClearStatsRuntime.HealCross:N0}";
 
             if (clearRandomCharacterImage != null)
             {
-                var party = FindFirstObjectByType<PartyHealthUI>();
                 Sprite sprite = null;
-                if (party != null && party.CharacterCount > 0)
+
+                if (clearPanelRandomImagePool != null && clearPanelRandomImagePool.Length > 0)
                 {
-                    int idx = Random.Range(0, party.CharacterCount);
-                    sprite = party.GetPortraitSprite(idx);
+                    int idx = Random.Range(0, clearPanelRandomImagePool.Length);
+                    sprite = clearPanelRandomImagePool[idx];
+                }
+                else
+                {
+                    // 리스트 미설정 시 기존 동작 유지(파티 초상화 랜덤)
+                    var party = FindFirstObjectByType<PartyHealthUI>();
+                    if (party != null && party.CharacterCount > 0)
+                    {
+                        int idx = Random.Range(0, party.CharacterCount);
+                        sprite = party.GetPortraitSprite(idx);
+                    }
                 }
 
                 clearRandomCharacterImage.sprite = sprite;

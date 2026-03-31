@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: EquipmentData_2
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Inventory.EquipmentData
   equipmentId: equip_slot0_guard
-  displayName: "\uC131\uB150 \uC131\uBCBD \uD569\uAE08"
-  description: "\uD30C\uD2F0 \uC804\uCCB4 \uCD5C\uB300 \uCCB4\uB825\uC744 \uD06C\uAC8C
-    \uB192\uC5EC \uBC84\uD2F0\uAE30\uB97C \uC88B\uAC8C \uB9CC\uB4E0\uB2E4."
-  icon: {fileID: -8542833333793727734, guid: a2cdb17e82adde74583bc7ccbd20bee5, type: 3}
+  displayName: "\uBAA8\uD5D8\uAC00\uC758 \uB9DD\uD1A0"
+  description: "\uD30C\uD2F0 \uC804\uCCB4 \uCD5C\uB300 \uCCB4\uB825\uC744 \uB192\uC5EC
+    \uC0DD\uC874\uB825\uC744 \uAC15\uD654\uD55C\uB2E4."
+  tmi: "\uC5D8\uD504 \uB9C8\uC744\uC758 \uAC00\uBCF4\uB85C \uB0B4\uB824\uC624\uB294
+    \uB9DD\uD1A0\uC774\uB2E4. \uC6A9\uC744 \uBB3C\uB9AC\uCCE4\uB358 \uBAA8\uD5D8\uAC00\uC758
+    \uC2E0\uBE44\uD55C \uD798\uC774 \uAE43\uB4E4\uC5B4\uC788\uB2E4\uB294 \uC804\uC124\uC774
+    \uC788\uB2E4."
+  effectLineOverride: "\uCCB4\uB82530%\uC0C1\uC2B9"
+  icon: {fileID: -7772476709369073691, guid: b811eeadc5007fe4eb894cf5e1f3923f, type: 3}
   slotType: 0
   goldCost: 1000
   requiredChapter: 2

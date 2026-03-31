@@ -22,6 +22,16 @@ namespace Match3Puzzle.Inventory
         [TextArea(2, 5)]
         public string description = "장비 설명";
 
+        [Header("TMI(추가 설명)")]
+        [Tooltip("옵션. InfoPanel의 TMI 영역에 표시됩니다. 비우면 숨김 처리됩니다.")]
+        [TextArea(2, 4)]
+        public string tmi = "";
+
+        [Header("효과 표기(선택)")]
+        [Tooltip("비우면 파티 체력/공격/회복 % 필드로 자동 문구 생성. 예: 방어력 1000% 상승")]
+        [TextArea(1, 3)]
+        public string effectLineOverride = "";
+
         [Header("표시")]
         public Sprite icon;
 
