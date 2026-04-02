@@ -1,0 +1,676 @@
+fileFormatVersion: 2
+guid: e603b3054cb38b0479e1f3c697c91a3a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2348489549718836776
+    second: Skeletons_1_Fail_0
+  - first:
+      213: 4622449080250531325
+    second: Skeletons_1_Fail_1
+  - first:
+      213: -2073306809996254855
+    second: Skeletons_1_Fail_2
+  - first:
+      213: 8849608673764213301
+    second: Skeletons_1_Fail_3
+  - first:
+      213: 4027670822422441891
+    second: Skeletons_1_Fail_4
+  - first:
+      213: -5381954005712536626
+    second: Skeletons_1_Fail_5
+  - first:
+      213: -7868017243781502055
+    second: Skeletons_1_Fail_6
+  - first:
+      213: 818143395852630538
+    second: Skeletons_1_Fail_7
+  - first:
+      213: 6264397877306913268
+    second: Skeletons_1_Fail_8
+  - first:
+      213: 2491834508042621222
+    second: Skeletons_1_Fail_9
+  - first:
+      213: -841429320160249761
+    second: Skeletons_1_Fail_10
+  - first:
+      213: 384883998807678174
+    second: Skeletons_1_Fail_11
+  - first:
+      213: -8630110005756835447
+    second: Skeletons_1_Fail_12
+  - first:
+      213: 7911648728236413759
+    second: Skeletons_1_Fail_13
+  - first:
+      213: 4392907704639915228
+    second: Skeletons_1_Fail_14
+  - first:
+      213: -6709443754097794352
+    second: Skeletons_1_Fail_15
+  - first:
+      213: 8519120339140402948
+    second: Skeletons_1_Fail_16
+  - first:
+      213: -1192179052718028916
+    second: Skeletons_1_Fail_17
+  - first:
+      213: 2067933473136539605
+    second: Skeletons_1_Fail_18
+  - first:
+      213: 8478702462750422360
+    second: Skeletons_1_Fail_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 68
+        width: 240
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d9aa46823d786fd0800000000000000
+      internalID: -2348489549718836776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_1
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 139
+        width: 175
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfdf9ac92fc362040800000000000000
+      internalID: 4622449080250531325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_2
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 120
+        width: 228
+        height: 300
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97166cfe0722a33e0800000000000000
+      internalID: -2073306809996254855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_3
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 119
+        width: 82
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5328ee8933020da70800000000000000
+      internalID: 8849608673764213301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_4
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 130
+        width: 152
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3afe1b2064925e730800000000000000
+      internalID: 4027670822422441891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_5
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 113
+        width: 150
+        height: 299
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecb730cb8557f45b0800000000000000
+      internalID: -5381954005712536626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_6
+      rect:
+        serializedVersion: 2
+        x: 728
+        y: 92
+        width: 302
+        height: 269
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99b61c9d0003fc290800000000000000
+      internalID: -7868017243781502055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_7
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 112
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0ab0257511aa5b00800000000000000
+      internalID: 818143395852630538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_8
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 105
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f1f690edac9fe650800000000000000
+      internalID: 6264397877306913268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_9
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 110
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 621d0f26846c49220800000000000000
+      internalID: 2491834508042621222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 106
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f58ff3ccd74a254f0800000000000000
+      internalID: -841429320160249761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_11
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 114
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edcd9ac25f1675500800000000000000
+      internalID: 384883998807678174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_12
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 115
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 989c15e8ca0bb3880800000000000000
+      internalID: -8630110005756835447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_13
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 100
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f33d332c992dbcd60800000000000000
+      internalID: 7911648728236413759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_14
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 76
+        width: 76
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd48322684eb6fc30800000000000000
+      internalID: 4392907704639915228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_15
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 95
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d2a98c247443e2a0800000000000000
+      internalID: -6709443754097794352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_16
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 74
+        width: 79
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40fd44defcef93670800000000000000
+      internalID: 8519120339140402948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_17
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 73
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c87841ec777847fe0800000000000000
+      internalID: -1192179052718028916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_18
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 68
+        width: 42
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d771759986c2bc10800000000000000
+      internalID: 2067933473136539605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skeletons_1_Fail_19
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 41
+        width: 84
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 855f770c7f66aa570800000000000000
+      internalID: 8478702462750422360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Skeletons_1_Fail_0: -2348489549718836776
+      Skeletons_1_Fail_1: 4622449080250531325
+      Skeletons_1_Fail_10: -841429320160249761
+      Skeletons_1_Fail_11: 384883998807678174
+      Skeletons_1_Fail_12: -8630110005756835447
+      Skeletons_1_Fail_13: 7911648728236413759
+      Skeletons_1_Fail_14: 4392907704639915228
+      Skeletons_1_Fail_15: -6709443754097794352
+      Skeletons_1_Fail_16: 8519120339140402948
+      Skeletons_1_Fail_17: -1192179052718028916
+      Skeletons_1_Fail_18: 2067933473136539605
+      Skeletons_1_Fail_19: 8478702462750422360
+      Skeletons_1_Fail_2: -2073306809996254855
+      Skeletons_1_Fail_3: 8849608673764213301
+      Skeletons_1_Fail_4: 4027670822422441891
+      Skeletons_1_Fail_5: -5381954005712536626
+      Skeletons_1_Fail_6: -7868017243781502055
+      Skeletons_1_Fail_7: 818143395852630538
+      Skeletons_1_Fail_8: 6264397877306913268
+      Skeletons_1_Fail_9: 2491834508042621222
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -85,7 +85,7 @@ namespace Match3Puzzle.Status
                     statLabel:    GetStatLabel(i),
                     level:        GetLevel(i),
                     currentValue: GetCurrentValue(i),
-                    nextValue:    GetNextValue(i),
+                    nextValue:    GetUpgradeIncrementValue(i),
                     canUpgrade:   hasPoint
                 );
                 slots[i].SetUpgradeCallback(() => OnLevelUp(capturedIndex));
@@ -165,16 +165,16 @@ namespace Match3Puzzle.Status
             };
         }
 
-        /// <summary>레벨을 1 올렸을 때의 수치를 상태 변경 없이 계산</summary>
-        private int GetNextValue(int idx)
+        /// <summary>한 번 Lv UP 시 증가하는 수치(CharacterStatsData의 *BonusPerLevel).</summary>
+        private int GetUpgradeIncrementValue(int idx)
         {
             if (statsData == null) return 0;
             return idx switch
             {
-                0 => statsData.baseSwordDamage + (CharacterUpgradeHolder.SwordLevel + 1) * statsData.swordBonusPerLevel,
-                1 => statsData.baseBowDamage   + (CharacterUpgradeHolder.BowLevel   + 1) * statsData.bowBonusPerLevel,
-                2 => statsData.baseWandDamage  + (CharacterUpgradeHolder.WandLevel  + 1) * statsData.wandBonusPerLevel,
-                3 => statsData.baseHealAmount  + (CharacterUpgradeHolder.HealLevel  + 1) * statsData.healBonusPerLevel,
+                0 => statsData.swordBonusPerLevel,
+                1 => statsData.bowBonusPerLevel,
+                2 => statsData.wandBonusPerLevel,
+                3 => statsData.healBonusPerLevel,
                 _ => 0
             };
         }

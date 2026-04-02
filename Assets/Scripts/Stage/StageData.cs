@@ -59,6 +59,10 @@ namespace Match3Puzzle.Stage
         public Sprite bossSprite;
         public int monsterMaxHp = 500;
 
+        [Header("클리어 후 보스/몬스터 (선택)")]
+        [Tooltip("스테이지 클리어 시(몬스터 사망) 표시할 이미지입니다. 비우면 현재 이미지(페이즈1/페이즈2)가 그대로 유지됩니다.")]
+        public Sprite bossSpriteAfterClear;
+
         [Header("페이즈1 몬스터 공격 (인스펙터에서 조절)")]
         [Tooltip("전투 시작 직후 선공 여부/턴 카운트 처리 방식")]
         public BattleStartAttackMode startAttackMode = BattleStartAttackMode.Disabled;

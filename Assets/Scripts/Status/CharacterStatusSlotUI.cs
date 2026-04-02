@@ -44,7 +44,7 @@ namespace Match3Puzzle.Status
         /// <param name="statLabel">스탯 종류 설명 문자열</param>
         /// <param name="level">현재 업그레이드 레벨</param>
         /// <param name="currentValue">현재 수치 (데미지 또는 회복량)</param>
-        /// <param name="nextValue">업그레이드 후 예상 수치</param>
+        /// <param name="nextValue">한 번 업그레이드 시 증가량 (데이터의 BonusPerLevel)</param>
         /// <param name="canUpgrade">업그레이드 포인트 보유 여부 (false면 버튼 비활성화)</param>
         public void Refresh(Story.DataCharacter character, string statLabel,
                             int level, int currentValue, int nextValue, bool canUpgrade)
@@ -59,9 +59,9 @@ namespace Match3Puzzle.Status
             }
 
             if (statLabelText    != null) statLabelText.text    = statLabel;
-            if (levelText        != null) levelText.text        = $"Lv.{level}";
+            if (levelText        != null) levelText.text        = $"{level}";
             if (currentValueText != null) currentValueText.text = $"{currentValue}";
-            if (nextValueText    != null) nextValueText.text    = $"→ {nextValue}";
+            if (nextValueText    != null) nextValueText.text    = $"{nextValue}";
 
             if (levelUpButton != null)
                 levelUpButton.interactable = canUpgrade;

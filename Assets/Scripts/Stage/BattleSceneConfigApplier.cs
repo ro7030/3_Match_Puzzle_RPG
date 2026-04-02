@@ -33,12 +33,14 @@ namespace Match3Puzzle.Stage
 
         private StageData _stageData;
         private bool _phase2Triggered;
+        private bool _clearMonsterSpriteApplied;
 
         private void Start()
         {
             BattlePhaseRuntime.ResetForNewBattle();
             BattleClearStatsRuntime.ResetForNewBattle();
             _phase2Triggered = false;
+            _clearMonsterSpriteApplied = false;
             ApplyStageConfig();
             DisableNonInteractiveUIRaycasts();
 
@@ -48,7 +50,10 @@ namespace Match3Puzzle.Stage
             StartCoroutine(EnsureBattleStartedNextFrame());
 
             if (monsterHealthUI != null)
+            {
                 monsterHealthUI.OnHPChanged += HandleMonsterHpChanged;
+                monsterHealthUI.OnDied += HandleMonsterDied; // 스테이지 클리어 순간 보스 이미지 교체
+            }
 
             if (partyHealthUI != null)
                 partyHealthUI.OnCharacterHpChanged += HandlePartyCharacterHpChanged;
@@ -133,10 +138,27 @@ namespace Match3Puzzle.Stage
         private void OnDestroy()
         {
             if (monsterHealthUI != null)
+            {
                 monsterHealthUI.OnHPChanged -= HandleMonsterHpChanged;
+                monsterHealthUI.OnDied -= HandleMonsterDied;
+            }
 
             if (partyHealthUI != null)
                 partyHealthUI.OnCharacterHpChanged -= HandlePartyCharacterHpChanged;
+        }
+
+        /// <summary>
+        /// 스테이지 클리어(몬스터 사망) 시 보스 이미지를 StageData의 "bossSpriteAfterClear"로 교체한다.
+        /// </summary>
+        private void HandleMonsterDied()
+        {
+            if (_clearMonsterSpriteApplied) return;
+            _clearMonsterSpriteApplied = true;
+
+            if (_stageData == null || monsterImage == null) return;
+            if (_stageData.bossSpriteAfterClear == null) return;
+
+            monsterImage.sprite = _stageData.bossSpriteAfterClear;
         }
 
         private void ApplyStageConfig()

@@ -53,6 +53,9 @@ namespace Match3Puzzle.UI
         [SerializeField] private TextMeshProUGUI defeatCrossHealText;
         [SerializeField] private Image defeatRandomCharacterImage;
 
+        [Tooltip("패배 패널 박스에 표시할 랜덤 이미지 목록. 비어 있으면 기존 파티 초상화 랜덤 로직 사용.")]
+        [SerializeField] private Sprite[] defeatPanelRandomImagePool;
+
         [Header("Level Complete Stats UI")]
         [SerializeField] private Button stageSelectButton;
         [SerializeField] private Image clearRandomCharacterImage;
@@ -558,32 +561,43 @@ namespace Match3Puzzle.UI
                 defeatScoreText.text = $"패배...  (Score: {scoreManager.CurrentScore:N0})";
 
             if (defeatGoldText != null)
-                defeatGoldText.text = "전체 획득 골드            0G";
+                defeatGoldText.text = "0G";
 
             int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
             if (defeatTurnsText != null)
-                defeatTurnsText.text = $"사용한 턴                   {turnsUsed}/40";
+                defeatTurnsText.text = $"{turnsUsed}/40";
 
             if (defeatEnhancedSummonText != null)
-                defeatEnhancedSummonText.text = $"강화 블록 생성            {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
+                defeatEnhancedSummonText.text = $"{BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
 
             if (defeatSwordDamageText != null)
-                defeatSwordDamageText.text = $"검  피해량                  {BattleClearStatsRuntime.DamageSword:N0}";
+                defeatSwordDamageText.text = $"{BattleClearStatsRuntime.DamageSword:N0}";
             if (defeatBowDamageText != null)
-                defeatBowDamageText.text = $"화살 피해량                {BattleClearStatsRuntime.DamageBow:N0}";
+                defeatBowDamageText.text = $"{BattleClearStatsRuntime.DamageBow:N0}";
             if (defeatWandDamageText != null)
-                defeatWandDamageText.text = $"마법 피해량               {BattleClearStatsRuntime.DamageWand:N0}";
+                defeatWandDamageText.text = $"{BattleClearStatsRuntime.DamageWand:N0}";
             if (defeatCrossHealText != null)
-                defeatCrossHealText.text = $"회복량                       {BattleClearStatsRuntime.HealCross:N0}";
+                defeatCrossHealText.text = $"{BattleClearStatsRuntime.HealCross:N0}";
 
             if (defeatRandomCharacterImage != null)
             {
                 var party = FindFirstObjectByType<PartyHealthUI>();
                 Sprite sprite = null;
-                if (party != null && party.CharacterCount > 0)
+
+                // Defeat Panel Random Image Pool이 비어있지 않으면 풀에서 랜덤으로 선택
+                if (defeatPanelRandomImagePool != null && defeatPanelRandomImagePool.Length > 0)
                 {
-                    int idx = Random.Range(0, party.CharacterCount);
-                    sprite = party.GetPortraitSprite(idx);
+                    int idx = Random.Range(0, defeatPanelRandomImagePool.Length);
+                    sprite = defeatPanelRandomImagePool[idx];
+                }
+                else
+                {
+                    // 리스트 미설정 시 기존 동작 유지(파티 초상화 랜덤)
+                    if (party != null && party.CharacterCount > 0)
+                    {
+                        int idx = Random.Range(0, party.CharacterCount);
+                        sprite = party.GetPortraitSprite(idx);
+                    }
                 }
 
                 defeatRandomCharacterImage.sprite = sprite;
@@ -683,8 +697,9 @@ namespace Match3Puzzle.UI
             }
 
             // 박스(배경 + 레이아웃)
+            // 씬에 이미 존재하는 ClearPanelBox를 우선 사용해, runtime용 *_Runtime 오브젝트가 별도로 생성되어 보이지 않게 한다.
             Transform boxParent = levelCompletePanel.transform;
-            var existingBox = boxParent.Find("ClearPanelBox_Runtime");
+            var existingBox = boxParent.Find("ClearPanelBox_Runtime") ?? boxParent.Find("ClearPanelBox");
             GameObject box = existingBox != null ? existingBox.gameObject : new GameObject("ClearPanelBox_Runtime");
             if (existingBox == null)
             {
@@ -822,7 +837,8 @@ namespace Match3Puzzle.UI
 
         private Transform EnsureButtonsRow(Transform boxTransform)
         {
-            var existing = boxTransform.Find("ClearPanelButtonsRow_Runtime");
+            // 씬에 존재하는 기본 버튼 로우를 먼저 사용한다.
+            var existing = boxTransform.Find("ClearPanelButtonsRow_Runtime") ?? boxTransform.Find("ClearPanelButtonsRow");
             if (existing != null) return existing;
 
             GameObject row = new GameObject("ClearPanelButtonsRow_Runtime");
@@ -899,23 +915,23 @@ namespace Match3Puzzle.UI
                 levelCompleteScoreText.text = $"클리어!  (Score: {scoreManager.CurrentScore:N0})";
 
             if (clearGoldText != null)
-                clearGoldText.text = $"전체 획득 골드            {_goldEarnedThisClear:N0}G";
+                clearGoldText.text = $"{_goldEarnedThisClear:N0}G";
 
             int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
             if (clearTurnsText != null)
-                clearTurnsText.text = $"사용한 턴                  {turnsUsed}/40";
+                clearTurnsText.text = $"{turnsUsed} / 40";
 
             if (clearEnhancedSummonText != null)
-                clearEnhancedSummonText.text = $"강화 타일 생성           {BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
+                clearEnhancedSummonText.text = $"{BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
 
             if (clearSwordDamageText != null)
-                clearSwordDamageText.text = $"검  피해량                 {BattleClearStatsRuntime.DamageSword:N0}";
+                clearSwordDamageText.text = $"{BattleClearStatsRuntime.DamageSword:N0}";
             if (clearBowDamageText != null)
-                clearBowDamageText.text = $"화살 피해량                {BattleClearStatsRuntime.DamageBow:N0}";
+                clearBowDamageText.text = $"{BattleClearStatsRuntime.DamageBow:N0}";
             if (clearWandDamageText != null)
-                clearWandDamageText.text = $"마법 피해량                {BattleClearStatsRuntime.DamageWand:N0}";
+                clearWandDamageText.text = $"{BattleClearStatsRuntime.DamageWand:N0}";
             if (clearCrossHealText != null)
-                clearCrossHealText.text = $"회복량                       {BattleClearStatsRuntime.HealCross:N0}";
+                clearCrossHealText.text = $"{BattleClearStatsRuntime.HealCross:N0}";
 
             if (clearRandomCharacterImage != null)
             {
