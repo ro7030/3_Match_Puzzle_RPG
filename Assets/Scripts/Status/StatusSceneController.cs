@@ -96,7 +96,7 @@ namespace Match3Puzzle.Status
 
         private void RefreshPlayerInfo()
         {
-            if (playerLevelText   != null) playerLevelText.text   = $"Lv.{_save.playerLevel}";
+            if (playerLevelText   != null) playerLevelText.text   = $"{_save.playerLevel}";
             if (upgradePointsText != null) upgradePointsText.text = $"업그레이드 포인트: {_save.upgradePoints}";
         }
 
