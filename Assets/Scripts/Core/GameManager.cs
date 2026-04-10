@@ -269,21 +269,29 @@ namespace Match3Puzzle.Core
         {
             int clearedIndex = Match3Puzzle.Stage.BattleStageHolder.CurrentStageIndex;
             var saveData = MainMenu.SaveSystem.Load() ?? new MainMenu.GameSaveData();
+
+            if (saveData.stageRewardClaimCounts == null || saveData.stageRewardClaimCounts.Length != StageDatabase.StageCount)
+                saveData.stageRewardClaimCounts = new int[StageDatabase.StageCount];
+
+            const int maxRewardClaimPerStage = 2;
+            if (clearedIndex >= 0 &&
+                clearedIndex < saveData.stageRewardClaimCounts.Length &&
+                saveData.stageRewardClaimCounts[clearedIndex] < maxRewardClaimPerStage)
+            {
+                saveData.stageRewardClaimCounts[clearedIndex]++;
+                int clearGold = GetCurrentStageClearGoldReward();
+                saveData.gold += clearGold;
+                saveData.playerLevel++;
+                saveData.upgradePoints++;
+            }
+
             if (clearedIndex > saveData.lastClearedStageIndex)
             {
                 saveData.lastClearedStageIndex = clearedIndex;
                 saveData.lastClearedChapter = (clearedIndex / 3) + 1;
-
-                // UIManager가 없는 경우에도 첫 클리어 골드 보상 반영
-                int clearGold = GetCurrentStageClearGoldReward();
-                saveData.gold += clearGold;
-
-                // 신규 스테이지 클리어 → 플레이어 레벨 +1, 업그레이드 포인트 +1
-                saveData.playerLevel++;
-                saveData.upgradePoints++;
-
-                MainMenu.SaveSystem.Save(saveData);
             }
+
+            MainMenu.SaveSystem.Save(saveData);
             SceneManager.LoadScene("MapScene");
         }
 

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SkillData_5
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Skill.SkillData
   skillId: skill_001
-  displayName: "\uAC15\uD0C0 :"
-  description: "\uAC80 \uD53C\uD574\uC758 500%"
+  displayName: "\uC775\uC2A4\uD50C\uB85C\uC804 :"
+  description: "\uB9C8\uBC95 \uD53C\uD574\uC758 1500%"
   icon: {fileID: -1823723604768877084, guid: a0889a6ccadfc02469a3cb47c44c726d, type: 3}
   iconGrayscale: {fileID: -4004774217189992839, guid: 428941cdf49b0cd47a762af5c0c29ed6, type: 3}
   cooldownTurns: 3
-  cooldownSeconds: 5
+  cooldownSeconds: 15
   effectType: 2
   effectMultiplier: 5
   ownerCharacterIndex: 0

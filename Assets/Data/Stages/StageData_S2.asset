@@ -16,16 +16,21 @@ MonoBehaviour:
   description: 
   backgroundSprite: {fileID: 3456022699895010531, guid: cb0df55a12d29a04ea8f9e6f919ec2c3, type: 3}
   bossSprite: {fileID: 8060827608744566591, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
-  monsterMaxHp: 100
+  monsterMaxHp: 1500
+  bossSpriteAfterClear: {fileID: 0}
+  monsterHpPortraitThresholds:
+  - hpThreshold: 200
+    sprite: {fileID: 6947022252201884407, guid: b6fbca3fc19cb0d4dbec189da7ac89a0, type: 3}
+  monsterHpPortraitThresholdsPhase2: []
   startAttackMode: 0
   attackIntervalTurns: 4
   attackDamage: 20
-  attackTargetType: 1
+  attackTargetType: 2
   partyStartHpDeduction: 0
   partyHpLossPerTurn: 0
   maxTurns: 40
   introCutscene: {fileID: 11400000, guid: 468dec44cbf73a24083126219e8aa692, type: 2}
-  clearGoldReward: 300
+  clearGoldReward: 100
   swordResistance: 0
   bowResistance: 0
   wandResistance: 0

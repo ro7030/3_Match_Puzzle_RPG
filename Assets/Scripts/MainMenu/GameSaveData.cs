@@ -39,6 +39,12 @@ namespace MainMenu
         public int upgradePoints = 0;
 
         /// <summary>
+        /// 스테이지별 클리어 보상(골드/레벨/포인트) 지급 횟수.
+        /// 인덱스는 스테이지 전역 인덱스와 동일.
+        /// </summary>
+        public int[] stageRewardClaimCounts = new int[10];
+
+        /// <summary>
         /// 스탯 업그레이드 레벨 배열. 인덱스는 CharacterUpgradeHolder.Index* 상수와 동일.
         /// [0]=검, [1]=활, [2]=마법, [3]=힐, [4]=강화타일
         /// </summary>

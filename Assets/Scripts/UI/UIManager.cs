@@ -93,6 +93,7 @@ namespace Match3Puzzle.UI
         private bool _clearPanelRuntimeBuilt;
         private bool _clearRewardApplied;
         private int _goldEarnedThisClear;
+        private const int MaxRewardClaimPerStage = 2;
 
         private void Awake()
         {
@@ -434,6 +435,19 @@ namespace Match3Puzzle.UI
         }
 
         /// <summary>
+        /// 패배 패널에서 "메인으로/스테이지 선택"을 눌렀을 때는 클리어 컷씬을 절대 재생하지 않는다.
+        /// (클리어 컷씬은 스테이지를 '클리어했을 때만' 흐름에 포함되어야 함)
+        /// </summary>
+        private void OnDefeatGoMainClicked()
+        {
+            if (defeatPanel != null)
+                defeatPanel.SetActive(false);
+
+            BattleStageHolder.AutoOpenStageSelectOnMap = true;
+            SceneManager.LoadScene(mapSceneName);
+        }
+
+        /// <summary>
         /// 파티원 사망(패배) 시 DefeatPanel 표시.
         /// 버튼 동작: 다시 플레이 / 스테이지 선택
         /// </summary>
@@ -461,7 +475,7 @@ namespace Match3Puzzle.UI
             if (defeatStageSelectButton != null)
             {
                 defeatStageSelectButton.onClick.RemoveAllListeners();
-                defeatStageSelectButton.onClick.AddListener(OnStageSelectClicked);
+                defeatStageSelectButton.onClick.AddListener(OnDefeatGoMainClicked);
             }
         }
 
@@ -563,9 +577,11 @@ namespace Match3Puzzle.UI
             if (defeatGoldText != null)
                 defeatGoldText.text = "0G";
 
+            EnsureLevelManagerForResultUI();
             int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
+            int maxTurns = GetResultMaxTurns();
             if (defeatTurnsText != null)
-                defeatTurnsText.text = $"{turnsUsed}/40";
+                defeatTurnsText.text = $"{turnsUsed}/{maxTurns}";
 
             if (defeatEnhancedSummonText != null)
                 defeatEnhancedSummonText.text = $"{BattleClearStatsRuntime.EnhancedSummonCount:N0}회";
@@ -612,32 +628,54 @@ namespace Match3Puzzle.UI
 
             int clearedIndex = BattleStageHolder.CurrentStageIndex;
             var saveData = SaveSystem.Load() ?? new GameSaveData();
+            EnsureStageRewardClaimCounts(saveData);
 
             int clearGold = 0;
             var stageData = GetCurrentStageData();
             clearGold = stageData != null ? Mathf.Max(0, stageData.clearGoldReward) : 0;
 
-            if (clearedIndex > saveData.lastClearedStageIndex)
+            if (clearedIndex >= 0 &&
+                saveData.stageRewardClaimCounts != null &&
+                clearedIndex < saveData.stageRewardClaimCounts.Length &&
+                saveData.stageRewardClaimCounts[clearedIndex] < MaxRewardClaimPerStage)
             {
-                saveData.lastClearedStageIndex = clearedIndex;
-                saveData.lastClearedChapter = (clearedIndex / 3) + 1; // 기존 로직 유지
+                saveData.stageRewardClaimCounts[clearedIndex]++;
 
-                // 스테이지 첫 클리어 골드 보상
+                // 스테이지 보상(최대 2회)
                 saveData.gold += clearGold;
-
-                // 신규 스테이지 클리어 → 플레이어 레벨 +1, 업그레이드 포인트 +1
                 saveData.playerLevel++;
                 saveData.upgradePoints++;
-
-                SaveSystem.Save(saveData);
-                Debug.Log($"[UIManager] 스테이지 클리어 저장: 인덱스 {clearedIndex} / 골드 +{clearGold} / Lv {saveData.playerLevel} / 포인트 {saveData.upgradePoints}");
             }
             else
             {
-                clearGold = 0; // 재클리어면 보상 표시 0
+                clearGold = 0; // 3회차 이상 클리어면 보상 표시 0
+            }
+
+            // 진행도(해금)는 기존처럼 "최고 도달 스테이지" 기준으로 유지
+            if (clearedIndex > saveData.lastClearedStageIndex)
+            {
+                saveData.lastClearedStageIndex = clearedIndex;
+                saveData.lastClearedChapter = (clearedIndex / 3) + 1;
+            }
+
+            SaveSystem.Save(saveData);
+            if (clearGold > 0)
+            {
+                Debug.Log($"[UIManager] 스테이지 클리어 보상 지급: 인덱스 {clearedIndex} / 골드 +{clearGold} / Lv {saveData.playerLevel} / 포인트 {saveData.upgradePoints}");
+            }
+            else
+            {
+                Debug.Log($"[UIManager] 스테이지 클리어 보상 미지급(지급 한도 초과): 인덱스 {clearedIndex}");
             }
 
             _goldEarnedThisClear = clearGold;
+        }
+
+        private static void EnsureStageRewardClaimCounts(GameSaveData saveData)
+        {
+            if (saveData == null) return;
+            if (saveData.stageRewardClaimCounts == null || saveData.stageRewardClaimCounts.Length != StageDatabase.StageCount)
+                saveData.stageRewardClaimCounts = new int[StageDatabase.StageCount];
         }
 
         /// <summary>현재 스테이지의 StageData 반환</summary>
@@ -647,6 +685,31 @@ namespace Match3Puzzle.UI
                 stageDatabase = Resources.Load<StageDatabase>("StageDatabase");
 
             return stageDatabase?.GetStage(BattleStageHolder.CurrentStageIndex);
+        }
+
+        /// <summary>
+        /// 결과 패널(클리어/패배) 갱신 시점에 LevelManager가 비어있을 수 있어 재탐색한다.
+        /// </summary>
+        private void EnsureLevelManagerForResultUI()
+        {
+            if (levelManager == null)
+                levelManager = FindFirstObjectByType<LevelManager>();
+        }
+
+        /// <summary>
+        /// 결과 패널의 분모(최대 턴)를 반환한다.
+        /// LevelManager 우선, 없으면 현재 StageData maxTurns, 둘 다 없으면 40.
+        /// </summary>
+        private int GetResultMaxTurns()
+        {
+            if (levelManager != null)
+                return Mathf.Max(1, levelManager.MaxTurns);
+
+            var stageData = GetCurrentStageData();
+            if (stageData != null)
+                return Mathf.Max(1, stageData.maxTurns);
+
+            return 40;
         }
 
         private void EnsureLevelCompletePanelUI()
@@ -917,9 +980,11 @@ namespace Match3Puzzle.UI
             if (clearGoldText != null)
                 clearGoldText.text = $"{_goldEarnedThisClear:N0}G";
 
+            EnsureLevelManagerForResultUI();
             int turnsUsed = levelManager != null ? levelManager.MovesUsed : 0;
+            int maxTurns = GetResultMaxTurns();
             if (clearTurnsText != null)
-                clearTurnsText.text = $"{turnsUsed} / 40";
+                clearTurnsText.text = $"{turnsUsed} / {maxTurns}";
 
             if (clearEnhancedSummonText != null)
                 clearEnhancedSummonText.text = $"{BattleClearStatsRuntime.EnhancedSummonCount:N0}회";

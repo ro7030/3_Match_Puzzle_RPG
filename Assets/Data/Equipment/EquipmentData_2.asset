@@ -25,6 +25,6 @@ MonoBehaviour:
   slotType: 0
   goldCost: 1000
   requiredChapter: 2
-  partyMaxHpPercent: 30
+  partyMaxHpPercent: 50
   attackPercent: 0
   healPercent: 0

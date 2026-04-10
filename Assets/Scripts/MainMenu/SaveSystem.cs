@@ -61,6 +61,8 @@ namespace MainMenu
                     data.equippedSkillIds ??= new string[4];
                     if (data.equippedEquipmentIds == null || data.equippedEquipmentIds.Length != 2)
                         data.equippedEquipmentIds = new string[2];
+                    if (data.stageRewardClaimCounts == null || data.stageRewardClaimCounts.Length != 10)
+                        data.stageRewardClaimCounts = new int[10];
                 }
                 Debug.Log("[SaveSystem] 로드 완료 - 챕터:" + data.lastClearedChapter + " 골드:" + data.gold);
                 return data;

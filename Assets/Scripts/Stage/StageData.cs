@@ -3,6 +3,21 @@ using UnityEngine;
 namespace Match3Puzzle.Stage
 {
     /// <summary>
+    /// 몬스터 현재 HP가 <see cref="hpThreshold"/> 이하일 때 표시할 초상화.
+    /// 여러 개가 동시에 조건을 만족하면 가장 낮은 체력 기준(가장 손상된 표정)이 적용됩니다.
+    /// </summary>
+    [System.Serializable]
+    public class MonsterHpSpriteEntry
+    {
+        [Min(0)]
+        [Tooltip("몬스터 현재 HP가 이 값 이하이면 아래 스프라이트로 바꿉니다.")]
+        public int hpThreshold = 100;
+
+        [Tooltip("위 체력 조건일 때 표시할 이미지")]
+        public Sprite sprite;
+    }
+
+    /// <summary>
     /// 몬스터 공격 대상 타입. 인스펙터에서 스테이지별로 선택 가능.
     /// </summary>
     public enum MonsterAttackTargetType
@@ -62,6 +77,14 @@ namespace Match3Puzzle.Stage
         [Header("클리어 후 보스/몬스터 (선택)")]
         [Tooltip("스테이지 클리어 시(몬스터 사망) 표시할 이미지입니다. 비우면 현재 이미지(페이즈1/페이즈2)가 그대로 유지됩니다.")]
         public Sprite bossSpriteAfterClear;
+
+        [Header("몬스터 체력별 이미지 (선택)")]
+        [Tooltip("페이즈1: 기본 bossSprite를 시작으로, 현재 HP가 각 행의 체력 이하이면 해당 이미지로 바꿉니다.\n"
+                 + "여러 행이 모두 조건이면 가장 낮은 체력 기준이 적용됩니다. 비우면 기본 이미지만 사용합니다.")]
+        public MonsterHpSpriteEntry[] monsterHpPortraitThresholds;
+
+        [Tooltip("페이즈2에서만 다른 표를 쓰려면 여기에 채웁니다. 비어 있으면 위 목록과 페이즈2 기본 이미지(bossSpritePhase2) 규칙을 그대로 사용합니다.")]
+        public MonsterHpSpriteEntry[] monsterHpPortraitThresholdsPhase2;
 
         [Header("페이즈1 몬스터 공격 (인스펙터에서 조절)")]
         [Tooltip("전투 시작 직후 선공 여부/턴 카운트 처리 방식")]
@@ -151,5 +174,43 @@ namespace Match3Puzzle.Stage
                  "할당 시 StoryScene에서 컷씬 재생 후 CutsceneData.nextSceneName으로 이동.\n" +
                  "CutsceneData의 nextSceneName을 MapScene으로, clearSaveOnComplete를 false로 설정할 것.")]
         public Story.CutsceneData clearCutscene;
+
+        /// <summary>
+        /// 현재 HP와 페이즈에 맞는 몬스터 초상 스프라이트를 반환합니다.
+        /// HP가 0 이하인 경우는 사망/클리어 처리 쪽에서 별도로 덮어쓰므로, 기본(페이즈) 스프라이트만 반환합니다.
+        /// </summary>
+        public Sprite ResolveMonsterPortraitSprite(int currentHp, bool isPhase2)
+        {
+            Sprite baseSprite = isPhase2
+                ? (bossSpritePhase2 != null ? bossSpritePhase2 : bossSprite)
+                : bossSprite;
+
+            if (currentHp <= 0)
+                return baseSprite;
+
+            MonsterHpSpriteEntry[] entries = isPhase2 && monsterHpPortraitThresholdsPhase2 != null &&
+                                             monsterHpPortraitThresholdsPhase2.Length > 0
+                ? monsterHpPortraitThresholdsPhase2
+                : monsterHpPortraitThresholds;
+
+            if (entries == null || entries.Length == 0)
+                return baseSprite;
+
+            int bestThreshold = int.MaxValue;
+            Sprite best = baseSprite;
+            for (int i = 0; i < entries.Length; i++)
+            {
+                MonsterHpSpriteEntry e = entries[i];
+                if (e == null || e.sprite == null)
+                    continue;
+                if (currentHp <= e.hpThreshold && e.hpThreshold < bestThreshold)
+                {
+                    bestThreshold = e.hpThreshold;
+                    best = e.sprite;
+                }
+            }
+
+            return best;
+        }
     }
 }

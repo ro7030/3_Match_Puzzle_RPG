@@ -15,10 +15,10 @@ MonoBehaviour:
   baseSwordDamage: 20
   baseBowDamage: 20
   baseWandDamage: 20
-  baseHealAmount: 10
+  baseHealAmount: 5
   baseEnhancedBonus: 40
   swordBonusPerLevel: 10
   bowBonusPerLevel: 10
   wandBonusPerLevel: 10
-  healBonusPerLevel: 5
+  healBonusPerLevel: 3
   enhancedBonusPerLevel: 15

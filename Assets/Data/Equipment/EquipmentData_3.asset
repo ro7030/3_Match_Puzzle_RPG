@@ -26,5 +26,5 @@ MonoBehaviour:
   goldCost: 1000
   requiredChapter: 2
   partyMaxHpPercent: 0
-  attackPercent: 10
-  healPercent: 30
+  attackPercent: 50
+  healPercent: 20

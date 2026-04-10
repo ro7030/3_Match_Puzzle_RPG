@@ -215,6 +215,16 @@ namespace Match3Puzzle.Stage
 
             try
             {
+                if (monsterHealthUI != null)
+                    RefreshMonsterPortraitByHp(monsterHealthUI.CurrentHp);
+            }
+            catch (MissingReferenceException ex)
+            {
+                Debug.LogWarning($"[BattleConfig] 체력별 몬스터 이미지 적용 실패(직렬화 불일치 가능): {ex.Message}");
+            }
+
+            try
+            {
                 if (levelManager != null)
                     levelManager.SetBattleConfig(data.maxTurns);
             }
@@ -239,6 +249,11 @@ namespace Match3Puzzle.Stage
         private void HandleMonsterHpChanged(int currentHp, int maxHp)
         {
             if (_stageData == null) return;
+
+            // HP가 0이면 클리어 이미지(bossSpriteAfterClear)가 우선 — 여기서는 초상만 건드리지 않음
+            if (currentHp > 0)
+                RefreshMonsterPortraitByHp(currentHp);
+
             if (!_stageData.hasPhase2) return;
             if (_phase2Triggered) return;
             if (_stageData.phase2TriggerTarget != Phase2TriggerTargetType.MonsterHp) return;
@@ -371,6 +386,30 @@ namespace Match3Puzzle.Stage
             {
                 int currentHp = monsterHealthUI.CurrentHp;
                 monsterHealthUI.SetHP(currentHp, _stageData.monsterMaxHpPhase2);
+            }
+
+            RefreshMonsterPortraitByHp(monsterHealthUI.CurrentHp);
+        }
+
+        /// <summary>
+        /// StageData의 체력 구간별 스프라이트 설정을 현재 HP·페이즈에 맞게 적용합니다.
+        /// </summary>
+        private void RefreshMonsterPortraitByHp(int currentHp)
+        {
+            if (_clearMonsterSpriteApplied) return;
+            if (_stageData == null || monsterImage == null) return;
+            if (currentHp <= 0) return;
+
+            bool phase2 = BattlePhaseRuntime.ActivePhaseIndex == BattlePhaseRuntime.Phase2;
+            try
+            {
+                Sprite s = _stageData.ResolveMonsterPortraitSprite(currentHp, phase2);
+                if (s != null)
+                    monsterImage.sprite = s;
+            }
+            catch (MissingReferenceException ex)
+            {
+                Debug.LogWarning($"[BattleConfig] ResolveMonsterPortraitSprite 실패: {ex.Message}");
             }
         }
 
