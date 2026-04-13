@@ -41,6 +41,9 @@ namespace Match3Puzzle.UI.Battle
         [SerializeField] private MonsterHealthUI monsterHealthUI;
         [SerializeField] private PartyHealthUI partyHealthUI;
 
+        [Header("스킬 이펙트·사운드 (없으면 배틀 씬에서 자동 탐색)")]
+        [SerializeField] private BattleSkillFxPlayer battleSkillFx;
+
         private StageData _currentStageData;
         private readonly Action[] _slotHandlers = new Action[EquippedSkillsHolder.CharacterCount];
         private readonly SkillEffectType[] _slotEffectTypes = new SkillEffectType[EquippedSkillsHolder.CharacterCount];
@@ -56,6 +59,8 @@ namespace Match3Puzzle.UI.Battle
                 monsterHealthUI = FindFirstObjectByType<MonsterHealthUI>();
             if (partyHealthUI == null)
                 partyHealthUI = FindFirstObjectByType<PartyHealthUI>();
+            if (battleSkillFx == null)
+                battleSkillFx = FindFirstObjectByType<BattleSkillFxPlayer>();
             if (stageDatabase == null)
                 stageDatabase = Resources.Load<StageDatabase>("StageDatabase");
             if (skillDatabase == null)
@@ -166,7 +171,11 @@ namespace Match3Puzzle.UI.Battle
 
                 // 클로저로 SkillData 캡처 후 OnSkillUsed에 효과 등록
                 SkillData captured = data;
-                _slotHandlers[i] = () => ApplySkillEffect(captured);
+                _slotHandlers[i] = () =>
+                {
+                    battleSkillFx?.Play(captured.effectType);
+                    ApplySkillEffect(captured);
+                };
                 slot.OnSkillUsed += _slotHandlers[i];
             }
         }

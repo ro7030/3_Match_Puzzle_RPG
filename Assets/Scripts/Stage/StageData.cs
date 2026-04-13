@@ -168,6 +168,10 @@ namespace Match3Puzzle.Stage
         [Tooltip("마법(지팡이) 공격 저항")]
         public float wandResistancePhase2 = 0f;
 
+        [Header("배경음 (BGM)")]
+        [Tooltip("이 스테이지 전투에서 재생할 배경음. 비우면 BgmManager 씬 매핑의 기본 BGM을 사용합니다.")]
+        public AudioClip bgmClip;
+
         [Header("클리어 후 컷씬 (선택 사항)")]
         [Tooltip("스테이지 클리어 후 재생할 컷씬 데이터.\n" +
                  "비워두면 바로 MapScene으로 이동.\n" +

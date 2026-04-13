@@ -23,6 +23,10 @@ namespace Story
         [Tooltip("true: 완료/스킵 시 세이브 삭제 (New Game 프롤로그용). false: 저장 유지")]
         public bool clearSaveOnComplete = true;
 
+        [Header("배경음 (BGM)")]
+        [Tooltip("이 컷씬 재생 중 사용할 배경음. 비우면 BgmManager 씬 매핑의 기본 BGM 또는 현재 BGM을 유지합니다.")]
+        public AudioClip bgmClip;
+
         public List<DialogueLineData> dialogueLines = new List<DialogueLineData>();
 
         [Serializable]
