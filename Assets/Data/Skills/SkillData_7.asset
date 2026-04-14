@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkillData_7
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Skill.SkillData
   skillId: skill_001
-  displayName: "\uC815\uB839\uC758 \uD65C\uC2DC\uC704 :"
+  displayName: "\uC0C1\uC2B9 \uAE30\uB958 :"
   description: "\uD654\uC0B4 \uD53C\uD574\uC758 1000%"
   icon: {fileID: -4669442029782755623, guid: 08ad4edbd0d78d94186c2e4db8f86cf5, type: 3}
   iconGrayscale: {fileID: 2423851402678899373, guid: b94d071a85504374b9bd77e04e8fcf0c, type: 3}

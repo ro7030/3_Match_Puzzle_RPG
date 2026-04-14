@@ -31,8 +31,8 @@ MonoBehaviour:
   maxTurns: 40
   introCutscene: {fileID: 11400000, guid: 09d4bd566e66122448d78ace519adb09, type: 2}
   clearGoldReward: 800
-  swordResistance: 0.7
-  bowResistance: 0.7
+  swordResistance: 0.65
+  bowResistance: 0.65
   wandResistance: 0.3
   hasPhase2: 0
   phase2TriggerTarget: 0

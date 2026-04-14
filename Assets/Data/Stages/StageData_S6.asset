@@ -32,7 +32,7 @@ MonoBehaviour:
   introCutscene: {fileID: 11400000, guid: ae71a9ce6dc967445b2a5e356650a212, type: 2}
   clearGoldReward: 300
   swordResistance: 0.6
-  bowResistance: 0
+  bowResistance: 0.2
   wandResistance: 0.6
   hasPhase2: 1
   phase2TriggerTarget: 0
