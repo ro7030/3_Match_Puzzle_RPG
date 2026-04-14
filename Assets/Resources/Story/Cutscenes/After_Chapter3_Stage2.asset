@@ -102,7 +102,7 @@ MonoBehaviour:
       \uC190\uAC00\uB77D\uC5D0 \uAC10\uAC01\uC774 \uC5C6\uC5B4. \uC9C4\uC9DC... \uC5EC\uAE30\uC11C
       \uB05D\uC778\uAC00 \uBD10.\""
     backgroundSprite: {fileID: -656593689415311612, guid: 9e59b68f660e23c4b82c4a51c3e38627, type: 3}
-  - characterId: 1
+  - characterId: -1
     characterSpriteOverride: {fileID: 0}
     characterId2: -1
     characterSpriteOverride2: {fileID: 0}
