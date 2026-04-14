@@ -70,6 +70,8 @@ namespace Match3Puzzle.Tutorial
 
             if (stageData != null)
                 ApplyStageData();
+            else if (debugStateLog)
+                Debug.LogWarning("[TutorialSceneStarter] stageData가 비어 있습니다. StageData_Tu를 연결하지 않으면 몬스터/파티 시작값을 적용하지 않습니다.");
 
             if (debugStateLog)
             {
@@ -224,16 +226,42 @@ namespace Match3Puzzle.Tutorial
         /// </summary>
         private void ApplyStageData()
         {
+            if (debugStateLog)
+            {
+                Debug.Log($"[TutorialSceneStarter] StageData 적용 시작: name={stageData.name}, monsterMaxHp={stageData.monsterMaxHp}, partyStartHpDeduction={stageData.partyStartHpDeduction}");
+            }
+
             if (monsterHealthUI == null)
                 monsterHealthUI = FindFirstObjectByType<MonsterHealthUI>();
 
             if (monsterHealthUI != null)
+            {
                 monsterHealthUI.SetHP(stageData.monsterMaxHp, stageData.monsterMaxHp);
+                if (debugStateLog)
+                    Debug.Log($"[TutorialSceneStarter] MonsterHealthUI 적용 완료: hp={monsterHealthUI.CurrentHp}/{monsterHealthUI.MaxHp}");
+            }
+            else if (debugStateLog)
+            {
+                Debug.LogWarning("[TutorialSceneStarter] MonsterHealthUI를 찾지 못해 monsterMaxHp를 적용하지 못했습니다.");
+            }
 
             if (partyHealthUI == null)
                 partyHealthUI = FindFirstObjectByType<PartyHealthUI>();
+
             if (partyHealthUI != null && stageData.partyStartHpDeduction > 0)
+            {
                 partyHealthUI.ApplyBattleStartingHpDeduction(stageData.partyStartHpDeduction);
+                if (debugStateLog)
+                    Debug.Log($"[TutorialSceneStarter] PartyHealthUI 적용 완료: partyStartHpDeduction={stageData.partyStartHpDeduction}");
+            }
+            else if (partyHealthUI == null && debugStateLog)
+            {
+                Debug.LogWarning("[TutorialSceneStarter] PartyHealthUI를 찾지 못해 partyStartHpDeduction을 적용하지 못했습니다.");
+            }
+            else if (debugStateLog)
+            {
+                Debug.Log("[TutorialSceneStarter] partyStartHpDeduction이 0이어서 파티 시작 HP 차감은 건너뜁니다.");
+            }
         }
 
         private IEnumerator EnsurePlayingForAShortTime()

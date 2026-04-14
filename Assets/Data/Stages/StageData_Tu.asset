@@ -12,22 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084b7be8cbd774c419e192d9e39c19f3, type: 3}
   m_Name: StageData_Tu
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Stage.StageData
-  stageName: Tutorial
-  description: 
+  stageName: Stage 0
+  description: "\uD29C\uD1A0\uB9AC\uC5BC"
   backgroundSprite: {fileID: 6558155441594556298, guid: 293e91c1221d86b48999f4d2edca1edb, type: 3}
-  bossSprite: {fileID: 8060827608744566591, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
+  bossSprite: {fileID: 6947022252201884407, guid: 12093b7bb7372f642a59f1cb1b319ede, type: 3}
   monsterMaxHp: 100
-<<<<<<< HEAD
-  bossSpriteAfterClear: {fileID: 6947022252201884407, guid: b6fbca3fc19cb0d4dbec189da7ac89a0, type: 3}
-=======
-  bossSpriteAfterClear: {fileID: 8060827608744566591, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
->>>>>>> c6f450ea331a781bcdf47d41a14859cefe6048b8
+  bossSpriteAfterClear: {fileID: 0}
   monsterHpPortraitThresholds: []
   monsterHpPortraitThresholdsPhase2: []
   startAttackMode: 2
   attackIntervalTurns: 4
   attackDamage: 20
-  attackTargetType: 1
+  attackTargetType: 0
   partyStartHpDeduction: 0
   partyHpLossPerTurn: 0
   maxTurns: 40
@@ -48,5 +44,5 @@ MonoBehaviour:
   swordResistancePhase2: 0
   bowResistancePhase2: 0
   wandResistancePhase2: 0
-  bgmClip: {fileID: 8300000, guid: 20f1fd7edc3e64cb99ab068ce8d3435d, type: 3}
-  clearCutscene: {fileID: 0}
+  bgmClip: {fileID: 0}
+  clearCutscene: {fileID: 11400000, guid: 3570474c5b3cb204fbe6f2e5c3ddb84d, type: 2}
