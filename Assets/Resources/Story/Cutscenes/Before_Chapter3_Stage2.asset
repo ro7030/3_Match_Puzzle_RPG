@@ -16,6 +16,7 @@ MonoBehaviour:
   nextSceneName: BattleScene
   isPrologueMode: 1
   clearSaveOnComplete: 0
+  bgmClip: {fileID: 8300000, guid: c0ff6c97aafd34f4381a2d07758c4ae9, type: 3}
   dialogueLines:
   - characterId: -1
     characterSpriteOverride: {fileID: -6702937843246533677, guid: 8f27ca58b55c595408a8e9d94ab8ea73, type: 3}

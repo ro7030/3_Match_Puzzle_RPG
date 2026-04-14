@@ -16,6 +16,7 @@ MonoBehaviour:
   nextSceneName: KingdomScene
   isPrologueMode: 1
   clearSaveOnComplete: 0
+  bgmClip: {fileID: 8300000, guid: 53cc8068941cc4d668e1dc36a71cdd9c, type: 3}
   dialogueLines:
   - characterId: -1
     characterSpriteOverride: {fileID: 0}

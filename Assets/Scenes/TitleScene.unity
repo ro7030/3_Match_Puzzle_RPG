@@ -4306,6 +4306,84 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1816194684}
   m_CullTransparentMesh: 1
+--- !u!1 &1866330416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1866330418}
+  - component: {fileID: 1866330417}
+  m_Layer: 0
+  m_Name: BgmManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1866330417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866330416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc68cdbaf42b4145b0d273a0ef04a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Audio.BgmManager
+  sceneEntries:
+  - sceneName: TitleScene
+    bgmClip: {fileID: 8300000, guid: 67c2c0be9e15942b4a9fda1b4ff8263f, type: 3}
+    bgmGroup: Title
+  - sceneName: PrologueScene
+    bgmClip: {fileID: 8300000, guid: 67c2c0be9e15942b4a9fda1b4ff8263f, type: 3}
+    bgmGroup: Title
+  - sceneName: TutorialScene
+    bgmClip: {fileID: 8300000, guid: 20f1fd7edc3e64cb99ab068ce8d3435d, type: 3}
+    bgmGroup: 
+  - sceneName: KingdomScene
+    bgmClip: {fileID: 8300000, guid: 6292ecccfe72442e2a08d441ddd0d175, type: 3}
+    bgmGroup: Lobby
+  - sceneName: MapScene
+    bgmClip: {fileID: 8300000, guid: 6292ecccfe72442e2a08d441ddd0d175, type: 3}
+    bgmGroup: Lobby
+  - sceneName: InventoryScene
+    bgmClip: {fileID: 8300000, guid: 6292ecccfe72442e2a08d441ddd0d175, type: 3}
+    bgmGroup: Lobby
+  - sceneName: SkillScene
+    bgmClip: {fileID: 8300000, guid: 6292ecccfe72442e2a08d441ddd0d175, type: 3}
+    bgmGroup: Lobby
+  - sceneName: StatusScene
+    bgmClip: {fileID: 8300000, guid: 6292ecccfe72442e2a08d441ddd0d175, type: 3}
+    bgmGroup: Lobby
+  - sceneName: StoryScene
+    bgmClip: {fileID: 0}
+    bgmGroup: 
+  - sceneName: BattleScene
+    bgmClip: {fileID: 0}
+    bgmGroup: 
+  audioSource: {fileID: 0}
+  bgmVolume: 0.5
+  fadeDuration: 1
+--- !u!4 &1866330418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866330416}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1899347625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4946,3 +5024,4 @@ SceneRoots:
   - {fileID: 516814384}
   - {fileID: 258718423}
   - {fileID: 877758855}
+  - {fileID: 1866330418}

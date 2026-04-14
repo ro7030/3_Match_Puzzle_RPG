@@ -16,6 +16,7 @@ MonoBehaviour:
   nextSceneName: MapScene
   isPrologueMode: 1
   clearSaveOnComplete: 0
+  bgmClip: {fileID: 8300000, guid: 67c2c0be9e15942b4a9fda1b4ff8263f, type: 3}
   dialogueLines:
   - characterId: -1
     characterSpriteOverride: {fileID: -1887551411774842755, guid: 611857d7cd13c9e4092f737f54d3377e, type: 3}

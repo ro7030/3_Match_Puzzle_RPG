@@ -17,7 +17,11 @@ MonoBehaviour:
   backgroundSprite: {fileID: 6558155441594556298, guid: 293e91c1221d86b48999f4d2edca1edb, type: 3}
   bossSprite: {fileID: 8060827608744566591, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
   monsterMaxHp: 100
+<<<<<<< HEAD
   bossSpriteAfterClear: {fileID: 6947022252201884407, guid: b6fbca3fc19cb0d4dbec189da7ac89a0, type: 3}
+=======
+  bossSpriteAfterClear: {fileID: 8060827608744566591, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
+>>>>>>> c6f450ea331a781bcdf47d41a14859cefe6048b8
   monsterHpPortraitThresholds: []
   monsterHpPortraitThresholdsPhase2: []
   startAttackMode: 2
@@ -44,4 +48,5 @@ MonoBehaviour:
   swordResistancePhase2: 0
   bowResistancePhase2: 0
   wandResistancePhase2: 0
+  bgmClip: {fileID: 8300000, guid: 20f1fd7edc3e64cb99ab068ce8d3435d, type: 3}
   clearCutscene: {fileID: 0}
