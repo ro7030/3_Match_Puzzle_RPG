@@ -11,7 +11,8 @@
       "Bash(npm list:*)",
       "Bash(node create_design_doc.js)",
       "Bash(python \"C:\\\\Users\\\\EZ\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\fa68f583-325f-426f-9e0b-0e497d73deaf\\\\6f131cb9-392a-4465-997f-cac8043507eb\\\\skills\\\\docx\\\\scripts\\\\office\\\\validate.py\" \"C:\\\\UnityProject\\\\3_Match_Puzzle_RPG\\\\3_Match_Puzzle_RPG_System_Design.docx\")",
-      "Bash(node create_level_doc.js)"
+      "Bash(node create_level_doc.js)",
+      "Bash(awk '/^--- !u!1 &415671248/,/^--- !u!/ {print NR\": \"$0; if \\(/^--- !u!/ && !/^--- !u!1 &415671248/\\) exit}' /c/UnityProject/3_Match_Puzzle_RPG/Assets/Scenes/BattleScene.unity)"
     ]
   }
 }

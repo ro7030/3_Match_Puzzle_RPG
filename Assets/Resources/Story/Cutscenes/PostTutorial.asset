@@ -148,7 +148,7 @@ MonoBehaviour:
     characterSpriteOverride3: {fileID: 0}
     speakerName: 
     text: "\uC18C\uD53C\uC544\uB294 \uC9D0\uC9D3 \uB530\uBD84\uD558\uB2E4\uB294 \uD45C\uC815\uC73C\uB85C
-      \uC9D9\uC740 \uBCF4\uB78F\uBE5B \uBA38\uB9AC\uCE74\uB77D\uC744 \uC190\uAC00\uB77D\uC73C\uB85C
+      \uC740\uBC1C\uC758 \uBA38\uB9AC\uCE74\uB77D\uC744 \uC190\uAC00\uB77D\uC73C\uB85C
       \uBC30\uBC30 \uAF2C\uC558\uB2E4."
     backgroundSprite: {fileID: -1963964102174010044, guid: 10a037c9f2be2e047ab30f47cdf515a5, type: 3}
   - characterId: 1

@@ -46,4 +46,6 @@ MonoBehaviour:
   swordResistancePhase2: 0
   bowResistancePhase2: 0
   wandResistancePhase2: 0
+  bgmClip: {fileID: 0}
   clearCutscene: {fileID: 11400000, guid: 3aa0ba460d853964a8d879512b883851, type: 2}
+  postClearSceneName: 

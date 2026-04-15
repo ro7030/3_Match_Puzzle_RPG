@@ -345,13 +345,19 @@ namespace Match3Puzzle.UI
                 {
                     CutsceneContext.SetNextForBattle(clearCutsceneId, () =>
                     {
-                        SceneManager.LoadScene(mapSceneName);
+                        LoadPostClearSceneOrFallback(() =>
+                        {
+                            SceneManager.LoadScene(mapSceneName);
+                        });
                     });
                     SceneManager.LoadScene(storySceneName);
                     return;
                 }
 
-                SceneManager.LoadScene(mapSceneName);
+                LoadPostClearSceneOrFallback(() =>
+                {
+                    SceneManager.LoadScene(mapSceneName);
+                });
                 return;
             }
 
@@ -360,13 +366,19 @@ namespace Match3Puzzle.UI
             {
                 CutsceneContext.SetNextForBattle(clearCutsceneId, () =>
                 {
-                    TryStartNextStageBattle(nextIndex);
+                    LoadPostClearSceneOrFallback(() =>
+                    {
+                        TryStartNextStageBattle(nextIndex);
+                    });
                 });
                 SceneManager.LoadScene(storySceneName);
                 return;
             }
 
-            TryStartNextStageBattle(nextIndex);
+            LoadPostClearSceneOrFallback(() =>
+            {
+                TryStartNextStageBattle(nextIndex);
+            });
         }
 
         /// <summary>
@@ -376,6 +388,36 @@ namespace Match3Puzzle.UI
         {
             if (cutscene == null) return null;
             return !string.IsNullOrEmpty(cutscene.cutsceneId) ? cutscene.cutsceneId : cutscene.name;
+        }
+
+        /// <summary>
+        /// 현재 스테이지의 "클리어 컷씬 후 추가 이동 씬" 이름을 반환.
+        /// 비어 있으면 null 반환.
+        /// </summary>
+        private string ResolvePostClearSceneName()
+        {
+            var stageData = GetCurrentStageData();
+            if (stageData == null) return null;
+
+            return string.IsNullOrWhiteSpace(stageData.postClearSceneName)
+                ? null
+                : stageData.postClearSceneName.Trim();
+        }
+
+        /// <summary>
+        /// postClearSceneName이 설정되어 있으면 해당 씬으로 이동하고,
+        /// 비어 있으면 fallback을 실행한다.
+        /// </summary>
+        private void LoadPostClearSceneOrFallback(System.Action fallback)
+        {
+            string postClearScene = ResolvePostClearSceneName();
+            if (!string.IsNullOrEmpty(postClearScene))
+            {
+                SceneManager.LoadScene(postClearScene);
+                return;
+            }
+
+            fallback?.Invoke();
         }
 
         /// <summary>
@@ -421,8 +463,11 @@ namespace Match3Puzzle.UI
             {
                 CutsceneContext.SetNextForBattle(clearCutsceneId, () =>
                 {
-                    BattleStageHolder.AutoOpenStageSelectOnMap = true;
-                    SceneManager.LoadScene(mapSceneName);
+                    LoadPostClearSceneOrFallback(() =>
+                    {
+                        BattleStageHolder.AutoOpenStageSelectOnMap = true;
+                        SceneManager.LoadScene(mapSceneName);
+                    });
                 });
                 SceneManager.LoadScene(storySceneName);
                 return;
@@ -430,8 +475,11 @@ namespace Match3Puzzle.UI
 
             // MapScene 진입 후 StageSelectPanel을 자동 오픈하기 위한 값 설정
             // (프로젝트 내 StageSelectPanel은 MapSceneController가 실제로 Show() 호출)
-            BattleStageHolder.AutoOpenStageSelectOnMap = true;
-            SceneManager.LoadScene(mapSceneName);
+            LoadPostClearSceneOrFallback(() =>
+            {
+                BattleStageHolder.AutoOpenStageSelectOnMap = true;
+                SceneManager.LoadScene(mapSceneName);
+            });
         }
 
         /// <summary>

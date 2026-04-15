@@ -179,6 +179,12 @@ namespace Match3Puzzle.Stage
                  "CutsceneData의 nextSceneName을 MapScene으로, clearSaveOnComplete를 false로 설정할 것.")]
         public Story.CutsceneData clearCutscene;
 
+        [Header("클리어 컷씬 후 추가 씬 이동 (선택)")]
+        [Tooltip("클리어 컷씬이 끝난 다음 추가로 이동할 씬 이름입니다.\n"
+                 + "비워두면 추가 씬 이동은 하지 않고 기존 흐름(맵/다음 스테이지)을 유지합니다.\n"
+                 + "예: EndingScene")]
+        public string postClearSceneName = "";
+
         /// <summary>
         /// 현재 HP와 페이즈에 맞는 몬스터 초상 스프라이트를 반환합니다.
         /// HP가 0 이하인 경우는 사망/클리어 처리 쪽에서 별도로 덮어쓰므로, 기본(페이즈) 스프라이트만 반환합니다.

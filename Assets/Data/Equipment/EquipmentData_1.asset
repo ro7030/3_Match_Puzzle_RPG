@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Match3Puzzle.Inventory.EquipmentData
   equipmentId: equip_slot1_warbanner
   displayName: "\uB9C8\uBC95\uC0AC\uC758 \uBC18\uC9C0"
-  description: "\uC804\uCCB4 \uACF5\uACA9\uB825\uC744 \uB192\uC5EC \uAC80/\uD65C/\uB9C8\uBC95
-    \uD53C\uD574\uB97C \uAC15\uD654\uD55C\uB2E4."
+  description: "\uACF5\uACA9\uB82525% \uBC0F \uD68C\uBCF5\uB7C9 10% \uB192\uC5EC
+    \uAC80/\uD65C/\uB9C8\uBC95 \uD53C\uD574\uB97C \uAC15\uD654\uD55C\uB2E4."
   tmi: "\uB9C8\uB825\uC744 \uAC15\uD654\uD574\uC8FC\uB294 \uBC18\uC9C0\uC774\uB2E4.
     \uC6A9\uC744 \uBB3C\uB9AC\uCE5C \uB9C8\uBC95\uC0AC\uAC00 \uC0AC\uC6A9\uD588\uB2E4\uB294
     \uC804\uC124\uC774 \uC788\uB2E4."
-  effectLineOverride: "\uACF5\uACA9\uB82520%\uC0C1\uC2B9"
+  effectLineOverride: "\uACF5\uACA9 \uBC0F \uD790\uB7C9 \uC0C1\uC2B9"
   icon: {fileID: -8113857153334705767, guid: be725e1977646a144999476be21faabc, type: 3}
   slotType: 1
   goldCost: 500

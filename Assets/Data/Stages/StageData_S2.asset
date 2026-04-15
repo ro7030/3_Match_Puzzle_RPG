@@ -15,7 +15,7 @@ MonoBehaviour:
   stageName: Stage 2
   description: 
   backgroundSprite: {fileID: 3456022699895010531, guid: cb0df55a12d29a04ea8f9e6f919ec2c3, type: 3}
-  bossSprite: {fileID: 6947022252201884407, guid: 12093b7bb7372f642a59f1cb1b319ede, type: 3}
+  bossSprite: {fileID: 21300000, guid: 8db415b1422693d44b059d1b55f95312, type: 3}
   monsterMaxHp: 1500
   bossSpriteAfterClear: {fileID: 0}
   monsterHpPortraitThresholds:
@@ -46,4 +46,6 @@ MonoBehaviour:
   swordResistancePhase2: 0
   bowResistancePhase2: 0
   wandResistancePhase2: 0
+  bgmClip: {fileID: 0}
   clearCutscene: {fileID: 0}
+  postClearSceneName: 

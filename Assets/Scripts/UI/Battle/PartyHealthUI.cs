@@ -31,6 +31,12 @@ namespace Match3Puzzle.UI.Battle
         public event System.Action<int> OnCharacterHpZero;
         public event System.Action<int, int, int> OnCharacterHpChanged; // (index, currentHp, maxHp)
 
+        /// <summary>파티원이 데미지를 받을 때 호출. 인자: (캐릭터 인덱스, 데미지량). DamageNumberSpawner에서 구독.</summary>
+        public event System.Action<int, int> OnDamageReceived;
+
+        /// <summary>파티원 HP가 회복될 때 호출. 인자: (캐릭터 인덱스, 회복량). DamageNumberSpawner에서 구독.</summary>
+        public event System.Action<int, int> OnHealReceived;
+
         public int CharacterCount => slots?.Length ?? 0;
         public int MaxHpPerCharacter => maxHpPerCharacter;
 
@@ -92,6 +98,7 @@ namespace Match3Puzzle.UI.Battle
             currentHp[characterIndex] = Mathf.Max(0, currentHp[characterIndex] - amount);
             RefreshBar(characterIndex);
             OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
+            OnDamageReceived?.Invoke(characterIndex, amount);
 
             if (before > 0 && currentHp[characterIndex] == 0)
                 OnCharacterHpZero?.Invoke(characterIndex);
@@ -107,6 +114,7 @@ namespace Match3Puzzle.UI.Battle
             currentHp[characterIndex] = Mathf.Min(maxHpPerCharacter, currentHp[characterIndex] + amount);
             RefreshBar(characterIndex);
             OnCharacterHpChanged?.Invoke(characterIndex, currentHp[characterIndex], maxHpPerCharacter);
+            OnHealReceived?.Invoke(characterIndex, amount);
         }
 
         /// <summary>

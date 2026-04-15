@@ -29,6 +29,12 @@ namespace Match3Puzzle.UI.Battle
         /// <summary>몬스터 HP(현재/최대)가 변경될 때마다 호출.</summary>
         public event System.Action<int, int> OnHPChanged;
 
+        /// <summary>몬스터가 데미지를 받을 때 호출. 인자: 실제 적용된 데미지량. DamageNumberSpawner에서 구독.</summary>
+        public event System.Action<int> OnDamageReceived;
+
+        /// <summary>몬스터 HP가 회복될 때 호출. 인자: 회복량. DamageNumberSpawner에서 구독.</summary>
+        public event System.Action<int> OnHealReceived;
+
         private void Start()
         {
             Refresh();
@@ -68,6 +74,7 @@ namespace Match3Puzzle.UI.Battle
             currentHp = Mathf.Max(0, currentHp - amount);
             Refresh();
             OnHPChanged?.Invoke(currentHp, maxHp);
+            OnDamageReceived?.Invoke(amount);
 
             Debug.Log($"[MonsterHP] TakeDamage:{amount} → 남은HP:{currentHp}/{maxHp} / OnDied구독수:{OnDied?.GetInvocationList().Length ?? 0}");
 
@@ -86,6 +93,7 @@ namespace Match3Puzzle.UI.Battle
             currentHp = Mathf.Min(maxHp, currentHp + amount);
             Refresh();
             OnHPChanged?.Invoke(currentHp, maxHp);
+            OnHealReceived?.Invoke(amount);
         }
 
         private void Refresh()
