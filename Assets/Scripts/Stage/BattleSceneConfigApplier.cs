@@ -109,7 +109,8 @@ namespace Match3Puzzle.Stage
                 if (IsUnderClearPanelHierarchy(g.transform)) continue;
 
                 // 버튼/슬라이더/입력필드 등 Selectable 계열 UI는 유지
-                if (g.GetComponentInParent<Selectable>() != null) continue;
+                // (비활성 패널 하위 UI도 포함해서 검사)
+                if (g.GetComponentsInParent<Selectable>(true).Length > 0) continue;
 
                 // 상호작용 없는 텍스트/이미지는 레이캐스트 비활성화
                 if (g is Image || g is TMP_Text)

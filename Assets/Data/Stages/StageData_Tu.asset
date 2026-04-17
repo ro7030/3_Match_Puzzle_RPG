@@ -46,3 +46,4 @@ MonoBehaviour:
   wandResistancePhase2: 0
   bgmClip: {fileID: 0}
   clearCutscene: {fileID: 11400000, guid: 3570474c5b3cb204fbe6f2e5c3ddb84d, type: 2}
+  postClearSceneName: 
