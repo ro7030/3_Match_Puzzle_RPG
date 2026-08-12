@@ -7,6 +7,19 @@
 
 ---
 
+## 플레이 영상
+
+팀 시연 영상입니다. (Git LFS · 약 409MB)
+
+https://github.com/ro7030/3_Match_Puzzle_RPG/blob/main/docs/media/team1_cliche.mp4
+
+<video src="docs/media/team1_cliche.mp4" controls width="720"></video>
+
+로컬에서 바로 보려면 [`docs/media/team1_cliche.mp4`](docs/media/team1_cliche.mp4) 파일을 열어 주세요.  
+클론 시 LFS 파일이 필요하면: `git lfs pull`
+
+---
+
 ## 게임 소개
 
 플레이어는 4인 파티(검사 · 마법사 · 궁수 · 힐러)를 이끌며, 맵에서 스테이지를 선택하고 왕국에서 스탯·스킬·장비를 정비한 뒤 배틀에 진입합니다.
